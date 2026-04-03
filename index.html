@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Quantum Miracle Teaching - Transformasi Pembelajaran</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="quantum-bg">
+        <div class="quantum-particle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
+        <div class="quantum-particle" style="width: 200px; height: 200px; top: 60%; right: 20%; animation-delay: 5s;"></div>
+        <div class="quantum-particle" style="width: 150px; height: 150px; bottom: 20%; left: 30%; animation-delay: 10s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <span>Neo Quantum</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#chapters">Isi Buku</a></li>
+                <li><a href="#ai-assistant">AI Assistant</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#about">Tentang</a></li>
+            </ul>
+            <button class="nav-cta" onclick="document.getElementById('ai-assistant').scrollIntoView({ behavior: 'smooth' })">
+                <i class="fas fa-robot"></i> Tanya AI
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    Buku Bestseller Pendidikan 2026
+                </div>
+                <h1 class="hero-title">
+                    Neo Quantum <span>Miracle Teaching</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Transformasi Pembelajaran dengan Deep Teaching, Deep Learning, STEM, dan Teknologi Modern. Panduan lengkap untuk guru masa kini yang ingin menciptakan keajaiban di kelas.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">9</span>
+                        <span class="stat-label">Bab Utama</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Metode Praktis</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">AI Support</span>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#chapters" class="btn-primary">
+                        <i class="fas fa-book-open"></i>
+                        Jelajahi Isi Buku
+                    </a>
+                    <button class="btn-secondary" onclick="document.getElementById('ai-assistant').scrollIntoView({ behavior: 'smooth' })">
+                        <i class="fas fa-comments"></i>
+                        Tanya AI Assistant
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="book-3d" onclick="openChapter(1)">
+                    <div class="book-spine"></div>
+                    <div class="book-cover">
+                        <div class="book-title">NEO QUANTUM MIRACLE TEACHING</div>
+                        <div class="book-subtitle">"Transformasi Pembelajaran dengan Deep Teaching, Deep Learning, STEM, dan Teknologi Modern"</div>
+                        <div style="margin-top: 2rem; font-size: 3rem; opacity: 0.3;">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <div class="book-author">Oleh: SARDIN DAMIS</div>
+                    </div>
+                    <div class="floating-elements">
+                        <div class="float-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="float-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="float-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapters Section -->
+    <section class="chapters-section" id="chapters">
+        <div class="section-header">
+            <span class="section-tag">Struktur Buku</span>
+            <h2 class="section-title">9 Bab Transformasi Pembelajaran</h2>
+            <p class="section-desc">
+                Setiap bab dirancang dengan pendekatan praktis dan teori yang solid. Klik pada bab untuk membaca ringkasan dan bertanya langsung ke AI Assistant.
+            </p>
+        </div>
+        <div class="chapters-grid" id="chaptersGrid">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </section>
+
+    <!-- AI Assistant Section -->
+    <section class="ai-section" id="ai-assistant">
+        <div class="ai-container" style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center;">
+            <div class="ai-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">
+                    <i class="fas fa-robot"></i>
+                    AI Assistant <span>Quantum Guide</span>
+                </h2>
+                <p style="font-size: 1.2rem; opacity: 0.9; line-height: 1.8;">
+                    Asisten pintar yang memahami setiap detail buku Neo Quantum Miracle Teaching. Tanyakan apa saja tentang Deep Teaching, STEM, VR, AI dalam pendidikan, dan dapatkan jawaban instan.
+                </p>
+                <ul class="ai-features" style="list-style: none; margin: 2rem 0;">
+                    <li style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle" style="color: var(--miracle-gold);"></i>
+                        Jawaban berbasis konten buku yang akurat
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle" style="color: var(--miracle-gold);"></i>
+                        Referensi otomatis ke bab dan halaman
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle" style="color: var(--miracle-gold);"></i>
+                        Mode praktis: RPP, proyek STEM, evaluasi
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle" style="color: var(--miracle-gold);"></i>
+                        Tersedia 24/7 untuk semua pertanyaan pendidikan
+                    </li>
+                </ul>
+            </div>
+            <div class="ai-chat-box">
+                <div class="chat-header" style="display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 40px; height: 40px; background: var(--stem-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--quantum-blue);">QuantumGuide AI</h4>
+                        <span style="font-size: 0.8rem; color: #64748b;">Ahli Neo Quantum Teaching</span>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-bubble">
+                            Halo! Saya Quantum Guide, AI yang siap membantu Anda memahami buku "Neo Quantum Miracle Teaching". Apa yang ingin Anda pelajari hari ini?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Tanyakan apa saja tentang buku ini..." onkeypress="handleKeyPress(event)">
+                    <button class="chat-send" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section" id="tools">
+        <div class="section-header">
+            <span class="section-tag">Teaching Tools</span>
+            <h2 class="section-title">Alat Bantu Interaktif</h2>
+            <p class="section-desc">
+                Tools praktis untuk mengimplementasikan konsep dari buku langsung di kelas Anda
+            </p>
+        </div>
+        <div style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="chapter-card" style="text-align: center; padding: 3rem;" onclick="openTool('stem')">
+                <i class="fas fa-flask" style="font-size: 3rem; color: var(--stem-orange); margin-bottom: 1.5rem;"></i>
+                <h3>STEM Project Generator</h3>
+                <p>Generate ide proyek STEM lengkap dengan alat, bahan, dan langkah-langkah.</p>
+                <a href="#" class="tool-link" style="color: var(--stem-orange); font-weight: 600; margin-top: 1rem; display: inline-block;">Coba Sekarang <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="chapter-card" style="text-align: center; padding: 3rem;" onclick="openTool('planner')">
+                <i class="fas fa-clipboard-list" style="font-size: 3rem; color: var(--stem-orange); margin-bottom: 1.5rem;"></i>
+                <h3>Deep Teaching Planner</h3>
+                <p>Buat rencana pelajaran dengan pendekatan Deep Teaching yang bermakna.</p>
+                <a href="#" class="tool-link" style="color: var(--stem-orange); font-weight: 600; margin-top: 1rem; display: inline-block;">Buat RPP <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="chapter-card" style="text-align: center; padding: 3rem;" onclick="openTool('checklist')">
+                <i class="fas fa-check-double" style="font-size: 3rem; color: var(--stem-orange); margin-bottom: 1.5rem;"></i>
+                <h3>Self-Assessment</h3>
+                <p>Evaluasi diri untuk mengukur penerapan Mindset Guru Quantum Anda.</p>
+                <a href="#" class="tool-link" style="color: var(--stem-orange); font-weight: 600; margin-top: 1rem; display: inline-block;">Mulai Evaluasi <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Neo Quantum Miracle Teaching</h3>
+                <p>Transformasi pembelajaran untuk generasi masa depan. Buku ini adalah panduan lengkap untuk guru yang ingin menjadi agen perubahan.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <ul style="list-style: none;">
+                    <li><a href="#chapters" style="color: #94a3b8; text-decoration: none;">Isi Buku</a></li>
+                    <li><a href="#ai-assistant" style="color: #94a3b8; text-decoration: none;">AI Assistant</a></li>
+                    <li><a href="#tools" style="color: #94a3b8; text-decoration: none;">Tools</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Topik Utama</h4>
+                <ul style="list-style: none;">
+                    <li><a href="#" onclick="askAI('Deep Teaching')" style="color: #94a3b8; text-decoration: none;">Deep Teaching</a></li>
+                    <li><a href="#" onclick="askAI('STEM')" style="color: #94a3b8; text-decoration: none;">STEM Education</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Kontak</h4>
+                <p style="color: #94a3b8;">contact@sardindamis.id</p>
+            </div>
+        </div>
+        <div style="text-align: center; padding-top: 3rem; margin-top: 3rem; border-top: 1px solid #1e293b; color: #64748b;">
+            <p>&copy; 2026 Sardin Damis. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chapter Modal -->
+    <div class="modal" id="chapterModal">
+        <div class="modal-content">
+            <div class="modal-main">
+                <button onclick="closeModal()" style="position: absolute; top: 1.5rem; left: 1.5rem; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i class="fas fa-times"></i></button>
+                <div id="chapterContent">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+            <div class="modal-sidebar">
+                <h4 style="color: var(--quantum-blue); margin-bottom: 1.5rem;"><i class="fas fa-robot"></i> Tanya AI Bab Ini</h4>
+                <div id="quickQuestions">
+                    <!-- Dynamic Questions -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
