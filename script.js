@@ -301,6 +301,10 @@ function askAI(query) {
                     sourceLabel = 'QuantumGuide AI (Gemini)';
                     sourceIcon = 'fa-sparkles';
                     sourceClass = 'ai-source-gemini';
+                } else if (data.source === 'hybrid') {
+                    sourceLabel = '📖 Buku + 🧠 AI (' + (data.model || 'Hybrid') + ')';
+                    sourceIcon = 'fa-wand-magic-sparkles';
+                    sourceClass = 'ai-source-hybrid';
                 } else if (data.source === 'book') {
                     sourceLabel = data.model || 'Konten Buku';
                     sourceIcon = 'fa-book-open';

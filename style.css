@@ -1796,6 +1796,21 @@ body {
     font-size: 0.8rem;
 }
 
+.message-source.ai-source-hybrid {
+    color: #7c3aed;
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.08), rgba(237, 137, 54, 0.05), transparent);
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    margin-top: 0.8rem;
+    border-top: none;
+    font-weight: 700;
+}
+
+.message-source.ai-source-hybrid i {
+    color: #7c3aed;
+    font-size: 0.8rem;
+}
+
 /* Chat Messages Scrollbar */
 .chat-messages::-webkit-scrollbar {
     width: 5px;

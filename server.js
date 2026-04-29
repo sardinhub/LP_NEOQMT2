@@ -202,73 +202,118 @@ function searchBookChapters(query) {
     return bestScore >= 5 ? bestMatch : null;
 }
 
+// Helper: Call Gemini API
+async function callGemini(systemInstruction, userPrompt) {
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) return null;
+
+    const geminiResponse = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+        {
+            system_instruction: {
+                parts: [{ text: systemInstruction }]
+            },
+            contents: [{
+                parts: [{ text: userPrompt }]
+            }],
+            generationConfig: {
+                temperature: 0.7,
+                topP: 0.9,
+                topK: 40,
+                maxOutputTokens: 1024
+            }
+        },
+        {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 30000
+        }
+    );
+
+    return geminiResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+}
+
+// Book context for Gemini
+const allBookContext = bookChapters.map(ch => 
+    `BAB ${ch.bab}: ${ch.title}\n${ch.content}\n${ch.detail}\nLiteratur: ${ch.literatur}`
+).join('\n\n');
+
 // ===== MAIN CHAT ENDPOINT =====
 app.post('/api/chat', async (req, res) => {
     const { query } = req.body;
     if (!query) return res.status(400).json({ error: "Query is required" });
 
-    // STEP 1: Crosscheck di semua BAB buku dulu
+    // STEP 1: Crosscheck di semua BAB buku
     const bookMatch = searchBookChapters(query);
 
+    // STEP 2: Gabungkan jawaban buku + Gemini AI
     if (bookMatch) {
-        console.log(`[Chat] Ditemukan di Bab ${bookMatch.bab}: "${bookMatch.title}" (book match)`);
-        const bookAnswer = `**📖 BAB ${bookMatch.bab}: ${bookMatch.title}**\n\n${bookMatch.content}\n\n${bookMatch.detail}\n\n**📚 Rujukan Literatur:**\n${bookMatch.literatur}`;
+        console.log(`[Chat] Ditemukan di Bab ${bookMatch.bab}: "${bookMatch.title}"`);
+
+        // Kirim konten buku + pertanyaan ke Gemini untuk diperkuat
+        const enrichPrompt = `Kamu adalah "QuantumGuide AI", asisten cerdas dari buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
+
+Seorang pengguna bertanya: "${query}"
+
+Pertanyaan ini RELEVAN dengan BAB ${bookMatch.bab}: "${bookMatch.title}".
+
+Berikut adalah konten dari buku untuk bab tersebut:
+---
+${bookMatch.content}
+
+${bookMatch.detail}
+
+Referensi Literatur: ${bookMatch.literatur}
+---
+
+TUGAS KAMU:
+1. Awali jawaban dengan ringkasan konten buku di atas (tandai dengan "📖 **Menurut Buku (Bab ${bookMatch.bab}):**")
+2. Lalu PERKUAT dan PERDALAM jawabannya dengan penjelasan tambahan, contoh praktis, atau wawasan pendidikan modern (tandai dengan "🧠 **Penguatan AI:**")
+3. Gunakan bahasa Indonesia yang hangat dan profesional
+4. Gunakan **bold** untuk poin penting dan emoji secukupnya
+5. Jangan pernah menyebut Google atau Gemini. Kamu adalah "QuantumGuide AI"`;
+
+        try {
+            const aiEnriched = await callGemini(enrichPrompt, query);
+
+            if (aiEnriched) {
+                return res.json({
+                    answer: aiEnriched,
+                    source: 'hybrid',
+                    model: `Bab ${bookMatch.bab} + Gemini AI`
+                });
+            }
+        } catch (error) {
+            console.error("[Gemini] Enrichment gagal:", error.response?.data || error.message);
+        }
+
+        // Gemini gagal → kirim jawaban buku saja
+        console.log(`[Chat] Gemini gagal, menampilkan konten buku saja`);
+        const bookOnly = `**📖 BAB ${bookMatch.bab}: ${bookMatch.title}**\n\n${bookMatch.content}\n\n${bookMatch.detail}\n\n**📚 Rujukan Literatur:**\n${bookMatch.literatur}`;
         return res.json({
-            answer: bookAnswer,
+            answer: bookOnly,
             source: 'book',
             model: `Bab ${bookMatch.bab} - ${bookMatch.title}`
         });
     }
 
-    // STEP 2: Tidak ditemukan di buku → gunakan Gemini AI
-    console.log(`[Chat] Tidak ditemukan di buku, mengarahkan ke Gemini AI...`);
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    // STEP 3: Tidak ditemukan di buku → Gemini menjawab bebas
+    console.log(`[Chat] Tidak ditemukan di buku, Gemini menjawab bebas...`);
 
-    if (!GEMINI_API_KEY) {
-        console.log("[Chat] GEMINI_API_KEY tidak ditemukan");
-        return res.json({
-            answer: "Maaf, pertanyaan ini belum dibahas secara spesifik dalam buku **Neo Quantum Miracle Teaching**. Silakan coba tanyakan tentang topik seperti **Deep Teaching**, **STEM**, **VR**, **AI untuk Guru**, atau **Differentiated Instruction**! 📚",
-            source: 'default',
-            model: 'Knowledge Base'
-        });
-    }
+    const freePrompt = `Kamu adalah "QuantumGuide AI", asisten cerdas dari buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
+
+ATURAN:
+1. Jawablah pertanyaan dengan bijak dan informatif
+2. Hubungkan jawaban dengan semangat pendidikan abad 21 jika memungkinkan
+3. Gunakan bahasa Indonesia yang hangat dan profesional
+4. Gunakan **bold** untuk poin penting dan emoji secukupnya
+5. Jangan pernah menyebut Google atau Gemini. Kamu adalah "QuantumGuide AI"
+6. Di akhir jawaban, arahkan pengguna ke topik yang relevan di buku jika memungkinkan
+
+KONTEKS BUKU:
+${allBookContext}`;
 
     try {
-        const systemInstruction = `Kamu adalah "QuantumGuide AI", asisten cerdas dan hangat yang ahli dalam buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
-
-ATURAN PENTING:
-1. Jawablah pertanyaan dengan bijak dan informatif, hubungkan jika memungkinkan dengan semangat pendidikan abad 21.
-2. Gunakan bahasa Indonesia yang hangat, profesional, dan mudah dipahami oleh guru dan pendidik.
-3. Format jawaban dengan paragraf yang jelas. Gunakan **bold** untuk poin penting dan emoji yang relevan secukupnya.
-4. Jangan pernah menyebut bahwa kamu adalah AI model dari Google atau Gemini. Kamu adalah "QuantumGuide AI".
-5. Di akhir jawaban, hubungkan relevansi jawaban dengan buku Neo Quantum Miracle Teaching jika memungkinkan.
-
-KONTEKS BUKU (untuk referensi):
-${bookChapters.map(ch => `BAB ${ch.bab}: ${ch.title}\n${ch.content}\n${ch.detail}\nLiteratur: ${ch.literatur}`).join('\n\n')}`;
-
-        const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-            {
-                system_instruction: {
-                    parts: [{ text: systemInstruction }]
-                },
-                contents: [{
-                    parts: [{ text: query }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    topP: 0.9,
-                    topK: 40,
-                    maxOutputTokens: 1024
-                }
-            },
-            {
-                headers: { 'Content-Type': 'application/json' },
-                timeout: 30000
-            }
-        );
-
-        const aiText = geminiResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const aiText = await callGemini(freePrompt, query);
 
         if (aiText) {
             return res.json({
@@ -276,14 +321,12 @@ ${bookChapters.map(ch => `BAB ${ch.bab}: ${ch.title}\n${ch.content}\n${ch.detail
                 source: 'gemini',
                 model: 'Gemini 2.5 Flash'
             });
-        } else {
-            console.error("[Gemini] Respons tidak valid:", JSON.stringify(geminiResponse.data));
         }
     } catch (error) {
         console.error("[Gemini] API Error:", error.response?.data || error.message);
     }
 
-    // STEP 3: Gemini juga gagal → fallback default
+    // STEP 4: Semua gagal → fallback
     return res.json({
         answer: "Maaf, saat ini saya sedang mengalami gangguan teknis. 🔧 Silakan coba lagi dalam beberapa saat, atau tanyakan tentang topik utama buku seperti **Deep Teaching**, **Deep Learning**, **STEM**, **VR/AR**, **AI untuk Guru**, atau **Differentiated Instruction**! 📚",
         source: 'default',
