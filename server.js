@@ -143,7 +143,7 @@ REFERENSI TAMBAHAN:
 ${knowledgeBaseText}`;
 
         const geminiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
             {
                 system_instruction: {
                     parts: [{ text: systemInstruction }]
@@ -170,7 +170,7 @@ ${knowledgeBaseText}`;
             res.json({
                 answer: aiText,
                 source: 'gemini',
-                model: 'Gemini 2.0 Flash'
+                model: 'Gemini 2.5 Flash'
             });
         } else {
             console.error("[Gemini] Respons tidak valid:", JSON.stringify(geminiResponse.data));
