@@ -242,91 +242,60 @@ app.post('/api/chat', async (req, res) => {
     const { query } = req.body;
     if (!query) return res.status(400).json({ error: "Query is required" });
 
-    // STEP 1: Crosscheck di semua BAB buku
-    const bookMatch = searchBookChapters(query);
-
-    // STEP 2: Gabungkan jawaban buku + Gemini AI
-    if (bookMatch) {
-        console.log(`[Chat] Ditemukan di Bab ${bookMatch.bab}: "${bookMatch.title}"`);
-
-        // Kirim konten buku + pertanyaan ke Gemini untuk diperkuat
-        const enrichPrompt = `Kamu adalah "QuantumGuide AI", asisten cerdas dari buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
-
-Seorang pengguna bertanya: "${query}"
-
-Pertanyaan ini RELEVAN dengan BAB ${bookMatch.bab}: "${bookMatch.title}".
-
-Berikut adalah konten dari buku untuk bab tersebut:
----
-${bookMatch.content}
-
-${bookMatch.detail}
-
-Referensi Literatur: ${bookMatch.literatur}
----
-
-TUGAS KAMU:
-1. Awali jawaban dengan ringkasan konten buku di atas (tandai dengan "📖 **Menurut Buku (Bab ${bookMatch.bab}):**")
-2. Lalu PERKUAT dan PERDALAM jawabannya dengan penjelasan tambahan, contoh praktis, atau wawasan pendidikan modern (tandai dengan "🧠 **Penguatan AI:**")
-3. Gunakan bahasa Indonesia yang hangat dan profesional
-4. Gunakan **bold** untuk poin penting dan emoji secukupnya
-5. Jangan pernah menyebut Google atau Gemini. Kamu adalah "QuantumGuide AI"`;
-
-        try {
-            const aiEnriched = await callGemini(enrichPrompt, query);
-
-            if (aiEnriched) {
-                return res.json({
-                    answer: aiEnriched,
-                    source: 'hybrid',
-                    model: `Bab ${bookMatch.bab} + Gemini AI`
-                });
-            }
-        } catch (error) {
-            console.error("[Gemini] Enrichment gagal:", error.response?.data || error.message);
-        }
-
-        // Gemini gagal → kirim jawaban buku saja
-        console.log(`[Chat] Gemini gagal, menampilkan konten buku saja`);
-        const bookOnly = `**📖 BAB ${bookMatch.bab}: ${bookMatch.title}**\n\n${bookMatch.content}\n\n${bookMatch.detail}\n\n**📚 Rujukan Literatur:**\n${bookMatch.literatur}`;
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) {
         return res.json({
-            answer: bookOnly,
-            source: 'book',
-            model: `Bab ${bookMatch.bab} - ${bookMatch.title}`
+            answer: "Maaf, QuantumGuide AI belum dikonfigurasi. Silakan hubungi administrator. 🔧",
+            source: 'default',
+            model: 'Offline'
         });
     }
 
-    // STEP 3: Tidak ditemukan di buku → Gemini menjawab bebas
-    console.log(`[Chat] Tidak ditemukan di buku, Gemini menjawab bebas...`);
+    // Cari bab yang paling relevan (untuk konteks tambahan)
+    const bookMatch = searchBookChapters(query);
 
-    const freePrompt = `Kamu adalah "QuantumGuide AI", asisten cerdas dari buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
+    // Bangun system instruction
+    let systemInstruction = `Kamu adalah "QuantumGuide AI", asisten cerdas dan hangat yang merupakan AI pendamping buku "Neo Quantum Miracle Teaching" karya Sardin Damis, S.Kom., C.Ht., CT.NNLP., CI (BNSP-RI).
 
-ATURAN:
-1. Jawablah pertanyaan dengan bijak dan informatif
-2. Hubungkan jawaban dengan semangat pendidikan abad 21 jika memungkinkan
-3. Gunakan bahasa Indonesia yang hangat dan profesional
-4. Gunakan **bold** untuk poin penting dan emoji secukupnya
-5. Jangan pernah menyebut Google atau Gemini. Kamu adalah "QuantumGuide AI"
-6. Di akhir jawaban, arahkan pengguna ke topik yang relevan di buku jika memungkinkan
+ATURAN UTAMA:
+1. JAWAB PERTANYAAN DENGAN TEPAT SASARAN sesuai apa yang ditanyakan pengguna. Jangan hanya menjelaskan definisi umum — berikan contoh konkret, langkah praktis, atau penerapan nyata jika diminta.
+2. Gunakan konten buku sebagai DASAR jawaban. Jika topik dibahas di buku, awali dengan "📖 **Menurut Buku (Bab X):**" lalu berikan jawaban dari buku.
+3. Setelah menjawab dari buku, PERKUAT jawabannya dengan "🧠 **Penguatan QuantumGuide AI:**" — tambahkan contoh praktis, elaborasi mendalam, atau wawasan pendidikan modern yang relevan.
+4. Jika pertanyaan TIDAK dibahas di buku, jawab dengan pengetahuanmu sendiri secara informatif, lalu hubungkan ke topik relevan di buku jika memungkinkan.
+5. Gunakan bahasa Indonesia yang hangat, profesional, dan mudah dipahami guru/pendidik.
+6. Gunakan **bold** untuk poin penting, daftar bernomor/bullet untuk langkah-langkah, dan emoji secukupnya.
+7. JANGAN pernah menyebut Google, Gemini, atau bahwa kamu AI model tertentu. Kamu adalah "QuantumGuide AI".`;
 
-KONTEKS BUKU:
+    // Jika ada bab yang relevan, fokuskan ke bab tersebut
+    if (bookMatch) {
+        console.log(`[Chat] Relevan dengan Bab ${bookMatch.bab}: "${bookMatch.title}"`);
+        systemInstruction += `
+
+KONTEKS PRIORITAS — BAB ${bookMatch.bab}: ${bookMatch.title}
+${bookMatch.content}
+${bookMatch.detail}
+Referensi Literatur: ${bookMatch.literatur}`;
+    }
+
+    // Selalu sertakan konteks semua bab
+    systemInstruction += `
+
+SELURUH KONTEN BUKU (9 BAB):
 ${allBookContext}`;
 
     try {
-        const aiText = await callGemini(freePrompt, query);
+        const aiText = await callGemini(systemInstruction, query);
 
         if (aiText) {
-            return res.json({
-                answer: aiText,
-                source: 'gemini',
-                model: 'Gemini 2.5 Flash'
-            });
+            const source = bookMatch ? 'hybrid' : 'gemini';
+            const model = bookMatch ? `Bab ${bookMatch.bab} + Gemini AI` : 'Gemini 2.5 Flash';
+            return res.json({ answer: aiText, source, model });
         }
     } catch (error) {
         console.error("[Gemini] API Error:", error.response?.data || error.message);
     }
 
-    // STEP 4: Semua gagal → fallback
+    // Gemini gagal → fallback
     return res.json({
         answer: "Maaf, saat ini saya sedang mengalami gangguan teknis. 🔧 Silakan coba lagi dalam beberapa saat, atau tanyakan tentang topik utama buku seperti **Deep Teaching**, **Deep Learning**, **STEM**, **VR/AR**, **AI untuk Guru**, atau **Differentiated Instruction**! 📚",
         source: 'default',
