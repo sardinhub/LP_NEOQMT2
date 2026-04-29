@@ -70,6 +70,8 @@ const responses = {
         book: "Penerapan Taksonomi Bloom dalam evaluasi berdiferensiasi dijelaskan di Bab 8.",
         lit: "Revisi Taksonomi Bloom menempatkan 'Creating' sebagai tingkat kognitif tertinggi, sejalan dengan proyek STEM dan Design Thinking."
     }
+};
+
 // Structured book chapters for search (comprehensive)
 const bookChapters = [
     {
