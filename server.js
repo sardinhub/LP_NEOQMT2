@@ -70,77 +70,179 @@ const responses = {
         book: "Penerapan Taksonomi Bloom dalam evaluasi berdiferensiasi dijelaskan di Bab 8.",
         lit: "Revisi Taksonomi Bloom menempatkan 'Creating' sebagai tingkat kognitif tertinggi, sejalan dengan proyek STEM dan Design Thinking."
     }
-};
+// Structured book chapters for search (comprehensive)
+const bookChapters = [
+    {
+        bab: 1,
+        title: "Membangun Mindset Guru Quantum",
+        keywords: ["mindset", "guru quantum", "growth mindset", "fixed mindset", "carol dweck", "refleksi diri", "lifelong learning", "adaptasi", "zona nyaman", "pola pikir", "inovator", "fasilitator", "motivator"],
+        content: "Mindset Guru Quantum adalah pola pikir yang memadukan kearifan lokal dengan inovasi global. Seperti partikel quantum yang bisa berada di banyak tempat sekaligus, guru quantum juga harus bisa 'berada' di banyak peran: sebagai fasilitator, motivator, inovator, dan bahkan entertainer dalam kelas.",
+        detail: "Ciri-ciri guru quantum: selalu haus pengetahuan baru, melihat tantangan sebagai peluang, tidak takut mencoba metode baru, memperlakukan setiap murid sebagai individu unik, mampu beradaptasi dengan teknologi. Penelitian Carol Dweck tentang Growth Mindset menunjukkan bahwa orang dengan growth mindset lebih berhasil dalam hidup.",
+        literatur: "Penelitian dari Stanford University oleh Carol Dweck menunjukkan bahwa growth mindset mendorong ketahanan, adaptasi, dan keberhasilan jangka panjang."
+    },
+    {
+        bab: 2,
+        title: "Deep Teaching - Mengajar dari Hati ke Hati",
+        keywords: ["deep teaching", "empati", "storytelling", "socratic questioning", "bercerita", "koneksi emosional", "dari hati", "mengajar", "surface teaching", "jigsaw"],
+        content: "Deep Teaching adalah pendekatan yang menekankan pemahaman mendalam dan koneksi emosional. Ini bukan sekadar transfer materi, tapi transformasi jiwa.",
+        detail: "Kunci utama: Empati (memahami perspektif murid sebelum mengajar), Storytelling (seni bercerita yang efektif menyampaikan konsep sulit), Socratic Questioning (teknik bertanya yang memicu pemikiran kritis — hindari pertanyaan Ya/Tidak, gunakan 'Mengapa' dan 'Bagaimana').",
+        literatur: "Kontras dengan 'Surface Teaching' (Marton & Säljö). Neuroscience menunjukkan bahwa narasi/storytelling memicu pelepasan oksitosin dan dopamin yang meningkatkan fokus dan keterikatan siswa."
+    },
+    {
+        bab: 3,
+        title: "Deep Learning - Membuat Siswa Belajar Lebih Dalam",
+        keywords: ["deep learning", "belajar mendalam", "surface learning", "metakognisi", "problem based learning", "pbl", "inquiry", "hafalan", "pemahaman", "berpikir", "konstruksi", "mandiri"],
+        content: "Deep Learning adalah proses di mana murid aktif mengkonstruksi pemahaman mereka sendiri. Surface Learning berfokus pada hafalan jangka pendek untuk ujian, sedangkan Deep Learning berfokus pada pemahaman untuk aplikasi nyata.",
+        detail: "Metakognisi: mengajarkan murid untuk 'berpikir tentang cara mereka berpikir' — ini membantu mereka menjadi pembelajar mandiri seumur hidup. Strategi PBL & Inquiry: berikan masalah nyata yang menantang, biarkan mereka berkolaborasi dan mencari solusi sendiri dengan bimbingan guru.",
+        literatur: "Penelitian Marton & Säljö (1976) menunjukkan bahwa surface approach dipicu oleh tuntutan eksternal dan beban materi terlalu padat. Metakognisi adalah kunci kemandirian belajar (Self-Regulated Learning)."
+    },
+    {
+        bab: 4,
+        title: "STEM Education - Mempersiapkan Generasi Masa Depan",
+        keywords: ["stem", "science", "technology", "engineering", "mathematics", "design thinking", "prototipe", "proyek", "interdisiplin", "hands-on", "real problems"],
+        content: "STEM bukan sekadar mata pelajaran, tapi sebuah pendekatan untuk memecahkan masalah menggunakan integrasi berbagai disiplin ilmu.",
+        detail: "Design Thinking dalam STEM: Empathy → Define → Ideate → Prototype → Test. STEM untuk Non-Sains: bisa diterapkan di Bahasa Indonesia atau IPS melalui analisis data sosial, pembuatan media digital, atau perencanaan proyek komunitas.",
+        literatur: "Praktek terbaik global menekankan Interdisciplinary Curriculum dan Authentic Project-Based Learning (PBL) untuk membangun skill abad-21."
+    },
+    {
+        bab: 5,
+        title: "Teknologi dalam Pembelajaran Modern",
+        keywords: ["teknologi", "lms", "google classroom", "moodle", "canva", "genially", "gamifikasi", "quizizz", "kahoot", "aplikasi", "digital", "kolaborasi", "interaktif"],
+        content: "Teknologi adalah alat (tools), bukan pengganti guru. Kuncinya adalah bagaimana teknologi meningkatkan interaksi, bukan menjauhkannya.",
+        detail: "LMS: Google Classroom & Moodle untuk manajemen materi yang rapi. Visual & Interaktif: Canva & Genially meningkatkan retensi informasi hingga 65%. Gamifikasi: Quizizz & Kahoot meningkatkan dopamin dan motivasi intrinsik siswa.",
+        literatur: "Literatur menunjukkan bahwa visual yang menarik meningkatkan retensi informasi hingga 65% dibandingkan teks biasa."
+    },
+    {
+        bab: 6,
+        title: "Virtual Reality (VR) & Augmented Reality (AR)",
+        keywords: ["vr", "ar", "virtual reality", "augmented reality", "immersive", "field trip", "cardboard", "headset", "3d", "simulasi", "luar angkasa", "mars"],
+        content: "VR membawa murid ke tempat yang tidak bisa mereka kunjungi (seperti luar angkasa atau dalam sel tubuh), sementara AR menambahkan lapisan informasi ke dunia nyata.",
+        detail: "Virtual Field Trips: mengunjungi Museum Louvre atau Mars tanpa meninggalkan kelas. Low-Cost VR: Google Cardboard atau headset terjangkau dengan smartphone. Banyak aplikasi gratis tersedia di store.",
+        literatur: "Immersive Learning terbukti meningkatkan retensi memori jangka panjang hingga 75% dibandingkan metode tradisional."
+    },
+    {
+        bab: 7,
+        title: "Artificial Intelligence (AI) untuk Efisiensi Guru",
+        keywords: ["ai", "artificial intelligence", "chatgpt", "prompt", "prompt engineering", "rpp", "gamma", "canva magic", "efisiensi", "otomatis", "asisten", "kopilot"],
+        content: "AI bukan musuh, tapi asisten pribadi yang sangat cerdas. Guru bisa menghemat waktu administrasi hingga 30-50% menggunakan AI.",
+        detail: "Prompt Engineering: seni memberikan perintah ke AI. Contoh: 'Buatlah RPP 1 lembar untuk topik Fotosintesis kelas 5 dengan aktivitas STEM.' Gamma & Canva Magic untuk membuat slide dan modul ajar otomatis.",
+        literatur: "Literatur modern menyarankan 'Human-in-the-loop', di mana AI sebagai kopilot namun keputusan pedagogis tetap di tangan guru."
+    },
+    {
+        bab: 8,
+        title: "Differentiated Instruction (DI)",
+        keywords: ["diferensiasi", "differentiated", "tomlinson", "bloom", "taksonomi", "gaya belajar", "learning styles", "inklusif", "personalized", "konten", "proses", "produk"],
+        content: "Setiap anak adalah bintang yang bersinar dengan caranya sendiri. DI memastikan tidak ada anak yang tertinggal karena gaya belajarnya berbeda.",
+        detail: "Diferensiasi Konten, Proses, & Produk: berikan pilihan materi, metode belajar, dan cara mereka menunjukkan pemahaman (video, tulisan, atau proyek). Framework Carol Ann Tomlinson (2001): modifikasi 4 elemen.",
+        literatur: "Carol Ann Tomlinson adalah pelopor Differentiated Instruction dengan fokus pada kesiapan (readiness), minat, dan profil belajar siswa. Revisi Taksonomi Bloom menempatkan 'Creating' sebagai tingkat kognitif tertinggi."
+    },
+    {
+        bab: 9,
+        title: "Menjadi Agen Perubahan",
+        keywords: ["agen perubahan", "komunitas", "leadership", "networking", "inspirasi", "praktik baik", "budaya inovasi", "sustainability", "kolaborasi guru", "rekan sejawat"],
+        content: "Anda sudah memiliki alatnya. Sekarang saatnya bergerak. Menjadi guru quantum berarti menjadi obor yang menerangi jalan bagi orang lain.",
+        detail: "Membangun Komunitas Belajar: jangan bergerak sendiri. Ajak rekan sejawat, berbagi praktik baik, dan ciptakan budaya inovasi di sekolah Anda.",
+        literatur: "Community of Practice (Wenger) menekankan bahwa pertumbuhan profesional terjadi dalam konteks sosial dan kolaboratif."
+    }
+];
 
-// Full book content for AI context
-const bookChaptersContext = `
-=== BUKU: NEO QUANTUM MIRACLE TEACHING ===
-Penulis: Sardin Damis, S.Kom., C.Ht., CT.NNLP., CI (BNSP-RI)
-Deskripsi: Transformasi Pembelajaran dengan Deep Teaching, Deep Learning, STEM, dan Teknologi Modern.
+// Search book chapters for relevant content
+function searchBookChapters(query) {
+    const q = query.toLowerCase();
+    const words = q.split(/\s+/).filter(w => w.length > 2);
+    let bestMatch = null;
+    let bestScore = 0;
 
---- BAB 1: Membangun Mindset Guru Quantum ---
-Mindset Guru Quantum adalah pola pikir yang memadukan kearifan lokal dengan inovasi global. Seperti partikel quantum yang bisa berada di banyak tempat sekaligus, guru quantum juga harus bisa "berada" di banyak peran: sebagai fasilitator, motivator, inovator, dan bahkan entertainer dalam kelas.
-Ciri-ciri guru quantum: selalu haus pengetahuan baru, melihat tantangan sebagai peluang, tidak takut mencoba metode baru, memperlakukan setiap murid sebagai individu unik, mampu beradaptasi dengan teknologi. Penelitian Carol Dweck tentang Growth Mindset menunjukkan bahwa orang dengan growth mindset lebih berhasil. Langkah membangun: Refleksi Diri (10 menit/hari), Belajar Terus-Menerus, Jaringan Guru Inspiratif, Eksperimen metode baru setiap minggu.
+    for (const chapter of bookChapters) {
+        let score = 0;
 
---- BAB 2: Deep Teaching - Mengajar dari Hati ke Hati ---
-Deep Teaching menekankan pemahaman mendalam dan koneksi emosional. Bukan sekadar transfer materi, tapi transformasi jiwa. Kunci utama: Empati (memahami perspektif murid), Storytelling (seni bercerita untuk menyampaikan konsep sulit), Socratic Questioning (teknik bertanya yang memicu pemikiran kritis, hindari pertanyaan Ya/Tidak, gunakan "Mengapa" dan "Bagaimana"). Kontras dengan Surface Teaching (Marton & Säljö).
+        // Check keyword matches (highest weight)
+        for (const keyword of chapter.keywords) {
+            if (q.includes(keyword)) {
+                score += 10;
+            }
+        }
 
---- BAB 3: Deep Learning - Membuat Siswa Belajar Lebih Dalam ---
-Deep Learning adalah proses murid aktif mengkonstruksi pemahaman. Surface vs Deep Learning: surface berfokus hafalan untuk ujian, deep berfokus pemahaman untuk aplikasi nyata. Metakognisi: mengajarkan murid "berpikir tentang cara mereka berpikir" untuk menjadi pembelajar mandiri seumur hidup. Strategi PBL & Inquiry: berikan masalah nyata yang menantang, biarkan mereka berkolaborasi dan mencari solusi dengan bimbingan guru.
+        // Check individual words against keywords
+        for (const word of words) {
+            for (const keyword of chapter.keywords) {
+                if (keyword.includes(word) || word.includes(keyword)) {
+                    score += 3;
+                }
+            }
+        }
 
---- BAB 4: STEM Education - Mempersiapkan Generasi Masa Depan ---
-STEM bukan sekadar mata pelajaran, tapi pendekatan memecahkan masalah menggunakan integrasi berbagai disiplin ilmu. Design Thinking: Empathy → Define → Ideate → Prototype → Test. STEM untuk Non-Sains: bisa diterapkan di Bahasa Indonesia atau IPS melalui analisis data sosial, pembuatan media digital, atau perencanaan proyek komunitas.
+        // Check title match
+        if (chapter.title.toLowerCase().includes(q) || q.includes(chapter.title.toLowerCase())) {
+            score += 15;
+        }
 
---- BAB 5: Teknologi dalam Pembelajaran Modern ---
-Teknologi adalah alat (tools), bukan pengganti guru. Kuncinya adalah bagaimana teknologi meningkatkan interaksi. LMS: Google Classroom & Moodle untuk manajemen materi. Visual & Interaktif: Canva & Genially meningkatkan retensi informasi hingga 65%. Gamifikasi: Quizizz & Kahoot meningkatkan dopamin dan motivasi intrinsik siswa.
+        // Check word matches in title
+        for (const word of words) {
+            if (chapter.title.toLowerCase().includes(word)) {
+                score += 2;
+            }
+        }
 
---- BAB 6: Virtual Reality (VR) & Augmented Reality (AR) ---
-VR membawa murid ke tempat yang tidak bisa dikunjungi (luar angkasa, dalam sel tubuh), AR menambahkan lapisan informasi ke dunia nyata. Virtual Field Trips: mengunjungi Museum Louvre atau Mars tanpa meninggalkan kelas. Low-Cost VR: Google Cardboard atau headset terjangkau dengan smartphone. Immersive Learning meningkatkan retensi memori jangka panjang hingga 75%.
+        // Check content & detail text
+        for (const word of words) {
+            if (chapter.content.toLowerCase().includes(word)) score += 1;
+            if (chapter.detail.toLowerCase().includes(word)) score += 1;
+        }
 
---- BAB 7: Artificial Intelligence (AI) untuk Efisiensi Guru ---
-AI bukan musuh, tapi asisten pribadi yang sangat cerdas. Guru bisa menghemat waktu administrasi hingga 30-50%. Prompt Engineering: seni memberikan perintah ke AI, contoh: "Buatlah RPP 1 lembar untuk topik Fotosintesis kelas 5 dengan aktivitas STEM." Gamma & Canva Magic: membuat slide presentasi dan modul ajar secara otomatis. Human-in-the-loop: AI sebagai kopilot, keputusan pedagogis tetap di tangan guru.
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = chapter;
+        }
+    }
 
---- BAB 8: Differentiated Instruction (DI) ---
-Setiap anak bintang yang bersinar dengan caranya sendiri. DI memastikan tidak ada anak tertinggal karena gaya belajar berbeda. Diferensiasi Konten, Proses, & Produk: berikan pilihan materi, metode belajar, dan cara menunjukkan pemahaman (video, tulisan, proyek). Framework Carol Ann Tomlinson (2001): modifikasi 4 elemen - Konten, Proses, Produk, dan Learning Environment. Taksonomi Bloom: Creating sebagai tingkat kognitif tertinggi.
+    // Minimum score threshold to consider it a match
+    return bestScore >= 5 ? bestMatch : null;
+}
 
---- BAB 9: Menjadi Agen Perubahan ---
-Menjadi guru quantum berarti menjadi obor yang menerangi jalan bagi orang lain. Membangun Komunitas Belajar: jangan bergerak sendiri, ajak rekan sejawat, berbagi praktik baik, ciptakan budaya inovasi di sekolah. Community of Practice, Educational Leadership, Networking, Sustainability.
-`;
-
-// Knowledge base keyword reference for Gemini context enrichment
-const knowledgeBaseText = Object.entries(responses).map(
-    ([key, val]) => `Topik "${key}": Buku: ${val.book} | Literatur: ${val.lit}`
-).join('\n');
-
-// Gemini AI Chat Endpoint
+// ===== MAIN CHAT ENDPOINT =====
 app.post('/api/chat', async (req, res) => {
     const { query } = req.body;
     if (!query) return res.status(400).json({ error: "Query is required" });
 
+    // STEP 1: Crosscheck di semua BAB buku dulu
+    const bookMatch = searchBookChapters(query);
+
+    if (bookMatch) {
+        console.log(`[Chat] Ditemukan di Bab ${bookMatch.bab}: "${bookMatch.title}" (book match)`);
+        const bookAnswer = `**📖 BAB ${bookMatch.bab}: ${bookMatch.title}**\n\n${bookMatch.content}\n\n${bookMatch.detail}\n\n**📚 Rujukan Literatur:**\n${bookMatch.literatur}`;
+        return res.json({
+            answer: bookAnswer,
+            source: 'book',
+            model: `Bab ${bookMatch.bab} - ${bookMatch.title}`
+        });
+    }
+
+    // STEP 2: Tidak ditemukan di buku → gunakan Gemini AI
+    console.log(`[Chat] Tidak ditemukan di buku, mengarahkan ke Gemini AI...`);
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-    // If no API key, fallback to keyword matching
     if (!GEMINI_API_KEY) {
-        console.log("[Chat] GEMINI_API_KEY tidak ditemukan, menggunakan keyword matching...");
-        return fallbackKeywordMatch(query, res);
+        console.log("[Chat] GEMINI_API_KEY tidak ditemukan");
+        return res.json({
+            answer: "Maaf, pertanyaan ini belum dibahas secara spesifik dalam buku **Neo Quantum Miracle Teaching**. Silakan coba tanyakan tentang topik seperti **Deep Teaching**, **STEM**, **VR**, **AI untuk Guru**, atau **Differentiated Instruction**! 📚",
+            source: 'default',
+            model: 'Knowledge Base'
+        });
     }
 
     try {
         const systemInstruction = `Kamu adalah "QuantumGuide AI", asisten cerdas dan hangat yang ahli dalam buku "Neo Quantum Miracle Teaching" karya Sardin Damis.
 
 ATURAN PENTING:
-1. Jawablah SEMUA pertanyaan berdasarkan konten buku berikut. Jika relevan, sebutkan bab mana yang membahasnya.
+1. Jawablah pertanyaan dengan bijak dan informatif, hubungkan jika memungkinkan dengan semangat pendidikan abad 21.
 2. Gunakan bahasa Indonesia yang hangat, profesional, dan mudah dipahami oleh guru dan pendidik.
-3. Jika pertanyaan di luar konteks buku, tetap jawab dengan bijak namun arahkan kembali ke relevansi pendidikan sesuai semangat buku.
-4. Format jawaban dengan paragraf yang jelas. Gunakan **bold** untuk poin penting dan emoji yang relevan secukupnya.
-5. Jangan pernah menyebut bahwa kamu adalah AI model dari Google atau Gemini. Kamu adalah "QuantumGuide AI" dari Neo Quantum Miracle Teaching.
-6. Tambahkan referensi literatur yang relevan jika memungkinkan (seperti teori dari Bobbi DePorter, Carol Dweck, Marton & Säljö, Carol Ann Tomlinson, dll).
+3. Format jawaban dengan paragraf yang jelas. Gunakan **bold** untuk poin penting dan emoji yang relevan secukupnya.
+4. Jangan pernah menyebut bahwa kamu adalah AI model dari Google atau Gemini. Kamu adalah "QuantumGuide AI".
+5. Di akhir jawaban, hubungkan relevansi jawaban dengan buku Neo Quantum Miracle Teaching jika memungkinkan.
 
-KONTEN BUKU:
-${bookChaptersContext}
-
-REFERENSI TAMBAHAN:
-${knowledgeBaseText}`;
+KONTEKS BUKU (untuk referensi):
+${bookChapters.map(ch => `BAB ${ch.bab}: ${ch.title}\n${ch.content}\n${ch.detail}\nLiteratur: ${ch.literatur}`).join('\n\n')}`;
 
         const geminiResponse = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
@@ -167,49 +269,25 @@ ${knowledgeBaseText}`;
         const aiText = geminiResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (aiText) {
-            res.json({
+            return res.json({
                 answer: aiText,
                 source: 'gemini',
                 model: 'Gemini 2.5 Flash'
             });
         } else {
             console.error("[Gemini] Respons tidak valid:", JSON.stringify(geminiResponse.data));
-            return fallbackKeywordMatch(query, res);
         }
-
     } catch (error) {
         console.error("[Gemini] API Error:", error.response?.data || error.message);
-        return fallbackKeywordMatch(query, res);
     }
+
+    // STEP 3: Gemini juga gagal → fallback default
+    return res.json({
+        answer: "Maaf, saat ini saya sedang mengalami gangguan teknis. 🔧 Silakan coba lagi dalam beberapa saat, atau tanyakan tentang topik utama buku seperti **Deep Teaching**, **Deep Learning**, **STEM**, **VR/AR**, **AI untuk Guru**, atau **Differentiated Instruction**! 📚",
+        source: 'default',
+        model: 'Knowledge Base'
+    });
 });
-
-// Fallback: Keyword matching dari knowledge base
-function fallbackKeywordMatch(query, res) {
-    const q = query.toLowerCase();
-    let foundResponse = null;
-
-    for (const key in responses) {
-        if (q.includes(key)) {
-            foundResponse = responses[key];
-            break;
-        }
-    }
-
-    if (foundResponse) {
-        const fallbackText = `**📖 Perspektif Buku:**\n${foundResponse.book}\n\n**📚 Rujukan Literatur:**\n${foundResponse.lit}`;
-        res.json({
-            answer: fallbackText,
-            source: 'keyword',
-            model: 'Knowledge Base'
-        });
-    } else {
-        res.json({
-            answer: "Pertanyaan menarik! 🤔 Dalam buku **Neo Quantum Miracle Teaching**, hal ini berkaitan dengan transformasi pendidikan modern. Coba tanyakan lebih spesifik tentang topik seperti **Deep Teaching**, **STEM**, **VR**, **AI untuk guru**, atau **Differentiated Instruction** — saya akan memberikan jawaban yang lebih mendalam! 📚",
-            source: 'default',
-            model: 'Knowledge Base'
-        });
-    }
-}
 
 app.post('/api/tools/stem', (req, res) => {
     const { subject, topic } = req.body;

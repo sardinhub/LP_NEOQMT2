@@ -1782,6 +1782,20 @@ body {
     font-size: 0.8rem;
 }
 
+.message-source.ai-source-book {
+    color: #059669;
+    background: linear-gradient(90deg, rgba(5, 150, 105, 0.08), transparent);
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    margin-top: 0.8rem;
+    border-top: none;
+}
+
+.message-source.ai-source-book i {
+    color: #059669;
+    font-size: 0.8rem;
+}
+
 /* Chat Messages Scrollbar */
 .chat-messages::-webkit-scrollbar {
     width: 5px;

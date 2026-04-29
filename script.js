@@ -295,9 +295,21 @@ function askAI(query) {
             if (data.answer) {
                 // Render markdown-like formatting
                 const formattedAnswer = renderMarkdown(data.answer);
-                const sourceLabel = data.source === 'gemini' ? 'QuantumGuide AI (Gemini)' : 'Knowledge Base';
-                const sourceIcon = data.source === 'gemini' ? 'fa-sparkles' : 'fa-book';
-                const sourceClass = data.source === 'gemini' ? 'ai-source-gemini' : 'ai-source-local';
+                
+                let sourceLabel, sourceIcon, sourceClass;
+                if (data.source === 'gemini') {
+                    sourceLabel = 'QuantumGuide AI (Gemini)';
+                    sourceIcon = 'fa-sparkles';
+                    sourceClass = 'ai-source-gemini';
+                } else if (data.source === 'book') {
+                    sourceLabel = data.model || 'Konten Buku';
+                    sourceIcon = 'fa-book-open';
+                    sourceClass = 'ai-source-book';
+                } else {
+                    sourceLabel = 'Knowledge Base';
+                    sourceIcon = 'fa-book';
+                    sourceClass = 'ai-source-local';
+                }
 
                 addAIMessage(formattedAnswer, sourceLabel, sourceIcon, sourceClass);
             } else {
