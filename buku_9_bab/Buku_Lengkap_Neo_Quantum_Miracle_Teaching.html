@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Quantum Miracle Teaching - Buku Lengkap 9 Bab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text: #334155;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Merriweather', Georgia, serif;
+            color: var(--text);
+            line-height: 1.8;
+            background: #f1f5f9;
+            padding: 2rem 1rem;
+        }
+
+        .book-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 4rem 5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .book-header {
+            text-align: center;
+            border-bottom: 3px double var(--primary);
+            padding-bottom: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .book-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-meta {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #64748b;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .toc-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            padding: 1.8rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 3.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toc-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.6rem;
+        }
+
+        .toc-list a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc-list a:hover {
+            text-decoration: underline;
+        }
+
+        .chapter-card {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            page-break-inside: avoid;
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h2.chapter-heading {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 0 0 1.2rem 1.8rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        blockquote {
+            background: #eff6ff;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .literature-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-left: 4px solid var(--accent);
+            padding: 0.8rem 1.2rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .literature-tag strong {
+            color: #b45309;
+        }
+
+        .no-print-actions {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.8rem;
+            z-index: 100;
+        }
+
+        .btn-action {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            background: var(--primary-dark);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .book-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .no-print-actions {
+                display: none !important;
+            }
+
+            .chapter-card {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-actions">
+        <button class="btn-action" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+        <button class="btn-action" style="background:#059669;" onclick="window.location.href='../index.html'">🏠 Kembali ke Aplikasi</button>
+    </div>
+
+    <div class="book-container">
+        <header class="book-header">
+            <h1 class="book-title">NEO QUANTUM MIRACLE TEACHING</h1>
+            <p class="book-subtitle">Transformasi Pembelajaran dengan Deep Teaching, Deep Learning, STEM, dan Teknologi Modern</p>
+            <div class="book-meta">
+                <span><strong>Penulis:</strong> Sardin Damis</span>
+                <span><strong>Edisi:</strong> 2026</span>
+                <span><strong>Struktur:</strong> 9 Bab Utama</span>
+            </div>
+        </header>
+
+        <nav class="toc-box">
+            <div class="toc-title">Daftar Isi 9 Bab Buku</div>
+            <ul class="toc-list">
+                <li><a href="#bab1">Bab 1: Membangun Mindset Guru Quantum</a></li>
+                <li><a href="#bab2">Bab 2: Deep Teaching - Mengajar dari Hati ke Hati</a></li>
+                <li><a href="#bab3">Bab 3: Deep Learning - Membuat Siswa Belajar Lebih Dalam</a></li>
+                <li><a href="#bab4">Bab 4: STEM Education - Mempersiapkan Generasi Masa Depan</a></li>
+                <li><a href="#bab5">Bab 5: Teknologi dalam Pembelajaran Modern</a></li>
+                <li><a href="#bab6">Bab 6: Virtual Reality (VR) & Augmented Reality (AR) dalam Pendidikan</a></li>
+                <li><a href="#bab7">Bab 7: Artificial Intelligence (AI) untuk Efisiensi Guru</a></li>
+                <li><a href="#bab8">Bab 8: Differentiated Instruction (DI) - Pembelajaran Berdiferensiasi</a></li>
+                <li><a href="#bab9">Bab 9: Menjadi Agen Perubahan (Educational Leadership)</a></li>
+            </ul>
+        </nav>
+
+        <!-- BAB 1 -->
+        <article class="chapter-card" id="bab1">
+            <span class="chapter-badge">Bab 1</span>
+            <h2 class="chapter-heading">Membangun Mindset Guru Quantum</h2>
+            <p>Mindset Guru Quantum adalah pola pikir yang memadukan kearifan lokal dengan inovasi global. Seperti partikel kuantum yang memiliki superposisi dan bisa berada di banyak keadaan sekaligus, guru kuantum sanggup berperan fleksibel sebagai fasilitator, motivator, inovator, dan entertainer edukatif.</p>
+            
+            <h3>Ciri-Ciri Guru Quantum</h3>
+            <ul>
+                <li>Selalu memiliki semangat belajar sepanjang hayat (lifelong learning).</li>
+                <li>Melihat tantangan sebagai peluang berkembang (Growth Mindset).</li>
+                <li>Memperlakukan setiap murid sebagai individu unik berpola pikir berkembang.</li>
+                <li>Menerapkan prinsip "Everything Speaks" di mana setiap elemen ruang kelas menyampaikan pesan pembelajaran.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Dr. Carol Dweck (Stanford University) - Penelitian Growth Mindset membuktikan bahwa keyakinan akan potensi kecerdasan meningkatkan resiliensi dan pencapaian akademik secara nyata.
+            </div>
+        </article>
+
+        <!-- BAB 2 -->
+        <article class="chapter-card" id="bab2">
+            <span class="chapter-badge">Bab 2</span>
+            <h2 class="chapter-heading">Deep Teaching - Mengajar dari Hati ke Hati</h2>
+            <p>Deep Teaching adalah pendekatan pedagogi yang menekankan pemahaman makna mendalam, keterikatan emosional, serta pengalaman belajar yang bermakna secara personal. Ini bukan sekadar transfer informasi hafalan, melainkan transformasi karakter dan jiwa.</p>
+            
+            <h3>Elemen Utama Deep Teaching</h3>
+            <ul>
+                <li><strong>Empati Utama:</strong> Memahami kondisi emosional dan perspektif murid sebelum memulai pelajaran.</li>
+                <li><strong>Seni Storytelling:</strong> Mengemas konsep ilmiah ke dalam narasi kontekstual yang berkesan.</li>
+                <li><strong>Socratic Questioning:</strong> Mengajukan pertanyaan reflektif bernalar tinggi (Why & How).</li>
+                <li><strong>Pembelajaran Kolaboratif:</strong> Menggunakan teknik Jigsaw untuk membangun ketergantungan positif.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Marton & Säljö Framework (Deep vs Surface Teaching). Riset neurosains membuktikan bahwa storytelling merangsang pelepasan hormon oksitosin dan dopamin yang memperkuat retensi memori.
+            </div>
+        </article>
+
+        <!-- BAB 3 -->
+        <article class="chapter-card" id="bab3">
+            <span class="chapter-badge">Bab 3</span>
+            <h2 class="chapter-heading">Deep Learning - Membuat Siswa Belajar Lebih Dalam</h2>
+            <p>Deep Learning fokus pada proses di mana murid aktif mengonstruksi pemahaman mereka sendiri secara mandiri. Berbeda dengan Surface Learning yang berfokus pada hafalan jangka pendek demi ujian, Deep Learning mendorong pemahaman konseptual untuk aplikasi kehidupan nyata.</p>
+            
+            <h3>Pilar Penting</h3>
+            <ul>
+                <li><strong>Metakognisi:</strong> Mengajarkan murid untuk "berpikir tentang cara mereka berpikir" (Self-Regulated Learning).</li>
+                <li><strong>Problem-Based Learning (PBL):</strong> Menyajikan tantangan dunia nyata untuk dipecahkan secara kolaboratif.</li>
+                <li><strong>Inquiry Learning:</strong> Melatih keterampilan berhipotesis, menguji data, dan menarik kesimpulan.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Zimmerman Self-Regulated Learning Theory. Penelitian membuktikan bahwa keterampilan metakognitif membentuk kecakapan pembelajar mandiri seumur hidup.
+            </div>
+        </article>
+
+        <!-- BAB 4 -->
+        <article class="chapter-card" id="bab4">
+            <span class="chapter-badge">Bab 4</span>
+            <h2 class="chapter-heading">STEM Education - Mempersiapkan Generasi Masa Depan</h2>
+            <p>STEM (Science, Technology, Engineering, Mathematics) adalah pendekatan interdisiplin yang mengintegrasikan konsep keilmuan ke dalam pemecahan masalah otentik. STEM melatih keterampilan 4C: Critical Thinking, Creativity, Collaboration, dan Communication.</p>
+            
+            <h3>Siklus Design Thinking STEM</h3>
+            <p>Empathize → Define → Ideate → Prototype → Test (Iterasi Berkelanjutan).</p>
+            <p>STEM juga dapat diintegrasikan dalam mata pelajaran non-sains (seperti Bahasa dan IPS) melalui pemodelan data sosial, pembuatan infografis digital, dan perencanaan proyek sosial.</p>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Global STEM Framework & Authentic Project-Based Learning. Praktik terbaik global menekankan integrasi lintas disiplin untuk kesiapan karir abad ke-21.
+            </div>
+        </article>
+
+        <!-- BAB 5 -->
+        <article class="chapter-card" id="bab5">
+            <span class="chapter-badge">Bab 5</span>
+            <h2 class="chapter-heading">Teknologi dalam Pembelajaran Modern</h2>
+            <p>Teknologi adalah alat pengungkit (lever) yang meningkatkan jangkauan dan kualitas interaksi kelas, bukan pengganti sosok guru. Penggunaan media visual interaktif dapat meningkatkan retensi memori siswa hingga 65%.</p>
+            
+            <h3>Ekosistem Alat Digital</h3>
+            <ul>
+                <li><strong>LMS:</strong> Google Classroom & Moodle untuk pengorganisasian kelas yang rapi.</li>
+                <li><strong>Visual Interaktif:</strong> Canva & Genially untuk materi pembelajaran visual.</li>
+                <li><strong>Gamifikasi:</strong> Quizizz & Kahoot untuk memicu motivasi belajar intrinsik.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Dual Coding Theory (Paivio). Kombinasi informasi visual dan verbal memperkuat jalur pemrosesan memori di otak.
+            </div>
+        </article>
+
+        <!-- BAB 6 -->
+        <article class="chapter-card" id="bab6">
+            <span class="chapter-badge">Bab 6</span>
+            <h2 class="chapter-heading">Virtual Reality (VR) & Augmented Reality (AR)</h2>
+            <p>Virtual Reality (VR) membawa siswa menjelajahi lingkungan 3D yang imersif (seperti luar angkasa atau bagian dalam sel tubuh), sedangkan Augmented Reality (AR) memperkaya dunia nyata dengan proyeksi informasi 3D interaktif.</p>
+            
+            <h3>Keunggulan Pembelajaran Imersif</h3>
+            <ul>
+                <li>Virtual Field Trips tanpa terkendala biaya dan lokasi fisik.</li>
+                <li>Penggunaan perangkat low-cost seperti Google Cardboard dan smartphone.</li>
+                <li>Meningkatkan retensi memori jangka panjang hingga 75%.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Immersive Experience Research in Education. Visualisasi spasial 3D mempercepat pemahaman intuitif terhadap konsep abstrak.
+            </div>
+        </article>
+
+        <!-- BAB 7 -->
+        <article class="chapter-card" id="bab7">
+            <span class="chapter-badge">Bab 7</span>
+            <h2 class="chapter-heading">Artificial Intelligence (AI) untuk Efisiensi Guru</h2>
+            <p>AI merupakan kopilot cerdas yang mampu menghemat waktu administrasi guru hingga 30-50%, sehingga guru dapat mencurahkan lebih banyak waktu untuk pendampingan emosional siswa.</p>
+            
+            <h3>Prompt Engineering untuk Pendidik</h3>
+            <p>Keterampilan menyusun instruksi presisi ke AI. Contoh prompt: <em>"Buatkan draf RPP 1 lembar topik Fotosintesis kelas 5 SD dengan pendekatan STEM dan evaluasi HOTS."</em></p>
+            
+            <h3>Prinsip Human-in-the-Loop</h3>
+            <p>AI berfungsi menghasilkan draf awal, sedangkan verifikasi kebenaran materi, validasi pedagogis, dan penyesuaian budaya tetap berada di tangan guru sepenuhnya.</p>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> AI Ethics in Education & UNESCO Guidelines for AI in Teaching.
+            </div>
+        </article>
+
+        <!-- BAB 8 -->
+        <article class="chapter-card" id="bab8">
+            <span class="chapter-badge">Bab 8</span>
+            <h2 class="chapter-heading">Differentiated Instruction (DI)</h2>
+            <p>Pembelajaran berdiferensiasi memastikan tidak ada anak yang tertinggal karena perbedaan kesiapan, minat, dan profil belajar. Setiap siswa diberi kesempatan bersinar sesuai keunikannya.</p>
+            
+            <h3>4 Modifikasi Elemen (Framework Tomlinson)</h3>
+            <ul>
+                <li><strong>Konten:</strong> Bahan ajar dalam berbagai format (teks, audio, video).</li>
+                <li><strong>Proses:</strong> Variasi gaya aktivitas (diskusi, eksperimen, investigasi).</li>
+                <li><strong>Produk:</strong> Opsi unjuk kerja (laporan, poster, video, atau prototipe).</li>
+                <li><strong>Lingkungan Belajar:</strong> Suasana kelas yang aman, inklusif, dan fleksibel.</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Carol Ann Tomlinson Differentiated Instruction Framework & Revised Bloom's Taxonomy.
+            </div>
+        </article>
+
+        <!-- BAB 9 -->
+        <article class="chapter-card" id="bab9">
+            <span class="chapter-badge">Bab 9</span>
+            <h2 class="chapter-heading">Menjadi Agen Perubahan (Educational Leadership)</h2>
+            <p>Puncak perjalanan seorang Guru Quantum adalah menjadi obor penggerak yang menginspirasi ekosistem pendidikan di sekitar. Guru diajak menginisiasi Komunitas Belajar (*Community of Practice*) untuk berbagi draf RPP, ide inovatif, dan pengalaman mengajar.</p>
+            
+            <h3>Langkah Strategis</h3>
+            <ul>
+                <li>Membangun Komunitas Belajar berbasis kolaborasi (*Etienne Wenger Framework*).</li>
+                <li>Berbagi praktik baik di media sosial dan jaringan guru.</li>
+                <li>Mengatasi resistensi perubahan dengan pendekatan empati dan pencapaian kecil (*Small Wins*).</li>
+            </ul>
+
+            <div class="literature-tag">
+                <strong>Rujukan Literatur:</strong> Etienne Wenger - Community of Practice & Educational Change Leadership.
+            </div>
+        </article>
+
+        <footer style="text-align: center; border-top: 2px solid var(--border); padding-top: 2rem; margin-top: 3rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #64748b;">
+            <p>© 2026 Neo Quantum Miracle Teaching — Penulis: Sardin Damis. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+
+</body>
+</html>

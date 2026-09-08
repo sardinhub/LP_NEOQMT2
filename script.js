@@ -1169,6 +1169,59 @@ function exportGalleryCode() {
     alert("Kode galleryData telah disalin! \n\nSilakan tempelkan kode ini di bagian atas script.js Anda untuk menyimpan perubahan secara permanen.");
 }
 
+// Modal Download Handlers
+function openDownloadModal() {
+    const modal = document.getElementById('downloadModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeDownloadModal() {
+    const modal = document.getElementById('downloadModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function downloadSelectedChapterPDF() {
+    const select = document.getElementById('chapterSelect');
+    if (!select) return;
+    const chapterId = parseInt(select.value, 10);
+    const ch = bookContent.chapters.find(c => c.id === chapterId);
+    if (!ch) return;
+
+    // Create temporary container for PDF export
+    const printContainer = document.createElement('div');
+    printContainer.style.padding = '30px';
+    printContainer.style.background = '#ffffff';
+    printContainer.style.color = '#1e293b';
+    printContainer.style.fontFamily = 'Inter, sans-serif';
+    printContainer.innerHTML = `
+        <div style="border-bottom: 2px solid #4f46e5; padding-bottom: 15px; margin-bottom: 20px;">
+            <div style="font-size: 12px; color: #6366f1; font-weight: bold; text-transform: uppercase;">Neo Quantum Miracle Teaching — Sardin Damis</div>
+            <h1 style="font-size: 22px; color: #0f172a; margin: 5px 0;">BAB ${ch.id}: ${ch.title}</h1>
+            <p style="font-size: 14px; color: #64748b;">${ch.desc}</p>
+        </div>
+        <div style="line-height: 1.7; font-size: 14px; color: #334155;">
+            ${ch.content}
+        </div>
+        <div style="margin-top: 30px; padding: 15px; background: #f8fafc; border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 13px;">
+            <strong>Topik Utama:</strong> ${ch.topics.join(', ')}
+        </div>
+    `;
+
+    document.body.appendChild(printContainer);
+
+    const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `Bab_${ch.id}_${ch.title.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(printContainer).save().then(() => {
+        document.body.removeChild(printContainer);
+    });
+}
+
 // Initialize
 window.onload = () => {
     renderChapters();

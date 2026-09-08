@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title": "Membangun Mindset Guru Quantum",
+    "icon": "fa-brain",
+    "topics": ["Growth Mindset", "Adaptasi Teknologi", "Refleksi Diri", "Lifelong Learning"],
+    "desc": "Pola pikir yang memadukan kearifan lokal dengan inovasi global untuk menciptakan keajaiban di kelas.",
+    "literatur": "Dr. Carol Dweck (Stanford University) - Growth Mindset & Bobbi DePorter - Quantum Teaching."
+  },
+  {
+    "id": 2,
+    "title": "Deep Teaching - Mengajar dari Hati ke Hati",
+    "icon": "fa-heart",
+    "topics": ["Empati", "Storytelling", "Socratic Questioning", "Jigsaw Method"],
+    "desc": "Pendekatan mengajar yang menekankan pemahaman mendalam, koneksi emosional, dan pengalaman bermakna.",
+    "literatur": "Marton & Säljö Framework (Deep vs Surface Teaching) & Neuroscience of Storytelling."
+  },
+  {
+    "id": 3,
+    "title": "Deep Learning - Membuat Siswa Belajar Lebih Dalam",
+    "icon": "fa-graduation-cap",
+    "topics": ["Problem-Based Learning", "Inquiry-Based", "Metakognisi", "Self-Regulated Learning"],
+    "desc": "Strategi agar murid tidak hanya menghafal, tapi benar-benar memahami dan menguasai materi.",
+    "literatur": "Zimmerman Self-Regulated Learning Theory & Constructivism."
+  },
+  {
+    "id": 4,
+    "title": "STEM Education - Mempersiapkan Generasi Masa Depan",
+    "icon": "fa-flask",
+    "topics": ["Integrated STEM", "Design Thinking", "Hands-On", "Authentic PBL"],
+    "desc": "Integrasi Science, Technology, Engineering, Mathematics dalam konteks pemecahan masalah nyata.",
+    "literatur": "Global STEM Curriculum Standards & Authentic Project-Based Learning."
+  },
+  {
+    "id": 5,
+    "title": "Teknologi dalam Pembelajaran Modern",
+    "icon": "fa-laptop-code",
+    "topics": ["LMS", "Canva & Genially", "Gamifikasi", "Collaborative Tools"],
+    "desc": "Panduan menggunakan LMS, aplikasi interaktif, dan alat kolaboratif modern.",
+    "literatur": "Dual Coding Theory (Paivio) - Visual & Verbal Information Processing."
+  },
+  {
+    "id": 6,
+    "title": "Virtual Reality (VR) & Augmented Reality (AR)",
+    "icon": "fa-vr-cardboard",
+    "topics": ["Immersive Learning", "Virtual Field Trips", "3D Visualization", "Low-Cost VR"],
+    "desc": "Membawa dunia luar ke dalam kelas melalui pengalaman imersif Virtual dan Augmented Reality.",
+    "literatur": "Immersive Learning Research - Spatial Visualization & Memory Retention."
+  },
+  {
+    "id": 7,
+    "title": "Artificial Intelligence (AI) untuk Efisiensi Guru",
+    "icon": "fa-robot",
+    "topics": ["ChatGPT/Gemini", "Prompt Engineering", "Gamma App", "Human-in-the-Loop"],
+    "desc": "Menggunakan Artificial Intelligence untuk membuat RPP, materi, dan evaluasi dalam hitungan detik.",
+    "literatur": "UNESCO Guidelines on AI in Education & Human-in-the-Loop Framework."
+  },
+  {
+    "id": 8,
+    "title": "Differentiated Instruction (DI)",
+    "icon": "fa-layer-group",
+    "topics": ["Learning Styles", "Inclusive Class", "Personalized Path", "Bloom Taxonomy"],
+    "desc": "Strategi memberikan pembelajaran yang sesuai dengan kebutuhan dan gaya belajar setiap murid.",
+    "literatur": "Carol Ann Tomlinson Differentiated Instruction Framework."
+  },
+  {
+    "id": 9,
+    "title": "Menjadi Agen Perubahan (Educational Leadership)",
+    "icon": "fa-rocket",
+    "topics": ["Community of Practice", "Educational Leadership", "Networking", "Sustainability"],
+    "desc": "Puncak perjalanan: Membangun komunitas dan menginspirasi ekosistem pendidikan di sekitar Anda.",
+    "literatur": "Etienne Wenger - Community of Practice Theory."
+  }
+]

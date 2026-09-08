@@ -38,7 +38,11 @@
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#about">Tentang</a></li>
             </ul>
-            <div class="nav-actions" style="display: flex; align-items: center; gap: 1rem;">
+            <div class="nav-actions" style="display: flex; align-items: center; gap: 0.8rem;">
+                <button class="nav-cta" style="background: linear-gradient(135deg, #10b981, #059669);"
+                    onclick="openDownloadModal()">
+                    <i class="fas fa-download"></i> Unduh 9 Bab
+                </button>
                 <button class="nav-cta"
                     onclick="document.getElementById('ai-assistant').scrollIntoView({ behavior: 'smooth' })">
                     <i class="fas fa-robot"></i> Tanya AI
@@ -80,11 +84,15 @@
                         <span class="stat-label">AI Support</span>
                     </div>
                 </div>
-                <div class="hero-cta">
+                <div class="hero-cta" style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <a href="#chapters" class="btn-primary">
                         <i class="fas fa-book-open"></i>
                         Jelajahi Isi Buku
                     </a>
+                    <button class="btn-primary" onclick="openDownloadModal()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; cursor: pointer;">
+                        <i class="fas fa-file-download"></i>
+                        Unduh 9 Bab Buku
+                    </button>
                     <button class="btn-secondary"
                         onclick="document.getElementById('ai-assistant').scrollIntoView({ behavior: 'smooth' })">
                         <i class="fas fa-comments"></i>
@@ -543,6 +551,75 @@
             <div style="display: flex; gap: 1rem;">
                 <button class="btn-secondary" onclick="closePasswordModal()" style="flex: 1; padding: 0.8rem;">Batal</button>
                 <button class="btn-primary" onclick="verifyGalleryPassword()" style="flex: 1; padding: 0.8rem; background: var(--stem-orange); border-color: var(--stem-orange);">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Modal for 9 Book Chapters -->
+    <div class="modal" id="downloadModal">
+        <div class="modal-content" style="max-width: 650px; padding: 2.5rem; border-radius: 20px;">
+            <button onclick="closeDownloadModal()" 
+                style="position: absolute; top: 1.5rem; right: 1.5rem; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: #64748b;">
+                <i class="fas fa-times"></i>
+            </button>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, #10b981, #059669); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; margin: 0 auto 1rem auto; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);">
+                    <i class="fas fa-file-download"></i>
+                </div>
+                <h3 style="color: var(--quantum-blue); font-size: 1.6rem; margin-bottom: 0.5rem;">Unduh 9 Bab Buku Rujukan</h3>
+                <p style="color: #64748b; font-size: 0.95rem;">Neo Quantum Miracle Teaching — karya Sardin Damis (2026)</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div>
+                        <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📄 Dokumen HTML Siap Cetak (Lengkap 9 Bab)</div>
+                        <div style="font-size: 0.85rem; color: #64748b;">Buka di browser & cetak langsung ke PDF dengan tampilan terformat rapi</div>
+                    </div>
+                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.html" target="_blank" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #059669; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                        <i class="fas fa-external-link-alt"></i> Buka / Cetak PDF
+                    </a>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div>
+                        <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📝 Berkas Markdown (.md) (Lengkap 9 Bab)</div>
+                        <div style="font-size: 0.85rem; color: #64748b;">Format teks terstruktur untuk aplikasi pembaca dokumen / editor</div>
+                    </div>
+                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.md" download class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #4f46e5; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                        <i class="fas fa-download"></i> Unduh .md
+                    </a>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                    <div>
+                        <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📊 Data JSON (Bab 1 s.d. 9)</div>
+                        <div style="font-size: 0.85rem; color: #64748b;">Struktur data lengkap 9 Bab beserta rujukan literatur</div>
+                    </div>
+                    <a href="buku_9_bab/Bab_1_sampai_9.json" download class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #0891b2; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                        <i class="fas fa-code"></i> Unduh JSON
+                    </a>
+                </div>
+            </div>
+
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
+                <label style="display: block; font-size: 0.9rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;">Unduh Ringkasan Bab Spesifik (PDF Direct):</label>
+                <div style="display: flex; gap: 0.8rem;">
+                    <select id="chapterSelect" style="flex: 1; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; outline: none;">
+                        <option value="1">Bab 1: Membangun Mindset Guru Quantum</option>
+                        <option value="2">Bab 2: Deep Teaching - Mengajar dari Hati</option>
+                        <option value="3">Bab 3: Deep Learning - Belajar Lebih Dalam</option>
+                        <option value="4">Bab 4: STEM Education Masa Depan</option>
+                        <option value="5">Bab 5: Teknologi Pembelajaran Modern</option>
+                        <option value="6">Bab 6: VR & AR dalam Pendidikan</option>
+                        <option value="7">Bab 7: AI untuk Efisiensi Guru</option>
+                        <option value="8">Bab 8: Differentiated Instruction</option>
+                        <option value="9">Bab 9: Menjadi Agen Perubahan</option>
+                    </select>
+                    <button onclick="downloadSelectedChapterPDF()" class="btn-primary" style="padding: 0.8rem 1.2rem; font-size: 0.9rem; background: var(--quantum-blue); border-radius: 10px;">
+                        <i class="fas fa-download"></i> Unduh Bab
+                    </button>
+                </div>
             </div>
         </div>
     </div>
