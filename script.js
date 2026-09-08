@@ -1169,8 +1169,34 @@ function exportGalleryCode() {
     alert("Kode galleryData telah disalin! \n\nSilakan tempelkan kode ini di bagian atas script.js Anda untuk menyimpan perubahan secara permanen.");
 }
 
-// Valid Commercial License Codes
-const validLicenses = ['NQMT-2026-NEO', 'NEO-GURU-2026', 'SARDIN-QMT-9BAB', 'NEOQMT-8899', 'NQMT-PREMIUM', 'NQMT-FULL9BAB'];
+// Valid Commercial License Codes (Pre-registered & Active)
+const validLicenses = [
+    'NQMT-GURU-2026',
+    'NQMT-2026-NEO',
+    'SARDIN-QMT-9BAB',
+    'NQMT-8899-7766',
+    'NQMT-PREMIUM-2026',
+    'NQMT-7821-K9A4',
+    'NQMT-3194-M8L2',
+    'NQMT-9042-B7R5',
+    'NQMT-5183-X4W9',
+    'NQMT-6472-H3P1',
+    'NQMT-1935-D8Y6',
+    'NQMT-8247-Z2V4',
+    'NQMT-4061-F9T3',
+    'NQMT-7519-E5S8',
+    'NQMT-9384-C1U7',
+    'NQMT-2648-L6Q3',
+    'NQMT-5810-R4M9',
+    'NQMT-3792-P8B1',
+    'NQMT-8406-K2X7',
+    'NQMT-6159-V9N4',
+    'NQMT-1428-A3T5',
+    'NQMT-7093-W6E2',
+    'NQMT-4931-J8S9',
+    'NQMT-8562-G7C1',
+    'NQMT-3274-Y4R8'
+];
 
 function openDownloadFlow() {
     const isActivated = localStorage.getItem('neoBookLicenseActivated') === 'true';
@@ -1255,6 +1281,7 @@ function requestLicenseViaWA() {
 function openAdminGenerator() {
     const pass = prompt("Masukkan Kata Sandi Admin Penulis (Sardin Damis):");
     if (pass === "admin" || pass === "quantum2026" || pass === "sardin") {
+        const teacherName = prompt("Masukkan Nama Guru / Pemesan (opsional):") || "Bpk/Ibu Guru";
         const randomPart1 = Math.random().toString(36).substring(2, 6).toUpperCase();
         const randomPart2 = Math.random().toString(36).substring(2, 6).toUpperCase();
         const newCode = `NQMT-${randomPart1}-${randomPart2}`;
@@ -1263,7 +1290,15 @@ function openAdminGenerator() {
         dynamicKeys.push(newCode);
         localStorage.setItem('neoGeneratedLicenses', JSON.stringify(dynamicKeys));
 
-        alert(`🔑 KODE LISENSI BARU BERHASIL DIGENERATE!\n\nKODE: ${newCode}\n\nKode ini telah didaftarkan dan dapat langsung Anda berikan kepada pembeli via WhatsApp.`);
+        const waText = `Halo ${teacherName}, terima kasih telah memesan Buku Neo Quantum Miracle Teaching.\n\nBerikut adalah KODE LISENSI RESMI Anda untuk mengunduh 9 Bab Buku:\n👉 ${newCode}\n\nSilakan masukkan kode di atas pada tombol 'Unduh 9 Bab' di aplikasi web. Selamat membaca!`;
+
+        // Copy message to clipboard
+        navigator.clipboard.writeText(waText).then(() => {
+            alert(`🔑 KODE LISENSI BARU BERHASIL DIGENERATE!\n\nKODE: ${newCode}\n\n✅ Pesan balasan WhatsApp berikut telah otomatis DISALIN ke clipboard Anda:\n\n"${waText}"\n\nAnda dapat langsung me-paste (Ctrl+V) pesan ini ke WhatsApp guru pemesan.`);
+        }).catch(() => {
+            alert(`🔑 KODE LISENSI BARU BERHASIL DIGENERATE!\n\nKODE: ${newCode}\n\nPESAN WA BALASAN:\n${waText}`);
+        });
+
         const input = document.getElementById('licenseCodeInput');
         if (input) input.value = newCode;
     } else if (pass !== null) {

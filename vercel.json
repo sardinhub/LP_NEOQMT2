@@ -6,6 +6,10 @@
       "use": "@vercel/node"
     },
     {
+      "src": "buku_9_bab/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "index.html",
       "use": "@vercel/static"
     },
