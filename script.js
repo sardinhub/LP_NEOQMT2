@@ -1241,7 +1241,7 @@ function verifyLicenseCode() {
 function requestLicenseViaWA() {
     const orderPhoneInput = document.getElementById('orderPhone');
     const orderPhone = orderPhoneInput ? orderPhoneInput.value.trim() : '';
-    let waNumber = "628123456789"; // Target WA number for order/license desk (Sardin Damis)
+    let waNumber = "6281354581418"; // Target WA number for order/license desk (Sardin Damis)
     
     let text = "Halo Bpk. Sardin Damis, saya bermaksud meminta/membeli Kode Lisensi untuk mengunduh 9 Bab Buku Neo Quantum Miracle Teaching pada aplikasi.";
     if (orderPhone) {
