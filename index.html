@@ -40,7 +40,7 @@
             </ul>
             <div class="nav-actions" style="display: flex; align-items: center; gap: 0.8rem;">
                 <button class="nav-cta" style="background: linear-gradient(135deg, #10b981, #059669);"
-                    onclick="openDownloadModal()">
+                    onclick="openDownloadFlow()">
                     <i class="fas fa-download"></i> Unduh 9 Bab
                 </button>
                 <button class="nav-cta"
@@ -89,7 +89,7 @@
                         <i class="fas fa-book-open"></i>
                         Jelajahi Isi Buku
                     </a>
-                    <button class="btn-primary" onclick="openDownloadModal()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; cursor: pointer;">
+                    <button class="btn-primary" onclick="openDownloadFlow()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; cursor: pointer;">
                         <i class="fas fa-file-download"></i>
                         Unduh 9 Bab Buku
                     </button>
@@ -533,7 +533,7 @@
 
     <!-- Password Modal for Gallery Management -->
     <div class="modal" id="passwordModal">
-        <div class="modal-content" style="max-width: 400px; padding: 2.5rem; text-align: center;">
+        <div class="modal-card-content" style="max-width: 400px; padding: 2.5rem; text-align: center;">
             <div style="background: var(--stem-orange); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1.5rem auto;">
                 <i class="fas fa-lock"></i>
             </div>
@@ -555,57 +555,111 @@
         </div>
     </div>
 
-    <!-- Download Modal for 9 Book Chapters -->
-    <div class="modal" id="downloadModal">
-        <div class="modal-content" style="max-width: 650px; padding: 2.5rem; border-radius: 20px;">
-            <button onclick="closeDownloadModal()" 
-                style="position: absolute; top: 1.5rem; right: 1.5rem; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: #64748b;">
+    <!-- License Gateway Modal for Commercial 9 Book Chapters -->
+    <div class="modal" id="licenseModal">
+        <div class="modal-card-content" style="max-width: 540px;">
+            <button onclick="closeLicenseModal()" 
+                style="position: absolute; top: 1.25rem; right: 1.25rem; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: #64748b;">
                 <i class="fas fa-times"></i>
             </button>
-            <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="text-align: center; margin-bottom: 1.8rem;">
+                <div style="background: linear-gradient(135deg, #4f46e5, #3730a3); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; margin: 0 auto 1rem auto; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3 style="color: var(--quantum-blue); font-size: 1.5rem; margin-bottom: 0.5rem;">Lisensi Akses 9 Bab Buku</h3>
+                <p style="color: #64748b; font-size: 0.9rem; line-height: 1.6;">
+                    Buku <strong>Neo Quantum Miracle Teaching</strong> adalah rujukan komersial. Silakan masukkan Kode Lisensi resmi yang Anda terima saat melakukan pemesanan via WhatsApp.
+                </p>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.9rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;">
+                    Masukkan Kode Lisensi Anda:
+                </label>
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                    <input type="text" id="licenseCodeInput" placeholder="Contoh: NQMT-2026-NEO" 
+                        style="flex: 1; min-width: 200px; padding: 0.9rem 1.2rem; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 1px; outline: none; text-transform: uppercase;"
+                        onkeypress="if(event.key==='Enter') verifyLicenseCode()">
+                    <button onclick="verifyLicenseCode()" class="btn-primary" style="padding: 0.9rem 1.5rem; font-size: 0.95rem; background: #4f46e5; border-radius: 12px; white-space: nowrap; cursor: pointer;">
+                        <i class="fas fa-unlock"></i> Verifikasi
+                    </button>
+                </div>
+                <div id="licenseStatusMsg" style="margin-top: 0.8rem; font-size: 0.88rem; display: none;"></div>
+            </div>
+
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 14px; padding: 1.25rem; text-align: center;">
+                <p style="font-size: 0.88rem; color: #1e40af; margin-bottom: 0.8rem; font-weight: 500;">
+                    Belum punya Kode Lisensi? Minta atau beli kode lisensi secara otomatis ke Penulis (Sardin Damis) melalui nomor pemesanan WhatsApp:
+                </p>
+                <button onclick="requestLicenseViaWA()" class="btn-primary" style="width: 100%; padding: 0.9rem; font-size: 0.95rem; background: #059669; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);">
+                    <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Minta / Pemesanan Kode Lisensi via WhatsApp
+                </button>
+            </div>
+            
+            <div style="margin-top: 1.2rem; text-align: center;">
+                <a href="javascript:void(0)" onclick="openAdminGenerator()" style="font-size: 0.8rem; color: #94a3b8; text-decoration: underline;">
+                    Akses Penulis / Generate Kode Baru (Admin)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Modal for 9 Book Chapters -->
+    <div class="modal" id="downloadModal">
+        <div class="modal-card-content" style="max-width: 640px;">
+            <button onclick="closeDownloadModal()" 
+                style="position: absolute; top: 1.25rem; right: 1.25rem; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: #64748b;">
+                <i class="fas fa-times"></i>
+            </button>
+            <div style="text-align: center; margin-bottom: 1.8rem;">
                 <div style="background: linear-gradient(135deg, #10b981, #059669); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; margin: 0 auto 1rem auto; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);">
                     <i class="fas fa-file-download"></i>
                 </div>
-                <h3 style="color: var(--quantum-blue); font-size: 1.6rem; margin-bottom: 0.5rem;">Unduh 9 Bab Buku Rujukan</h3>
+                <h3 style="color: var(--quantum-blue); font-size: 1.6rem; margin-bottom: 0.4rem;">Unduh 9 Bab Buku Rujukan</h3>
                 <p style="color: #64748b; font-size: 0.95rem;">Neo Quantum Miracle Teaching — karya Sardin Damis (2026)</p>
+                <div style="margin-top: 0.5rem;">
+                    <span style="background: #ecfdf5; color: #047857; font-size: 0.8rem; font-weight: 600; padding: 0.2rem 0.8rem; border-radius: 20px; border: 1px solid #a7f3d0;">
+                        <i class="fas fa-check-circle"></i> Lisensi Terverifikasi & Aktif
+                    </span>
+                </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.8rem;">
+                <div class="download-option-card">
                     <div>
                         <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📄 Dokumen HTML Siap Cetak (Lengkap 9 Bab)</div>
                         <div style="font-size: 0.85rem; color: #64748b;">Buka di browser & cetak langsung ke PDF dengan tampilan terformat rapi</div>
                     </div>
-                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.html" target="_blank" class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #059669; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.html" target="_blank" class="btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.85rem; background: #059669; text-decoration: none; border-radius: 10px; white-space: nowrap; font-weight: 600;">
                         <i class="fas fa-external-link-alt"></i> Buka / Cetak PDF
                     </a>
                 </div>
 
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div class="download-option-card">
                     <div>
                         <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📝 Berkas Markdown (.md) (Lengkap 9 Bab)</div>
                         <div style="font-size: 0.85rem; color: #64748b;">Format teks terstruktur untuk aplikasi pembaca dokumen / editor</div>
                     </div>
-                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.md" download class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #4f46e5; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                    <a href="buku_9_bab/Buku_Lengkap_Neo_Quantum_Miracle_Teaching.md" download class="btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.85rem; background: #4f46e5; text-decoration: none; border-radius: 10px; white-space: nowrap; font-weight: 600;">
                         <i class="fas fa-download"></i> Unduh .md
                     </a>
                 </div>
 
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div class="download-option-card">
                     <div>
                         <div style="font-weight: 700; color: #1e293b; margin-bottom: 0.25rem;">📊 Data JSON (Bab 1 s.d. 9)</div>
                         <div style="font-size: 0.85rem; color: #64748b;">Struktur data lengkap 9 Bab beserta rujukan literatur</div>
                     </div>
-                    <a href="buku_9_bab/Bab_1_sampai_9.json" download class="btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #0891b2; text-decoration: none; border-radius: 8px; white-space: nowrap;">
+                    <a href="buku_9_bab/Bab_1_sampai_9.json" download class="btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.85rem; background: #0891b2; text-decoration: none; border-radius: 10px; white-space: nowrap; font-weight: 600;">
                         <i class="fas fa-code"></i> Unduh JSON
                     </a>
                 </div>
             </div>
 
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
-                <label style="display: block; font-size: 0.9rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;">Unduh Ringkasan Bab Spesifik (PDF Direct):</label>
-                <div style="display: flex; gap: 0.8rem;">
-                    <select id="chapterSelect" style="flex: 1; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; outline: none;">
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 1.25rem;">
+                <label style="display: block; font-size: 0.9rem; font-weight: 600; color: #334155; margin-bottom: 0.6rem;">Unduh Ringkasan Bab Spesifik (PDF Direct):</label>
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                    <select id="chapterSelect" style="flex: 1; min-width: 220px; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; outline: none;">
                         <option value="1">Bab 1: Membangun Mindset Guru Quantum</option>
                         <option value="2">Bab 2: Deep Teaching - Mengajar dari Hati</option>
                         <option value="3">Bab 3: Deep Learning - Belajar Lebih Dalam</option>
@@ -616,7 +670,7 @@
                         <option value="8">Bab 8: Differentiated Instruction</option>
                         <option value="9">Bab 9: Menjadi Agen Perubahan</option>
                     </select>
-                    <button onclick="downloadSelectedChapterPDF()" class="btn-primary" style="padding: 0.8rem 1.2rem; font-size: 0.9rem; background: var(--quantum-blue); border-radius: 10px;">
+                    <button onclick="downloadSelectedChapterPDF()" class="btn-primary" style="padding: 0.8rem 1.2rem; font-size: 0.9rem; background: var(--quantum-blue); border-radius: 10px; font-weight: 600; white-space: nowrap;">
                         <i class="fas fa-download"></i> Unduh Bab
                     </button>
                 </div>

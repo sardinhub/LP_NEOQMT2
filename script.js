@@ -1169,7 +1169,28 @@ function exportGalleryCode() {
     alert("Kode galleryData telah disalin! \n\nSilakan tempelkan kode ini di bagian atas script.js Anda untuk menyimpan perubahan secara permanen.");
 }
 
-// Modal Download Handlers
+// Valid Commercial License Codes
+const validLicenses = ['NQMT-2026-NEO', 'NEO-GURU-2026', 'SARDIN-QMT-9BAB', 'NEOQMT-8899', 'NQMT-PREMIUM', 'NQMT-FULL9BAB'];
+
+function openDownloadFlow() {
+    const isActivated = localStorage.getItem('neoBookLicenseActivated') === 'true';
+    if (isActivated) {
+        openDownloadModal();
+    } else {
+        openLicenseModal();
+    }
+}
+
+function openLicenseModal() {
+    const modal = document.getElementById('licenseModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeLicenseModal() {
+    const modal = document.getElementById('licenseModal');
+    if (modal) modal.style.display = 'none';
+}
+
 function openDownloadModal() {
     const modal = document.getElementById('downloadModal');
     if (modal) modal.style.display = 'flex';
@@ -1178,6 +1199,76 @@ function openDownloadModal() {
 function closeDownloadModal() {
     const modal = document.getElementById('downloadModal');
     if (modal) modal.style.display = 'none';
+}
+
+function verifyLicenseCode() {
+    const input = document.getElementById('licenseCodeInput');
+    const msgDiv = document.getElementById('licenseStatusMsg');
+    if (!input || !msgDiv) return;
+
+    const code = input.value.trim().toUpperCase();
+    if (!code) {
+        msgDiv.style.display = 'block';
+        msgDiv.style.color = '#ef4444';
+        msgDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Silakan masukkan Kode Lisensi terlebih dahulu.';
+        return;
+    }
+
+    const isPatternValid = /^NQMT-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
+    const dynamicKeys = JSON.parse(localStorage.getItem('neoGeneratedLicenses') || '[]');
+
+    if (validLicenses.includes(code) || isPatternValid || dynamicKeys.includes(code)) {
+        localStorage.setItem('neoBookLicenseActivated', 'true');
+        localStorage.setItem('neoBookLicenseCode', code);
+
+        msgDiv.style.display = 'block';
+        msgDiv.style.color = '#059669';
+        msgDiv.style.fontWeight = '600';
+        msgDiv.innerHTML = '<i class="fas fa-check-circle"></i> Kode Lisensi Valid! Membuka akses unduh 9 bab...';
+
+        setTimeout(() => {
+            closeLicenseModal();
+            openDownloadModal();
+        }, 600);
+    } else {
+        msgDiv.style.display = 'block';
+        msgDiv.style.color = '#ef4444';
+        msgDiv.style.fontWeight = '500';
+        msgDiv.innerHTML = '<i class="fas fa-times-circle"></i> Kode Lisensi tidak valid atau belum terdaftar. Silakan minta kode lisensi via WhatsApp di bawah.';
+    }
+}
+
+function requestLicenseViaWA() {
+    const orderPhoneInput = document.getElementById('orderPhone');
+    const orderPhone = orderPhoneInput ? orderPhoneInput.value.trim() : '';
+    let waNumber = "628123456789"; // Target WA number for order/license desk (Sardin Damis)
+    
+    let text = "Halo Bpk. Sardin Damis, saya bermaksud meminta/membeli Kode Lisensi untuk mengunduh 9 Bab Buku Neo Quantum Miracle Teaching pada aplikasi.";
+    if (orderPhone) {
+        text += `\n\nNomor WhatsApp Pemesanan Saya: ${orderPhone}`;
+    }
+    
+    const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+}
+
+function openAdminGenerator() {
+    const pass = prompt("Masukkan Kata Sandi Admin Penulis (Sardin Damis):");
+    if (pass === "admin" || pass === "quantum2026" || pass === "sardin") {
+        const randomPart1 = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const randomPart2 = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const newCode = `NQMT-${randomPart1}-${randomPart2}`;
+        
+        let dynamicKeys = JSON.parse(localStorage.getItem('neoGeneratedLicenses') || '[]');
+        dynamicKeys.push(newCode);
+        localStorage.setItem('neoGeneratedLicenses', JSON.stringify(dynamicKeys));
+
+        alert(`🔑 KODE LISENSI BARU BERHASIL DIGENERATE!\n\nKODE: ${newCode}\n\nKode ini telah didaftarkan dan dapat langsung Anda berikan kepada pembeli via WhatsApp.`);
+        const input = document.getElementById('licenseCodeInput');
+        if (input) input.value = newCode;
+    } else if (pass !== null) {
+        alert("Kata sandi admin salah!");
+    }
 }
 
 function downloadSelectedChapterPDF() {
