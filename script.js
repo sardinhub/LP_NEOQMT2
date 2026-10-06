@@ -570,35 +570,7 @@ function openTool(type) {
             break;
         case 'checklist':
             title = "Quantum Guru Self-Assessment";
-            const items = [
-                "Saya selalu berefleksi setelah selesai mengajar.",
-                "Saya terbuka terhadap teknologi baru di kelas.",
-                "Saya mengenal hobi dan minat sebagian besar murid saya.",
-                "Saya sering menggunakan cerita/narasi untuk memulai materi.",
-                "Saya memberikan pilihan cara belajar kepada murid saya.",
-                "Saya mendorong murid untuk bertanya 'Mengapa' bukan sekadar menghafal.",
-                "Saya merasa nyaman saat murid berkolaborasi secara aktif.",
-                "Saya mencari solusi kreatif saat fasilitas sekolah terbatas.",
-                "Saya terus belajar hal baru setiap bulannya.",
-                "Saya percaya setiap murid memiliki potensi jenius."
-            ];
-            content = `
-                <div class="tool-form">
-                    <p>Ukur kesiapan Anda menjadi Guru Quantum dengan menjawab jujur:</p>
-                    <div id="checklistForm" style="margin: 1.5rem 0;">
-                        ${items.map((item, i) => `
-                            <div class="checklist-item">
-                                <input type="checkbox" id="check-${i}">
-                                <label for="check-${i}">${item}</label>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <button class="btn-generate" onclick="calculateAssessment()">
-                        <i class="fas fa-poll"></i> Lihat Hasil Evaluasi
-                    </button>
-                    <div id="toolResult"></div>
-                </div>
-            `;
+            content = renderSelfAssessmentHTML();
             break;
         case 'orderBook':
             title = "Pemesanan Buku Neo Quantum";
@@ -1937,23 +1909,218 @@ function downloadRPPAsPDF(customFilename) {
 }
 
 
+const selfAssessmentBank = [
+    // Dimensi 1: Kesadaran & Emosional
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya secara rutin membuka kelas dengan Mindful Check-in (menyapa emosi & kesiapan mental murid)." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya mengenal minat, gaya belajar, dan keunikan latar belakang sebagian besar peserta didik saya." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya membangun rasa aman psikologis sehingga murid tidak takut salah saat mengemukakan pendapat." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya merespons pertanyaan sulit atau gangguan di kelas dengan ketenangan (Mindful Response)." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya percaya bahwa setiap peserta didik memiliki keunikan dan potensi jenius yang perlu dikembangkan." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya menyampaikan apresiasi yang tulus (Feedback from the Heart) atas setiap usaha dan proses belajar siswa." },
+    { cat: "Kesadaran & Emosional", badge: "blue", text: "Saya selalu menjaga energi positif dan antusiasme tinggi saat memasuki ruang kelas." },
+
+    // Dimensi 2: Pedagogi Deep Teaching & Socratic
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya melontarkan pertanyaan provokatif (Socratic Questioning) yang memicu pemikiran kritis HOTS." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya mengaitkan setiap topik materi dengan fenomena riil atau studi kasus dalam kehidupan sehari-hari." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya menggunakan naskah apersepsi mengejutkan (Mindful Hook) untuk memantik rasa ingin tahu diawal pembelajaran." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya memberikan kesempatan murid untuk menemukan konsep sendiri (Discovery Learning) daripada mendikte." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya merancang alur kegiatan 3M (Memahami, Mengaplikasi, Merefleksi) secara seimbang di Modul Ajar." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya mendorong peserta didik untuk mempertanyakan alasan 'mengapa' dan 'bagaimana' di balik suatu teori." },
+    { cat: "Pedagogi Deep Teaching", badge: "orange", text: "Saya memfasilitasi diskusi kolaboratif di mana murid saling berargumen secara santun berbasis data." },
+
+    // Dimensi 3: Teknologi & Inovasi
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya secara aktif memanfaatkan tools AI (seperti Generator Modul Ajar) untuk memperkaya persiapan mengajar." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya memanfaatkan media interaktif digital (visual, simulasi, atau aplikasi) untuk memperjelas konsep abstrak." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya mendorong murid menggunakan teknologi secara bijak untuk riset dan pembuatan karya ilmiah." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya secara rutin mencoba metode atau strategi pengajaran baru yang belum pernah saya gunakan sebelumnya." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya menemukan cara-cara kreatif memfasilitasi praktikum/eksperimen saat sarana fisik terbatas." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya mengikuti perkembangan tools pendidikan digital terkini untuk meningkatkan efisiensi guru." },
+    { cat: "Teknologi & Inovasi", badge: "purple", text: "Saya mendokumentasikan karya dan praktik baik pembelajaran kelas saya secara digital." },
+
+    // Dimensi 4: Pembelajaran Berdiferensiasi
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya memetakan kesiapan awal dan minat belajar murid sebelum merancang alur pembelajaran." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya menyediakan beragam opsi tugas/produk (Diferensiasi Produk) sesuai bakat murid." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya memberikan bimbingan bertahap (Scaffolding) bagi siswa yang mengalami kesulitan belajar." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya merancang materi tantangan pengayaan khusus bagi murid yang tuntas belajar lebih cepat." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya menyusun kelompok belajar yang heterogen untuk melatih gotong royong dan empati antar-murid." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya menyesuaikan kecepatan penyampaian materi berdasarkan respon dan pemahaman siswa di kelas." },
+    { cat: "Diferensiasi Pembelajaran", badge: "green", text: "Saya memastikan semua peserta didik memperoleh kesempatan yang sama untuk tampil dan berpendapat." },
+
+    // Dimensi 5: Asesmen Autentik & Refleksi
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya secara konsisten melakukan refleksi diri (Self-Reflection) seusai menyelesaikan sesi mengajar." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya menggunakan asesmen formatif (observasi, kuis interaktif, peer-assessment) selama proses belajar." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya menilai pemahaman murid melalui produk autentik/portofolio/presentasi, bukan sekadar hafalan PG." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya memberikan rubrik penilaian yang transparan dan dapat dipahami siswa sejak awal proyek." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya menganggap umpan balik atau kritik dari murid dan rekan sejawat sebagai peluang tumbuh (Growth Mindset)." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya menyisihkan waktu khusus untuk kegiatan refleksi metakognisi murid di penutup pembelajaran." },
+    { cat: "Asesmen & Refleksi", badge: "red", text: "Saya berkomitmen meningkatkan kompetensi profesional diri melalui literasi dan pelatihan mandiri." }
+];
+
+function getSampledAssessmentQuestions() {
+    const categories = [
+        "Kesadaran & Emosional",
+        "Pedagogi Deep Teaching",
+        "Teknologi & Inovasi",
+        "Diferensiasi Pembelajaran",
+        "Asesmen & Refleksi"
+    ];
+
+    let sampled = [];
+    categories.forEach(cat => {
+        const catQuestions = selfAssessmentBank.filter(q => q.cat === cat);
+        const shuffled = [...catQuestions].sort(() => 0.5 - Math.random());
+        sampled.push(...shuffled.slice(0, 2));
+    });
+
+    sampled.sort(() => 0.5 - Math.random());
+    window.currentAssessmentQuestions = sampled;
+    return sampled;
+}
+
+function renderSelfAssessmentHTML() {
+    const questions = getSampledAssessmentQuestions();
+    return `
+        <div class="tool-form">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; background: linear-gradient(135deg, rgba(79,70,229,0.08), rgba(6,182,212,0.08)); padding: 1rem 1.25rem; border-radius: 12px; border-left: 4px solid var(--quantum-blue); margin-bottom: 1.25rem;">
+                <div>
+                    <h4 style="margin: 0 0 0.25rem 0; color: #1e293b; font-size: 0.98rem;"><i class="fas fa-clipboard-check" style="color:var(--quantum-blue)"></i> Quantum Guru Self-Assessment (Bank Soal Dinamis)</h4>
+                    <p style="margin:0; font-size:0.82rem; color:#64748b;">10 indikator teracak secara proporsional dari 5 Dimensi Utama Kompetensi Guru Modern.</p>
+                </div>
+                <button onclick="refreshSelfAssessmentForm()" class="rpp-print-btn" style="background:#4f46e5; border:none; padding:0.45rem 0.85rem; font-size:0.8rem;">
+                    <i class="fas fa-random"></i> Acak Pertanyaan Baru
+                </button>
+            </div>
+
+            <p style="font-size:0.88rem; color:#475569; margin-bottom:1rem;">Ukur kesiapan dan kualitas praktik pembelajaran Anda dengan memberi tanda centang pada pernyataan yang sesuai:</p>
+
+            <div id="checklistForm" style="margin: 1rem 0;">
+                ${questions.map((q, i) => `
+                    <div class="checklist-item" style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.85rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:0.6rem; transition:all 0.2s ease;">
+                        <input type="checkbox" id="check-${i}" style="margin-top:0.25rem; width:18px; height:18px; cursor:pointer;">
+                        <label for="check-${i}" style="cursor:pointer; font-size:0.88rem; color:#1e293b; line-height:1.4; flex:1;">
+                            <span class="rpp-badge ${q.badge}" style="font-size:0.72rem; margin-bottom:0.25rem; display:inline-block;">${q.cat}</span><br>
+                            ${q.text}
+                        </label>
+                    </div>
+                `).join('')}
+            </div>
+
+            <button class="btn-generate" onclick="calculateAssessment()" style="background: linear-gradient(135deg, var(--quantum-blue), #1d4ed8); margin-top:0.5rem;">
+                <i class="fas fa-poll"></i> Analisis & Lihat Hasil Evaluasi Diri
+            </button>
+            <div id="toolResult" style="margin-top:1.5rem;"></div>
+        </div>
+    `;
+}
+
+function refreshSelfAssessmentForm() {
+    const formContainer = document.querySelector('.modal-main #chapterContent .tool-form');
+    if (formContainer) {
+        formContainer.parentElement.innerHTML = renderSelfAssessmentHTML();
+    } else {
+        openTool('checklist');
+    }
+}
+
 function calculateAssessment() {
+    const questions = window.currentAssessmentQuestions || [];
     let score = 0;
-    for (let i = 0; i < 10; i++) {
-        if (document.getElementById(`check-${i}`).checked) score++;
+    const catScores = {};
+
+    questions.forEach((q, i) => {
+        const checkbox = document.getElementById(`check-${i}`);
+        if (!catScores[q.cat]) {
+            catScores[q.cat] = { checked: 0, total: 0 };
+        }
+        catScores[q.cat].total++;
+
+        if (checkbox && checkbox.checked) {
+            score++;
+            catScores[q.cat].checked++;
+        }
+    });
+
+    const totalQuestions = questions.length || 10;
+    const percentage = Math.round((score / totalQuestions) * 100);
+
+    let levelTitle = "";
+    let levelBadgeClass = "";
+    let levelDesc = "";
+    let levelIcon = "";
+
+    if (score >= 9) {
+        levelTitle = "Quantum Master Teacher (Master Pendidik)";
+        levelBadgeClass = "score-high";
+        levelIcon = "fa-crown";
+        levelDesc = "Luar biasa! Anda telah menerapkan prinsip Deep Teaching, empati kesadaran, serta asesmen autentik secara konsisten dan menyeluruh di setiap sesi mengajar.";
+    } else if (score >= 7) {
+        levelTitle = "Quantum Innovator (Pendidik Cerdas & Berkesadaran)";
+        levelBadgeClass = "score-high";
+        levelIcon = "fa-rocket";
+        levelDesc = "Sangat Baik! Anda memiliki fondasi pedagogi modern yang kuat dan antusiasme tinggi terhadap inovasi pembelajaran mendalam.";
+    } else if (score >= 5) {
+        levelTitle = "Quantum Practitioner (Pendidik Berkembang)";
+        levelBadgeClass = "score-med";
+        levelIcon = "fa-seedling";
+        levelDesc = "Baik! Anda sudah mulai mengintegrasikan nilai-nilai Quantum & Deep Learning, dan berpotensi besar terus berkembang mencapai keunggulan mengajar.";
+    } else {
+        levelTitle = "Quantum Explorer (Perintis Transformasi)";
+        levelBadgeClass = "score-low";
+        levelIcon = "fa-compass";
+        levelDesc = "Langkah awal yang bagus! Teruslah mengeksplorasi strategi Deep Teaching dan Socratic Questioning untuk meningkatkan kualitas interaksi di kelas.";
     }
 
-    const resultDiv = document.getElementById('toolResult');
-    let level = score >= 8 ? "Quantum Expert" : (score >= 5 ? "Quantum Practitioner" : "Quantum Novice");
-    let colorClass = score >= 8 ? "score-high" : (score >= 5 ? "score-med" : "score-low");
+    const catBreakdownHTML = Object.keys(catScores).map(cat => {
+        const item = catScores[cat];
+        const pct = Math.round((item.checked / item.total) * 100);
+        return `
+            <div style="margin-bottom:0.75rem;">
+                <div style="display:flex; justify-content:space-between; font-size:0.83rem; margin-bottom:0.25rem;">
+                    <span style="font-weight:600; color:#334155;">${cat}</span>
+                    <span style="color:#64748b;">${item.checked} / ${item.total} (${pct}%)</span>
+                </div>
+                <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;">
+                    <div style="height:100%; width:${pct}%; background:var(--quantum-blue); border-radius:3px; transition:width 0.4s ease;"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
 
+    const resultDiv = document.getElementById('toolResult');
     resultDiv.innerHTML = `
-        <div class="tool-result-container" style="text-align:center;">
-            <div class="score-badge ${colorClass}">${score} / 10</div>
-            <h3>Level Anda: ${level}</h3>
-            <div style="background:white; padding:1rem; border-radius:10px; text-align:left; margin-top:1rem;">
-                <strong>Rekomendasi:</strong>
-                <p>Silakan gunakan AI Assistant untuk konsultasi RPP berdasarkan level Anda.</p>
+        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; box-shadow:0 10px 25px rgba(0,0,0,0.05); margin-top:1.5rem;">
+            
+            <div style="text-align:center; padding-bottom:1.25rem; border-bottom:1px solid #f1f5f9;">
+                <div style="display:inline-flex; align-items:center; justify-content:center; width:64px; height:64px; background:#e0e7ff; color:#4f46e5; border-radius:50%; font-size:1.8rem; margin-bottom:0.75rem;">
+                    <i class="fas ${levelIcon}"></i>
+                </div>
+                <h3 style="margin:0 0 0.4rem 0; color:#1e293b; font-size:1.25rem;">${levelTitle}</h3>
+                <div class="score-badge ${levelBadgeClass}" style="display:inline-block; font-size:1.1rem; padding:0.4rem 1.2rem; border-radius:20px; font-weight:700;">
+                    Skor Kesiapan: ${score} / ${totalQuestions} (${percentage}%)
+                </div>
+                <p style="margin:0.75rem 0 0 0; font-size:0.88rem; color:#475569; line-height:1.5; max-width:550px; margin-left:auto; margin-right:auto;">
+                    ${levelDesc}
+                </p>
+            </div>
+
+            <div style="margin-top:1.25rem;">
+                <h4 style="margin:0 0 0.8rem 0; color:#1e293b; font-size:0.95rem;"><i class="fas fa-chart-pie" style="color:var(--stem-orange);"></i> Analisis Skor per Dimensi Kompetensi:</h4>
+                ${catBreakdownHTML}
+            </div>
+
+            <div style="margin-top:1.25rem; background:#f8fafc; border-left:4px solid var(--quantum-blue); padding:1rem; border-radius:8px;">
+                <h5 style="margin:0 0 0.4rem 0; color:#0f172a; font-size:0.9rem;"><i class="fas fa-lightbulb" style="color:var(--quantum-blue);"></i> Rekomendasi Tindak Lanjut Quantum Teacher:</h5>
+                <ul style="margin:0; padding-left:1.2rem; font-size:0.85rem; color:#475569; line-height:1.6;">
+                    <li>Manfaatkan <strong>Deep Teaching Planner</strong> untuk merancang alur 3M (Memahami-Mengaplikasi-Merefleksi) secara terstruktur.</li>
+                    <li>Gunakan <strong>STEM Project Generator</strong> untuk merancang studi kasus berbasis rekayasa konteks riil.</li>
+                    <li>Lakukan asesmen ulang secara berkala untuk memantau perkembangan efektivitas mengajar Anda secara berkelanjutan.</li>
+                </ul>
+            </div>
+
+            <div style="text-align:center; margin-top:1.25rem;">
+                <button onclick="refreshSelfAssessmentForm()" class="rpp-print-btn" style="background:#4f46e5; border:none; padding:0.6rem 1.25rem;">
+                    <i class="fas fa-redo"></i> Coba Evaluasi Lagi dengan Soal Acak Baru
+                </button>
             </div>
         </div>
     `;
