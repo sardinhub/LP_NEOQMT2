@@ -1237,48 +1237,86 @@ body {
         size: A4 portrait;
         margin: 10mm 10mm 10mm 10mm;
     }
-    body, html {
+    
+    html, body {
         height: auto !important;
-        overflow: visible !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
         background: white !important;
+        overflow: visible !important;
     }
-    body * { visibility: hidden; }
-    #chapterModal, #chapterModal * { visibility: visible; }
+    
+    /* Completely hide everything in body except #chapterModal to collapse unused page height */
+    body > *:not(#chapterModal) {
+        display: none !important;
+    }
+
     #chapterModal { 
-        position: absolute !important; 
+        position: relative !important; 
         left: 0 !important; 
         top: 0 !important; 
         width: 100% !important; 
         height: auto !important; 
+        min-height: 0 !important;
         background: white !important; 
         margin: 0 !important; 
         padding: 0 !important; 
+        box-shadow: none !important;
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
+    
     .modal-content, .modal-main, #chapterContent, #toolResult { 
         display: block !important; 
         width: 100% !important; 
         height: auto !important; 
+        min-height: 0 !important;
         margin: 0 !important; 
-        padding: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        overflow: visible !important;
+        padding: 0 !important; 
+        border: none !important; 
+        box-shadow: none !important; 
+        overflow: visible !important; 
+        background: white !important;
     }
-    .modal-sidebar, .fas.fa-times, .quick-ask-btn, .stem-preview-bar, .tool-form > p, .tool-form > h2, .tool-form > div:not(#toolResult) { 
+
+    /* Hide non-printable controls inside modal */
+    .modal-sidebar, 
+    .fas.fa-times, 
+    .quick-ask-btn, 
+    .stem-preview-bar, 
+    .rpp-print-btn, 
+    .rpp-print-btn-pdf, 
+    .btnDownloadPDF, 
+    .stem-action-btn, 
+    .rpp-watermark,
+    .tool-form > p, 
+    .tool-form > h2, 
+    .tool-form > div:not(#toolResult) { 
         display: none !important; 
     }
+    
     .rpp-container { 
         margin: 0 !important; 
+        padding: 0 !important;
         border: 1px solid #cbd5e1 !important; 
         width: 100% !important; 
+        height: auto !important;
+        min-height: 0 !important;
         background: white !important;
         box-shadow: none !important;
         border-radius: 0 !important;
     }
-    .rpp-print-btn, .rpp-print-btn-pdf, .btnDownloadPDF, .stem-action-btn { display: none !important; }
     
-    .rpp-watermark {
-        display: none !important;
+    .stem-tab-pane { 
+        display: block !important; 
+        opacity: 1 !important; 
+        visibility: visible !important; 
+        border: none !important; 
+        padding: 0.5rem 0 !important; 
+        margin: 0 !important;
+        min-height: 0 !important;
     }
     
     .rpp-section-title { 
@@ -1294,6 +1332,32 @@ body {
         print-color-adjust: exact !important;
     }
     
+    .lkpd-card, .stem-pillar-card, .diff-card, .safety-box, .hook-card, tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    
+    .lkpd-card { 
+        border: 1px solid #cbd5e1 !important; 
+        background: white !important; 
+        margin-bottom: 0.8rem !important;
+    }
+    
+    .hook-card { 
+        background: white !important; 
+        color: #1e293b !important; 
+        border: 1px solid #e2e8f0 !important; 
+        border-left: 6px solid #f59e0b !important; 
+        margin-bottom: 0.8rem !important; 
+    }
+    .hook-card h3 { color: #d97706 !important; }
+    .hook-card p { color: #334155 !important; }
+    .driving-q-box { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
+    .driving-q-box h4 { color: #0284c7 !important; }
+    .driving-q-box ul { color: #334155 !important; }
+    .diff-grid { grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; }
+    .stem-pillars-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
     table { width: 100% !important; border-collapse: collapse !important; page-break-inside: auto !important; }
     thead { display: table-header-group !important; }
     tbody { display: table-row-group !important; }
@@ -2250,40 +2314,4 @@ body {
     line-height: 1.7;
 }
 
-@media print {
-    .stem-preview-bar { display: none !important; }
-    .stem-tab-pane { 
-        display: block !important; 
-        opacity: 1 !important; 
-        visibility: visible !important; 
-        border: none !important; 
-        padding: 0.5rem 0 !important; 
-        margin: 0 !important;
-        min-height: 0 !important;
-    }
-    .lkpd-card { 
-        border-style: solid !important; 
-        border-width: 1px !important;
-        border-color: #cbd5e1 !important;
-        background: white !important; 
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        margin-bottom: 0.8rem !important;
-    }
-    .stem-pillar-card, .diff-card, .safety-box, .hook-card, tr, .rpp-section-title {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-    .rpp-section-title {
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-    }
-    .hook-card { background: white !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; border-left: 6px solid #f59e0b !important; margin-bottom: 0.8rem !important; }
-    .hook-card h3 { color: #d97706 !important; }
-    .hook-card p { color: #334155 !important; }
-    .driving-q-box { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
-    .driving-q-box h4 { color: #0284c7 !important; }
-    .driving-q-box ul { color: #334155 !important; }
-    .diff-grid { grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; }
-    .stem-pillars-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-}
+
