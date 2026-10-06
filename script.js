@@ -1981,31 +1981,22 @@ function renderSelfAssessmentHTML() {
     const questions = getSampledAssessmentQuestions();
     return `
         <div class="tool-form">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; background: linear-gradient(135deg, rgba(79,70,229,0.08), rgba(6,182,212,0.08)); padding: 1rem 1.25rem; border-radius: 12px; border-left: 4px solid var(--quantum-blue); margin-bottom: 1.25rem;">
-                <div>
-                    <h4 style="margin: 0 0 0.25rem 0; color: #1e293b; font-size: 0.98rem;"><i class="fas fa-clipboard-check" style="color:var(--quantum-blue)"></i> Quantum Guru Self-Assessment (Bank Soal Dinamis)</h4>
-                    <p style="margin:0; font-size:0.82rem; color:#64748b;">10 indikator teracak secara proporsional dari 5 Dimensi Utama Kompetensi Guru Modern.</p>
-                </div>
-                <button onclick="refreshSelfAssessmentForm()" class="rpp-print-btn" style="background:#4f46e5; border:none; padding:0.45rem 0.85rem; font-size:0.8rem;">
-                    <i class="fas fa-random"></i> Acak Pertanyaan Baru
-                </button>
-            </div>
-
-            <p style="font-size:0.88rem; color:#475569; margin-bottom:1rem;">Ukur kesiapan dan kualitas praktik pembelajaran Anda dengan memberi tanda centang pada pernyataan yang sesuai:</p>
+            <p style="font-size:0.92rem; color:#334155; margin-bottom:1.25rem; font-weight:500; line-height:1.5;">
+                Ukur kesiapan dan kualitas praktik pembelajaran Anda dengan memberi tanda centang pada indikator pernyataan yang sesuai berikut ini:
+            </p>
 
             <div id="checklistForm" style="margin: 1rem 0;">
                 ${questions.map((q, i) => `
-                    <div class="checklist-item" style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.85rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:0.6rem; transition:all 0.2s ease;">
-                        <input type="checkbox" id="check-${i}" style="margin-top:0.25rem; width:18px; height:18px; cursor:pointer;">
-                        <label for="check-${i}" style="cursor:pointer; font-size:0.88rem; color:#1e293b; line-height:1.4; flex:1;">
-                            <span class="rpp-badge ${q.badge}" style="font-size:0.72rem; margin-bottom:0.25rem; display:inline-block;">${q.cat}</span><br>
+                    <div class="checklist-item" style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.85rem 1rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:0.6rem; transition:all 0.2s ease;">
+                        <input type="checkbox" id="check-${i}" style="margin-top:0.2rem; width:18px; height:18px; cursor:pointer;">
+                        <label for="check-${i}" style="cursor:pointer; font-size:0.9rem; color:#1e293b; line-height:1.5; flex:1;">
                             ${q.text}
                         </label>
                     </div>
                 `).join('')}
             </div>
 
-            <button class="btn-generate" onclick="calculateAssessment()" style="background: linear-gradient(135deg, var(--quantum-blue), #1d4ed8); margin-top:0.5rem;">
+            <button class="btn-generate" onclick="calculateAssessment()" style="background: linear-gradient(135deg, var(--quantum-blue), #1d4ed8); margin-top:0.75rem; padding:0.85rem; font-size:0.95rem;">
                 <i class="fas fa-poll"></i> Analisis & Lihat Hasil Evaluasi Diri
             </button>
             <div id="toolResult" style="margin-top:1.5rem;"></div>
@@ -2025,18 +2016,11 @@ function refreshSelfAssessmentForm() {
 function calculateAssessment() {
     const questions = window.currentAssessmentQuestions || [];
     let score = 0;
-    const catScores = {};
 
     questions.forEach((q, i) => {
         const checkbox = document.getElementById(`check-${i}`);
-        if (!catScores[q.cat]) {
-            catScores[q.cat] = { checked: 0, total: 0 };
-        }
-        catScores[q.cat].total++;
-
         if (checkbox && checkbox.checked) {
             score++;
-            catScores[q.cat].checked++;
         }
     });
 
@@ -2070,22 +2054,6 @@ function calculateAssessment() {
         levelDesc = "Langkah awal yang bagus! Teruslah mengeksplorasi strategi Deep Teaching dan Socratic Questioning untuk meningkatkan kualitas interaksi di kelas.";
     }
 
-    const catBreakdownHTML = Object.keys(catScores).map(cat => {
-        const item = catScores[cat];
-        const pct = Math.round((item.checked / item.total) * 100);
-        return `
-            <div style="margin-bottom:0.75rem;">
-                <div style="display:flex; justify-content:space-between; font-size:0.83rem; margin-bottom:0.25rem;">
-                    <span style="font-weight:600; color:#334155;">${cat}</span>
-                    <span style="color:#64748b;">${item.checked} / ${item.total} (${pct}%)</span>
-                </div>
-                <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;">
-                    <div style="height:100%; width:${pct}%; background:var(--quantum-blue); border-radius:3px; transition:width 0.4s ease;"></div>
-                </div>
-            </div>
-        `;
-    }).join('');
-
     const resultDiv = document.getElementById('toolResult');
     resultDiv.innerHTML = `
         <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; box-shadow:0 10px 25px rgba(0,0,0,0.05); margin-top:1.5rem;">
@@ -2103,24 +2071,13 @@ function calculateAssessment() {
                 </p>
             </div>
 
-            <div style="margin-top:1.25rem;">
-                <h4 style="margin:0 0 0.8rem 0; color:#1e293b; font-size:0.95rem;"><i class="fas fa-chart-pie" style="color:var(--stem-orange);"></i> Analisis Skor per Dimensi Kompetensi:</h4>
-                ${catBreakdownHTML}
-            </div>
-
             <div style="margin-top:1.25rem; background:#f8fafc; border-left:4px solid var(--quantum-blue); padding:1rem; border-radius:8px;">
                 <h5 style="margin:0 0 0.4rem 0; color:#0f172a; font-size:0.9rem;"><i class="fas fa-lightbulb" style="color:var(--quantum-blue);"></i> Rekomendasi Tindak Lanjut Quantum Teacher:</h5>
                 <ul style="margin:0; padding-left:1.2rem; font-size:0.85rem; color:#475569; line-height:1.6;">
                     <li>Manfaatkan <strong>Deep Teaching Planner</strong> untuk merancang alur 3M (Memahami-Mengaplikasi-Merefleksi) secara terstruktur.</li>
                     <li>Gunakan <strong>STEM Project Generator</strong> untuk merancang studi kasus berbasis rekayasa konteks riil.</li>
-                    <li>Lakukan asesmen ulang secara berkala untuk memantau perkembangan efektivitas mengajar Anda secara berkelanjutan.</li>
+                    <li>Lakukan evaluasi diri secara berkala untuk memantau perkembangan efektivitas mengajar Anda secara berkelanjutan.</li>
                 </ul>
-            </div>
-
-            <div style="text-align:center; margin-top:1.25rem;">
-                <button onclick="refreshSelfAssessmentForm()" class="rpp-print-btn" style="background:#4f46e5; border:none; padding:0.6rem 1.25rem;">
-                    <i class="fas fa-redo"></i> Coba Evaluasi Lagi dengan Soal Acak Baru
-                </button>
             </div>
         </div>
     `;
