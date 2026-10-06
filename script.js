@@ -498,38 +498,71 @@ function openTool(type) {
             `;
             break;
         case 'planner':
-            title = "Deep Teaching Planner";
+            title = "Deep Teaching Modul Ajar Generator";
             content = `
                 <div class="tool-form">
-                    <p>Buat draf RPP yang menyentuh hati dan memicu pemikiran kritis.</p>
-                    <div style="margin: 1.5rem 0;">
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Mata Pelajaran:</label>
-                        <input type="text" id="planSubject" placeholder="Contoh: Matematika, Bahasa Indonesia..." style="width:100%; padding:1rem; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:1rem;">
-                        
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Topik Pembelajaran:</label>
-                        <input type="text" id="planTopic" placeholder="Contoh: Persamaan Linear, Menulis Puisi..." style="width:100%; padding:1rem; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:1rem;">
-                        
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Target Kelas:</label>
-                        <select id="planGrade" style="width:100%; padding:1rem; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:1.5rem;">
-                            <option value="SD">Sekolah Dasar (SD)</option>
-                            <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
-                            <option value="SMA">Sekolah Menengah Atas (SMA)</option>
-                        </select>
+                    <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1)); padding: 1rem 1.25rem; border-radius: 12px; border-left: 4px solid var(--quantum-blue); margin-bottom: 1.5rem;">
+                        <h4 style="margin: 0 0 0.4rem 0; color: #1e293b; font-size: 1rem;"><i class="fas fa-feather-alt" style="color:var(--quantum-blue)"></i> Generator Modul Ajar Deep Teaching & Deep Learning</h4>
+                        <p style="margin:0; font-size:0.85rem; color:#64748b; line-height:1.5;">Hasilkan Modul Ajar LENGKAP berstandar Kurikulum Merdeka yang merangkum: <strong>1. Informasi Umum</strong>, <strong>2. Komponen Inti & Sintaks</strong>, dan <strong>3. Komponen Lampiran (LKPD, Rubrik, Bacaan, Glosarium & Pustaka)</strong>.</p>
+                    </div>
 
-                        <label style="display:block; margin-bottom:0.8rem; font-weight:600;">Profil Lulusan (Pilih yang dituju):</label>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Keimanan dan Ketakwaan kepada Tuhan YME" data-color="blue" checked> Keimanan dan Ketakwaan kepada Tuhan YME</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kewargaan (Citizenship)" data-color="green" checked> Kewargaan (Citizenship)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Penalaran Kritis (Critical Thinking)" data-color="orange" checked> Penalaran Kritis (Critical Thinking)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kreativitas (Creativity)" data-color="purple" checked> Kreativitas (Creativity)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kolaborasi (Collaboration)" data-color="blue"> Kolaborasi (Collaboration)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kemandirian (Self-Regulation)" data-color="green"> Kemandirian (Self-Regulation)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kesehatan (Wellbeing)" data-color="orange"> Kesehatan (Wellbeing)</label>
-                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Komunikasi (Communication)" data-color="purple"> Komunikasi (Communication)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Nama Penyusun / Guru:</label>
+                            <input type="text" id="planName" placeholder="Contoh: Sardin Damis, S.Pd." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Nama Institusi / Sekolah:</label>
+                            <input type="text" id="planSchool" placeholder="Contoh: SMP Quantum Miracle" style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
                         </div>
                     </div>
-                    <button class="btn-generate" onclick="generatePlanner()" style="margin-top:1rem;">
-                        <i class="fas fa-feather-alt"></i> Buat Rencana Pembelajaran
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Mata Pelajaran:</label>
+                            <input type="text" id="planSubject" placeholder="Contoh: Matematika, IPA, Bahasa Indonesia..." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Jenjang, Kelas & Fase:</label>
+                            <select id="planGrade" style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem; background:white;">
+                                <option value="SD Kelas 4 - Fase B">Sekolah Dasar (SD Kelas 4 - Fase B)</option>
+                                <option value="SMP Kelas 8 - Fase D" selected>Sekolah Menengah Pertama (SMP Kelas 8 - Fase D)</option>
+                                <option value="SMA Kelas 11 - Fase F">Sekolah Menengah Atas (SMA Kelas 11 - Fase F)</option>
+                                <option value="SMK Kelas 10 - Fase E">Sekolah Menengah Kejuruan (SMK Kelas 10 - Fase E)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Topik / Materi Pembelajaran:</label>
+                            <input type="text" id="planTopic" placeholder="Contoh: Persamaan Linear, Ekosistem, Menulis Puisi..." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Model Pembelajaran Utama:</label>
+                            <select id="planModel" style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem; background:white;">
+                                <option value="Deep Teaching & Deep Learning (Integrasi Socratic & Experiential)" selected>Deep Teaching & Deep Learning (Socratic & Experiential)</option>
+                                <option value="Problem-Based Learning (PBL) Berbasis Deep Learning">Problem-Based Learning (PBL)</option>
+                                <option value="Project-Based Learning (PjBL) Berbasis Deep Learning">Project-Based Learning (PjBL)</option>
+                                <option value="Inquiry-Based Learning (Penemuan Konseptual)">Inquiry & Discovery Learning</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.25rem;">
+                        <label style="display:block; margin-bottom:0.6rem; font-weight:600; font-size:0.9rem;">Profil Pelajar / Dimensi Karakter (Pilih yang Dituju):</label>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; background:#f8fafc; padding:1rem; border-radius:10px; border:1px solid #e2e8f0;">
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Penalaran Kritis (Critical Thinking)" checked> Penalaran Kritis (Critical Thinking)</label>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kreativitas (Creativity)" checked> Kreativitas (Creativity)</label>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kolaborasi (Collaboration)" checked> Kolaborasi (Gotong Royong)</label>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kemandirian (Self-Regulation)" checked> Kemandirian (Self-Regulation)</label>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Keimanan dan Ketakwaan kepada Tuhan YME"> Keimanan & Ketakwaan YME</label>
+                            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem;"><input type="checkbox" class="plan-profil" value="Kebinekaan Global (Global Citizenship)"> Kebinekaan Global</label>
+                        </div>
+                    </div>
+
+                    <button class="btn-generate" onclick="generatePlanner()" style="background: linear-gradient(135deg, var(--quantum-blue), #1d4ed8); padding: 0.9rem; font-size: 1rem;">
+                        <i class="fas fa-feather-alt"></i> Buat Modul Ajar Deep Teaching
                     </button>
                     <div id="toolResult"></div>
                 </div>
@@ -1027,154 +1060,627 @@ function renderSTEMPreview(data) {
 
 
 function generatePlanner() {
-    const subject = document.getElementById('planSubject').value || 'Mata Pelajaran';
-    const topic = document.getElementById('planTopic').value || 'Topik Pembelajaran';
-    const grade = document.getElementById('planGrade').value;
+    const name = document.getElementById('planName')?.value || 'Nama Guru / Penyusun';
+    const school = document.getElementById('planSchool')?.value || 'Nama Instansi / Sekolah';
+    const subject = document.getElementById('planSubject')?.value || 'Mata Pelajaran';
+    const topic = document.getElementById('planTopic')?.value || 'Topik Pembelajaran';
+    const grade = document.getElementById('planGrade')?.value || 'SMA';
+    const model = document.getElementById('planModel')?.value || 'Problem-Based Learning (PBL)';
 
     const checkboxes = document.querySelectorAll('.plan-profil:checked');
-    let profilHTML = '';
-    checkboxes.forEach(cb => {
-        profilHTML += `<span class="rpp-badge ${cb.dataset.color}" style="margin-bottom:0.3rem; margin-right:0.3rem; display:inline-block;">${cb.value}</span>`;
-    });
-    if (!profilHTML) profilHTML = '<em>Belum ada profil yang dipilih</em>';
+    const profilList = [];
+    checkboxes.forEach(cb => profilList.push(cb.value));
 
-    const gradeMap = {
-        'SD': { label: 'Sekolah Dasar (SD)', fase: 'Fase A/B/C', bloom: 'Mengingat, Memahami, Menerapkan' },
-        'SMP': { label: 'Sekolah Menengah Pertama (SMP)', fase: 'Fase D', bloom: 'Memahami, Menerapkan, Menganalisis' },
-        'SMA': { label: 'Sekolah Menengah Atas (SMA)', fase: 'Fase E/F', bloom: 'Menganalisis, Mengevaluasi, Mencipta' }
-    };
-    const gradeInfo = gradeMap[grade];
     const resultDiv = document.getElementById('toolResult');
-
     resultDiv.innerHTML = `
-    <div class="rpp-container">
-
-        <!-- RPP Watermark -->
-        <div class="rpp-watermark">DRAFT</div>
-
-        <!-- Header RPP -->
-        <div class="rpp-header">
-            <div class="rpp-logo-area">
-                <i class="fas fa-atom rpp-logo-icon"></i>
-            </div>
-            <div class="rpp-title-area">
-                <h2>MODUL AJAR / DRAFT RPP</h2>
-                <p>Berbasis <strong>Standar Kurikulum Pembelajaran Mendalam 2025</strong></p>
-                <p>Neo Quantum Miracle Teaching</p>
-            </div>
-            <div style="display:flex; gap:0.5rem;">
-                <button onclick="window.print()" class="rpp-print-btn">
-                    <i class="fas fa-print"></i> Cetak
-                </button>
-                <button onclick="downloadRPPAsPDF('Draft_RPP_Quantum_${topic.replace(/\s+/g, '_')}')" class="rpp-print-btn" id="btnDownloadPDF" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);">
-                    <i class="fas fa-file-pdf"></i> PDF
-                </button>
-            </div>
+        <div style="text-align: center; padding: 3rem 1rem; color: #475569;">
+            <i class="fas fa-brain fa-spin fa-3x" style="color: #6366f1; margin-bottom: 1rem;"></i>
+            <h3 style="color: #1e293b; margin-bottom: 0.5rem;">Memproses Modul Ajar Deep Teaching...</h3>
+            <p style="font-size: 0.95rem; color: #64748b; max-width: 500px; margin: 0 auto;">
+                Sistem AI sedang merumuskan Informasi Umum, Komponen Inti, LKPD Deep Learning, Rubrik Asesmen Autentik, hingga Glosarium secara komprehensif.
+            </p>
         </div>
-
-        <!-- BLOK 1: IDENTIFIKASI (KONTEKS) -->
-        <div class="rpp-section-title">1. IDENTIFIKASI (KONTEKS)</div>
-        <table class="rpp-table">
-            <tr><td class="rpp-label">Identifikasi Peserta Didik</td><td>Menjabarkan kesiapan kognitif, minat, motivasi, dan gaya belajar murid. Membangun suasana <em>Berkesadaran</em> dan kesiapan mental belajar.</td></tr>
-            <tr><td class="rpp-label">Karakteristik Materi Pelajaran</td><td>Mata Pelajaran: <strong>${subject}</strong> | Topik: <strong>${topic}</strong>. Membutuhkan penalaran, eksplorasi konseptual mendalam, dan relevansi langsung dengan pemecahan masalah (problem-solving) pada realitas kehidupan sehari-hari tingkat ${gradeInfo.label}.</td></tr>
-            <tr><td class="rpp-label">Dimensi Profil Lulusan</td><td>
-                ${profilHTML}
-            </td></tr>
-        </table>
-
-        <!-- BLOK 2: DESAIN PEMBELAJARAN -->
-        <div class="rpp-section-title">2. DESAIN PEMBELAJARAN (PERENCANAAN)</div>
-        <table class="rpp-table">
-            <tr><td class="rpp-label" width="22%">Capaian Pembelajaran (CP) & Tujuan Pembelajaran (TP)</td><td>Peserta didik mampu memahami secara mendalam, mengevaluasi, dan menemukan penyelesaian kontekstual terkait <strong>${topic}</strong> sesuai target ${gradeInfo.fase}. Fokus pada pemahaman mendalam, bukan sekadar ketuntasan materi.</td></tr>
-            <tr><td class="rpp-label">Topik Pembelajaran</td><td><strong>${topic}</strong> (Didesain lebih faktual dan relevan di dunia nyata, kontekstual).</td></tr>
-            <tr><td class="rpp-label">Lintas Disiplin Ilmu</td><td>Materi sangat terkait dengan kemampuan Komunikasi, Literasi Digital, dan Kesadaran Sosial-Emosional.</td></tr>
-            <tr><td class="rpp-label">Praktik Pedagogis</td><td>Project-Based Learning (PjBL) atau Inquiry Based Learning.</td></tr>
-            <tr><td class="rpp-label">Lingkungan & Kemitraan</td><td>Pemanfaatan ruang fisik/kelas, komunitas sekolah, atau narasumber virtual/digital.</td></tr>
-            <tr><td class="rpp-label">Pemanfaatan Teknologi</td><td>Penggunaan media digital, alat kolaborasi online, atau pemanfaatan AI yang mendukung proses belajar mendalam.</td></tr>
-        </table>
-
-        <!-- BLOK 3: PENGALAMAN BELAJAR -->
-        <div class="rpp-section-title">3. PENGALAMAN BELAJAR (LANGKAH-LANGKAH 3M - Prinsip BBM)</div>
-        <table class="rpp-table">
-            <thead><tr><th width="18%">Fase / Prinsip BBM</th><th>Aktivitas Pembelajaran Integratif</th><th width="18%">Tahap 3M</th></tr></thead>
-            <tbody>
-                <tr class="rpp-phase-row">
-                    <td><span class="rpp-phase-badge opening">AWAL</span><br><br><small><strong>Berkesadaran</strong> dan <strong>Menggembirakan</strong></small></td>
-                    <td>
-                        <strong>Apersepsi dan Motivasi:</strong><br>
-                        Guru mengkondisikan siswa agar fokus dan membangun koneksi emosional. Membuka topik <strong>${topic}</strong> menggunakan fenomena mengejutkan atau cerita pemantik yang menggugah nalar.
-                    </td>
-                    <td><span class="rpp-badge green" style="width: 100%; box-sizing: border-box;">Persiapan Mental</span></td>
-                </tr>
-                <tr>
-                    <td><span class="rpp-phase-badge main">INTI</span><br><br><small>Sangat <strong>Bermakna</strong>: membangun kualitas pemahaman</small></td>
-                    <td>
-                        <strong>1. Memahami (Konstruksi Pengetahuan)</strong><br>
-                        Penyelidikan mendalam melalui literasi multi-sumber, dialog socratic, dan diskusi interaktif terkait ${topic}.<br><br>
-                        
-                        <strong>2. Mengaplikasi (Konteks Nyata)</strong><br>
-                        Siswa secara langsung menerapkan konsep ${topic} ke dalam aksi nyata: simulasi, membuahkan proyek mini, atau pemecahan kasus secara riil secara tim/kelompok.<br><br>
-                        
-                        <strong>3. Merefleksi (Evaluasi Diri)</strong><br>
-                        Siswa menyadari proses belajarnya: apa hambatan yang mereka temui, bagaimana cara mengatasinya, dan mencatat jurnal pemahaman.
-                    </td>
-                    <td>
-                        <span class="rpp-badge blue" style="margin-bottom:0.8rem; width: 100%; box-sizing: border-box;">1. Memahami</span>
-                        <span class="rpp-badge orange" style="margin-bottom:0.8rem; width: 100%; box-sizing: border-box;">2. Mengaplikasi</span>
-                        <span class="rpp-badge purple" style="width: 100%; box-sizing: border-box;">3. Merefleksi</span>
-                    </td>
-                </tr>
-                <tr class="rpp-phase-row">
-                    <td><span class="rpp-phase-badge closing">PENUTUP</span></td>
-                    <td>
-                        <strong>Umpan Balik Konstruktif:</strong><br>
-                        Guru dan sesama teman memberikan umpan balik, meneguhkan pemahaman, dan apresiasi. Menjaga semangat bahwa belajar itu bermakna dan memantik rasa ingin tahu berkelanjutan.
-                    </td>
-                    <td><span class="rpp-badge green" style="width: 100%; box-sizing: border-box;">Penguatan</span></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- BLOK 4: ASESMEN -->
-        <div class="rpp-section-title">4. ASESMEN (PENILAIAN PEMAHAMAN MENDALAM)</div>
-        <table class="rpp-table">
-            <thead><tr><th width="25%">Jenis Asesmen</th><th>Fokus Asesmen & Instrumen (Berbasis Kualitas Pemahaman)</th></tr></thead>
-            <tbody>
-                <tr>
-                    <td><span class="rpp-badge blue" style="width: 100%; box-sizing: border-box;">Asesmen Awal</span><br><br><small>(Diagnostic Assessment)</small></td>
-                    <td>Mengecek asumsi awal dan pengetahuan prasyarat terkait ${topic} menggunakan Kuis Interaktif atau Pertanyaan Pemantik.</td>
-                </tr>
-                <tr>
-                    <td><span class="rpp-badge green" style="width: 100%; box-sizing: border-box;">Asesmen Proses</span><br><br><small>(Formatif - Assessment for Learning)</small></td>
-                    <td>Observasi kemampuan penalaran kritis selama proses <em>'Mengaplikasi'</em>. Penilaian umpan balik sesama teman dan jurnal ketangguhan mental saat menghadapi kesulitan.</td>
-                </tr>
-                <tr>
-                    <td><span class="rpp-badge orange" style="width: 100%; box-sizing: border-box;">Asesmen Akhir</span><br><br><small>(Sumatif - Assessment of Learning)</small></td>
-                    <td>Evaluasi tidak lagi menggunakan ujian hafalan pilihan ganda, melainkan menilai kedalaman gagasan lewat <strong>Portofolio, Hasil Proyek, atau Presentasi Argumentatif</strong> atas solusi dari problematika ${topic}.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="rpp-footer">
-            <p><i class="fas fa-atom"></i> Dihasilkan oleh <strong>Neo Quantum Miracle Teaching — Deep Teaching Planner</strong> | Standar Pembelajaran Mendalam 2025</p>
-        </div>
-    </div>
     `;
+
+    fetch(`${API_URL}/tools/planner`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            teacherName: name,
+            schoolName: school,
+            subject: subject,
+            grade: grade,
+            topic: topic,
+            model: model,
+            profil: profilList
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Gagal merespons dari server");
+        return res.json();
+    })
+    .then(data => {
+        renderModulAjarPreview(data);
+    })
+    .catch(err => {
+        console.warn("API Error, using client fallback generator:", err);
+        const fallbackData = createModulAjarFallbackData({ name, school, subject, grade, topic, model, profilList });
+        renderModulAjarPreview(fallbackData);
+    });
 }
 
-// Function to download RPP as PDF using html2pdf
+function createModulAjarFallbackData({ name, school, subject, grade, topic, model, profilList }) {
+    const profilBadgeHTML = (profilList && profilList.length > 0)
+        ? profilList.map(p => `<span class="rpp-badge blue" style="margin-right:4px; display:inline-block;">${p}</span>`).join(' ')
+        : `<span class="rpp-badge blue">Bernalar Kritis</span> <span class="rpp-badge orange">Kreatif</span> <span class="rpp-badge green">Gotong Royong</span>`;
+
+    return {
+        identitas: {
+            penyusun: name || 'Tim Pengembang Kurikulum',
+            sekolah: school || 'Sekolah Penggerak Deep Teaching',
+            tahun: new Date().getFullYear().toString(),
+            jenjangFase: grade === 'SD' ? 'SD / Fase A-C' : (grade === 'SMP' ? 'SMP / Fase D' : 'SMA / Fase E-F'),
+            kelas: grade === 'SD' ? 'Kelas 4' : (grade === 'SMP' ? 'Kelas 8' : 'Kelas 10'),
+            alokasiWaktu: '3 x 45 Menit (1 Pertemuan)',
+            mataPelajaran: subject,
+            topik: topic
+        },
+        kompetensiAwal: `Peserta didik telah memiliki pemahaman mendasar mengenai konsep dasar ${subject} serta memiliki rasa ingin tahu tinggi terhadap penerapan ${topic} dalam kehidupan sehari-hari.`,
+        profilPelajarBadgeHTML: profilBadgeHTML,
+        saranaPrasarana: [
+            'Proyektor / Smart TV & Laptop',
+            'Alat & bahan eksperimen/praktikum kontekstual',
+            'Lembar Kerja Peserta Didik (LKPD Deep Learning)',
+            'Akses internet dan platform media interaktif digital'
+        ],
+        targetPesertaDidik: 'Peserta Didik Reguler / Tipikal (Heterogen) dengan pendampingan diferensiasi bagi siswa yang memerlukan perancangan remedial.',
+        modelPembelajaran: model || 'Problem-Based Learning (PBL) berbasis Deep Teaching',
+
+        tujuanPembelajaran: [
+            `Menganalisis dan mengidentifikasi prinsip utama ${topic} secara mendalam melalui penyelidikan fenomena riil.`,
+            `Merancang dan mengaplikasikan solusi praktis atas permasalahan kontekstual ${topic} dengan pendekatan kolaboratif.`,
+            `Refleksi metakognitif mengenai manfaat pemahaman ${topic} dalam kehidupan sehari-hari dan tanggung jawab sosial.`
+        ],
+        pemahamanBermakna: `Pemahaman mendalam tentang ${topic} membantu peserta didik menyadari bahwa konsep-konsep ${subject} bukan sekadar teori hafalan, melainkan alat analisis kritis untuk memecahkan masalah nyata dan membuat keputusan bijak dalam kehidupan.`,
+        pertanyaanPemantik: [
+            `Mengapa konsep ${topic} sangat krusial dalam dinamika kehidupan modern saat ini?`,
+            `Apa dampaknya jika kita tidak menerapkan prinsip ${topic} secara cerdas dan berkesadaran?`,
+            `Bagaimana kamu dapat memanfaatkan pemahaman ${topic} untuk membantu komunitas atau lingkungan sekitarmu?`
+        ],
+
+        kegiatanPembelajaran: {
+            pendahuluan: [
+                'Guru membuka pelajaran dengan salam hangat, doa bersama, dan melakukan pengondisian kelas berkesadaran (Mindful Check-in).',
+                `Guru menyampaikan Apersepsi & Mindful Hook: menampilkan tayangan fenomena mengejutkan terkait ${topic} untuk memantik rasa ingin tahu.`,
+                'Guru menjelaskan tujuan pembelajaran, alur kegiatan 3M (Memahami-Mengaplikasi-Merefleksi), dan teknik asesmen yang akan dilakukan.'
+            ],
+            inti: {
+                memahami: [
+                    `Siswa membentuk kelompok heterogen dan mengamati studi kasus / fenomena nyata tentang ${topic}.`,
+                    'Siswa melakukan penelusuran literasi multi-sumber (buku, media digital, eksperimen mini) untuk mendalami konsep inti.',
+                    'Guru memfasilitasi Dialog Socratic untuk menggali penalaran kritis dan meluruskan miskonsepsi.'
+                ],
+                mengaplikasi: [
+                    `Kelompok merancang karya / desain solusi / lembar investigasi EDP atas permasalahan ${topic}.`,
+                    'Siswa menguji coba rancangan solusi, mengumpulkan data penunjang, dan mendokumentasikan hasil temuan.',
+                    'Setiap kelompok menyajikan hasil aplikasi proyek/solusi dalam pameran karya singkat (Gallery Walk) untuk saling memberi umpan balik.'
+                ],
+                merefleksi: [
+                    'Siswa menyusun jurnal refleksi pribadi: apa yang sudah dipahami, apa kendala yang dihadapi, dan strategi perbaikan.',
+                    'Diskusi reflektif kelas mengenai nilai moral dan tanggung jawab yang dipelajari dari proses pemecahan masalah.'
+                ]
+            },
+            penutup: [
+                'Guru dan siswa bersama-sama menyimpulkan poin-poin kunci pembelajaran.',
+                'Guru memberikan umpan balik apresiatif dan konstruktif terhadap kinerja individual maupun kelompok.',
+                'Menyampaikan rencana tindak lanjut (tugas pengayaan / persiapan pertemuan berikutnya) dan ditutup dengan doa.'
+            ]
+        },
+
+        rencanaAsesmen: {
+            diagnostik: 'Kuis singkat prasyarat dan pemetaan awal minat/gaya belajar siswa sebelum memulai kegiatan.',
+            formatif: 'Observasi keaktifan diskusi, penilaian antar teman (peer-assessment), lembar kerja 3M, dan unjuk kerja proyek.',
+            sumatif: 'Evaluasi berbasis produk autentik / laporan solusi / presentasi argumentatif di akhir modul.'
+        },
+
+        pengayaanRemedial: {
+            pengayaan: `Bagi peserta didik yang telah mencapai ketuntasan cepat: Diberikan tantangan menganalisis studi kasus tingkat lanjut atau menjadi tutor sebaya dalam riset ${topic}.`,
+            remedial: `Bagi peserta didik yang memerlukan bimbingan tambahan: Pendampingan diferensiasi terfokus oleh guru dengan bantuan skema visual dan tutor sebaya.`
+        },
+
+        lkpd: {
+            judul: `LKPD Deep Learning: Eksplorasi & Solusi Kontekstual ${topic}`,
+            petunjuk: [
+                'Bacalah setiap instruksi dengan cermat bersama anggota kelompokmu.',
+                `Diskusi dan jawablah pertanyaan pemantik terkait fenomena ${topic}.`,
+                'Gunakan tabel alur kerja untuk mendokumentasikan data dan hasil rancangan solusi kelompok.'
+            ],
+            tugasKontekstual: `Lakukan analisis terhadap masalah nyata di lingkungan sekitar yang berkaitan dengan ${topic}. Rumuskan rancangan ide kreatif solusi yang efisien, hemat biaya, dan dapat diterapkan!`,
+            tabelKerja: [
+                { langkah: '1. Identifikasi Masalah', deskripsi: `Jelaskan apa masalah utama terkait ${topic} yang kalian temukan di lingkungan sekitar.` },
+                { langkah: '2. Pengumpulan Data', deskripsi: 'Tuliskan fakta, data pendukung, atau teori prasyarat yang relevan.' },
+                { langkah: '3. Rancangan Solusi', deskripsi: 'Gambarkan atau jabarkan skema solusi/karya yang akan dibuat.' },
+                { langkah: '4. Evaluasi & Refleksi', deskripsi: 'Apa kelebihan dan kelemahan dari solusi yang kelompok kalian tawarkan?' }
+            ],
+            pertanyaanReflektif: [
+                'Apa hal baru dan berharga yang kamu pelajari dari pengerjaan LKPD ini?',
+                'Bagaimana kamu mengatasi perbedaan pendapat di dalam kelompokmu saat merancang solusi?'
+            ]
+        },
+
+        rubrikAsesmen: [
+            { kriteria: 'Penalaran Kritis & Kedalaman Konsep', skala1: 'Menunjukkan pemahaman parsial/banyak miskonsepsi.', skala2: 'Memahami konsep dasar namun belum mampu menghubungkan variabel.', skala3: 'Memahami konsep secara utuh dan mampu menjelaskan alasan penalaran.', skala4: 'Menganalisis konsep secara mendalam, kritis, dan menemukan pola baru.' },
+            { kriteria: 'Kreativitas & Desain Solusi', skala1: 'Solusi meniru penuh tanpa variasi.', skala2: 'Solusi standar dengan sedikit modifikasi.', skala3: 'Solusi relatif baru dan aplikatif untuk pemecahan masalah.', skala4: 'Solusi sangat inovatif, orisinal, bernilai tambah tinggi dan hemat daya.' },
+            { kriteria: 'Kolaborasi & Gotong Royong', skala1: 'Pasif dan bergantung pada anggota lain.', skala2: 'Terkadang berpartisipasi jika diminta.', skala3: 'Aktif bekerjasama dan menghargai pendapat teman.', skala4: 'Inisiatif tinggi, memfasilitasi diskusi, dan menolong teman yang kesulitan.' },
+            { kriteria: 'Komunikasi & Presentasi', skala1: 'Penyampaian membingungkan dan tidak berkesinambungan.', skala2: 'Penyampaian cukup jelas namun kurang percaya diri.', skala3: 'Penyampaian sistematis, komunikatif, dan responsif.', skala4: 'Penyampaian sangat persuasif, runtut, didukung argumen ilmiah yang kuat.' }
+        ],
+
+        bahanBacaan: {
+            guru: `Referensi pedagogis Deep Teaching dan Kurikulum Merdeka: Panduan pengembangan indikator berpikir tingkat tinggi (HOTS) pada mata pelajaran ${subject} materi ${topic}.`,
+            siswa: `Rangkuman materi bergambar, infografis konsep inti ${topic}, serta tautan artikel sains digital/video edukasi penunjang.`
+        },
+
+        glosarium: [
+            { istilah: 'Deep Teaching', arti: 'Pendekatan pembelajaran berkesadaran yang berfokus pada kedalaman makna dan aplikasi nyata, bukan luas hafalan.' },
+            { istilah: 'Apersepsi', arti: 'Pengamatan atau penghayatan tentang segala sesuatu yang menjadi dasar untuk menerima ide-ide baru.' },
+            { istilah: 'Mindful Hook', arti: 'Stimulus diawal pembelajaran untuk mengalihkan perhatian siswa agar fokus dan tergerak secara mental.' },
+            { istilah: 'Diferensiasi', arti: 'Penyesuaian strategi pembelajaran sesuai tingkat kesiapan, minat, dan profil belajar peserta didik.' }
+        ],
+
+        daftarPustaka: [
+            'Kemendikbudristek. (2024). Panduan Pembelajaran dan Asesmen Kurikulum Merdeka. Jakarta.',
+            `Tim Penulis Utama. (2025). Buku Guru dan Siswa ${subject}: Pembelajaran Mendalam. Jakarta: Pusat Kurikulum dan Perbukuan.`,
+            'Neo Quantum Miracle Teaching. (2025). Modul Pelatihan Guru Modern Deep Teaching & Quantum Learning. Bandung.'
+        ]
+    };
+}
+
+function renderModulAjarPreview(data) {
+    const resultDiv = document.getElementById('toolResult');
+    const idt = data.identitas || {};
+
+    const profilBadges = data.profilPelajarBadgeHTML || (idt.profilPelajar || []).map(p => `<span class="rpp-badge blue" style="margin-right:4px;">${p}</span>`).join(' ') || '<span class="rpp-badge blue">Bernalar Kritis</span>';
+
+    const saranaList = (data.saranaPrasarana || []).map(s => `<li>${s}</li>`).join('');
+    const tpList = (data.tujuanPembelajaran || []).map(tp => `<li>${tp}</li>`).join('');
+    const pemantikList = (data.pertanyaanPemantik || []).map(p => `<li>${p}</li>`).join('');
+
+    const pendahuluanList = (data.kegiatanPembelajaran?.pendahuluan || []).map(p => `<li>${p}</li>`).join('');
+    const memahamiList = (data.kegiatanPembelajaran?.inti?.memahami || []).map(m => `<li>${m}</li>`).join('');
+    const mengaplikasiList = (data.kegiatanPembelajaran?.inti?.mengaplikasi || []).map(m => `<li>${m}</li>`).join('');
+    const merefleksiList = (data.kegiatanPembelajaran?.inti?.merefleksi || []).map(m => `<li>${m}</li>`).join('');
+    const penutupList = (data.kegiatanPembelajaran?.penutup || []).map(p => `<li>${p}</li>`).join('');
+
+    const lkpdPetunjuk = (data.lkpd?.petunjuk || []).map(pt => `<li>${pt}</li>`).join('');
+    const lkpdTabelRows = (data.lkpd?.tabelKerja || []).map(row => `
+        <tr>
+            <td style="font-weight:600; background:#f8fafc;" width="30%">${row.langkah}</td>
+            <td>${row.deskripsi}</td>
+        </tr>
+    `).join('');
+    const lkpdRefleksi = (data.lkpd?.pertanyaanReflektif || []).map(q => `<li>${q}</li>`).join('');
+
+    const rubrikRows = (data.rubrikAsesmen || []).map(r => `
+        <tr>
+            <td style="font-weight:600; background:#f8fafc;" width="20%">${r.kriteria}</td>
+            <td style="font-size:0.85rem;">${r.skala1}</td>
+            <td style="font-size:0.85rem;">${r.skala2}</td>
+            <td style="font-size:0.85rem;">${r.skala3}</td>
+            <td style="font-size:0.85rem; background:#ecfdf5; color:#065f46; font-weight:500;">${r.skala4}</td>
+        </tr>
+    `).join('');
+
+    const glosariumRows = (data.glosarium || []).map(g => `
+        <tr>
+            <td style="font-weight:600; color:#1e293b;" width="25%">${g.istilah}</td>
+            <td>${g.arti}</td>
+        </tr>
+    `).join('');
+
+    const pustakaList = (data.daftarPustaka || []).map(p => `<li>${p}</li>`).join('');
+
+    resultDiv.innerHTML = `
+        <div class="planner-wrapper" style="margin-top:1.5rem;">
+
+            <!-- Header Action Controls -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; background:#0f172a; padding:1rem 1.25rem; border-radius:12px; margin-bottom:1rem; color:white;">
+                <div>
+                    <h3 style="margin:0; font-size:1.1rem; color:#f8fafc;"><i class="fas fa-book-open" style="color:var(--stem-orange); margin-right:0.5rem;"></i> Modul Ajar Deep Teaching Ready</h3>
+                    <p style="margin:0; font-size:0.8rem; color:#94a3b8;">${idt.mataPelajaran || 'Mata Pelajaran'} - ${idt.topik || 'Topik'} (${idt.jenjangFase || 'Fase'})</p>
+                </div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button onclick="copyModulAjarToClipboard()" class="rpp-print-btn" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);">
+                        <i class="fas fa-copy"></i> Salin Teks
+                    </button>
+                    <button onclick="window.print()" class="rpp-print-btn">
+                        <i class="fas fa-print"></i> Cetak A4
+                    </button>
+                    <button onclick="downloadRPPAsPDF('Modul_Ajar_${(idt.topik || 'DeepTeaching').replace(/\s+/g, '_')}')" class="rpp-print-btn" style="background:#4f46e5; border:none;">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Header -->
+            <div class="planner-tabs" style="display:flex; gap:0.5rem; border-bottom:2px solid #e2e8f0; margin-bottom:1.25rem; overflow-x:auto; padding-bottom:4px;">
+                <button class="planner-tab-btn active" onclick="switchPlannerTab('tab-info', this)">
+                    <i class="fas fa-info-circle"></i> 1. Informasi Umum
+                </button>
+                <button class="planner-tab-btn" onclick="switchPlannerTab('tab-inti', this)">
+                    <i class="fas fa-bullseye"></i> 2. Komponen Inti
+                </button>
+                <button class="planner-tab-btn" onclick="switchPlannerTab('tab-asesmen', this)">
+                    <i class="fas fa-tasks"></i> 3. Rencana Asesmen
+                </button>
+                <button class="planner-tab-btn" onclick="switchPlannerTab('tab-lampiran', this)">
+                    <i class="fas fa-file-alt"></i> 4. LKPD & Rubrik
+                </button>
+                <button class="planner-tab-btn" onclick="switchPlannerTab('tab-pustaka', this)">
+                    <i class="fas fa-bookmark"></i> 5. Glosarium & Pustaka
+                </button>
+                <button class="planner-tab-btn" onclick="switchPlannerTab('tab-full-planner', this)" style="background:#f1f5f9; color:#475569; font-weight:600;">
+                    <i class="fas fa-eye"></i> Tampilan Utuh (Cetak)
+                </button>
+            </div>
+
+            <!-- TAB 1: INFORMASI UMUM -->
+            <div id="tab-info" class="planner-tab-content active">
+                <div class="rpp-section-title">1. INFORMASI UMUM</div>
+                <table class="rpp-table">
+                    <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun || '-'}</td></tr>
+                    <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah || '-'}</td></tr>
+                    <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun || '2025'}</td></tr>
+                    <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase || '-'} (${idt.kelas || '-'})</td></tr>
+                    <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu || '3 x 45 Menit'}</td></tr>
+                    <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran || '-'}</strong> — ${idt.topik || '-'}</td></tr>
+                    <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal || '-'}</td></tr>
+                    <tr><td class="rpp-label">Profil Pelajar / Nilai Karakter</td><td>${profilBadges}</td></tr>
+                    <tr><td class="rpp-label">Sarana dan Prasarana</td><td><ul style="margin:0; padding-left:1.2rem;">${saranaList}</ul></td></tr>
+                    <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik || '-'}</td></tr>
+                    <tr><td class="rpp-label">Model Pembelajaran</td><td><span class="rpp-badge orange">${data.modelPembelajaran || '-'}</span></td></tr>
+                </table>
+            </div>
+
+            <!-- TAB 2: KOMPONEN INTI -->
+            <div id="tab-inti" class="planner-tab-content" style="display:none;">
+                <div class="rpp-section-title">2. KOMPONEN INTI</div>
+                <table class="rpp-table">
+                    <tr><td class="rpp-label" width="25%">Tujuan Pembelajaran (TP)</td><td><ol style="margin:0; padding-left:1.2rem;">${tpList}</ol></td></tr>
+                    <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna || '-'}</td></tr>
+                    <tr><td class="rpp-label">Pertanyaan Pemantik (Mindful Hook)</td><td><ol style="margin:0; padding-left:1.2rem;">${pemantikList}</ol></td></tr>
+                </table>
+
+                <div class="rpp-section-title" style="margin-top:1.5rem;">KEGIATAN PEMBELAJARAN (ALUR 3M DEEP TEACHING)</div>
+                <table class="rpp-table">
+                    <thead>
+                        <tr><th width="20%">Tahapan</th><th>Aktivitas Pembelajaran Integratif</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="rpp-phase-row">
+                            <td><span class="rpp-phase-badge opening">PENDAHULUAN</span><br><br><small><strong>Berkesadaran & Mindful Hook</strong></small></td>
+                            <td><ul style="margin:0; padding-left:1.2rem;">${pendahuluanList}</ul></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rpp-phase-badge main">INTI</span><br><br><small><strong>Memahami (Konstruksi)</strong></small></td>
+                            <td><ul style="margin:0; padding-left:1.2rem;">${memahamiList}</ul></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rpp-phase-badge main" style="background:#e0e7ff; color:#3730a3;">INTI</span><br><br><small><strong>Mengaplikasi (Aksi Nyata)</strong></small></td>
+                            <td><ul style="margin:0; padding-left:1.2rem;">${mengaplikasiList}</ul></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rpp-phase-badge main" style="background:#f3e8ff; color:#6b21a8;">INTI</span><br><br><small><strong>Merefleksi (Metakognisi)</strong></small></td>
+                            <td><ul style="margin:0; padding-left:1.2rem;">${merefleksiList}</ul></td>
+                        </tr>
+                        <tr class="rpp-phase-row">
+                            <td><span class="rpp-phase-badge closing">PENUTUP</span><br><br><small><strong>Umpan Balik & Penguatan</strong></small></td>
+                            <td><ul style="margin:0; padding-left:1.2rem;">${penutupList}</ul></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAB 3: RENCANA ASESMEN -->
+            <div id="tab-asesmen" class="planner-tab-content" style="display:none;">
+                <div class="rpp-section-title">3. RENCANA ASESMEN & STRATEGI DIFERENSIASI</div>
+                <table class="rpp-table">
+                    <thead>
+                        <tr><th width="25%">Jenis Asesmen</th><th>Deskripsi & Instrumen Penilaian</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="rpp-badge blue">Asesmen Diagnostik</span><br><small>(Awal Pembelajaran)</small></td>
+                            <td>${data.rencanaAsesmen?.diagnostik || '-'}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rpp-badge green">Asesmen Formatif</span><br><small>(Proses Pembelajaran)</small></td>
+                            <td>${data.rencanaAsesmen?.formatif || '-'}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rpp-badge orange">Asesmen Sumatif</span><br><small>(Akhir Pembelajaran/Proyek)</small></td>
+                            <td>${data.rencanaAsesmen?.sumatif || '-'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="rpp-section-title" style="margin-top:1.5rem;">PENGAYAAN DAN REMEDIAL</div>
+                <table class="rpp-table">
+                    <tr>
+                        <td class="rpp-label" width="25%">Strategi Pengayaan (Tuntas Cepat)</td>
+                        <td>${data.pengayaanRemedial?.pengayaan || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td class="rpp-label">Strategi Remedial (Bimbingan)</td>
+                        <td>${data.pengayaanRemedial?.remedial || '-'}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- TAB 4: LAMPIRAN (LKPD & RUBRIK) -->
+            <div id="tab-lampiran" class="planner-tab-content" style="display:none;">
+                <div class="rpp-section-title">4. LAMPIRAN: LEMBAR KERJA PESERTA DIDIK (LKPD DEEP LEARNING)</div>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:1.25rem; margin-bottom:1.5rem;">
+                    <h4 style="margin-top:0; color:#1e293b;"><i class="fas fa-file-signature" style="color:var(--stem-blue);"></i> ${data.lkpd?.judul || 'LKPD Deep Learning'}</h4>
+                    <p><strong>Petunjuk Pengerjaan:</strong></p>
+                    <ol style="padding-left:1.2rem; margin-bottom:1rem;">${lkpdPetunjuk}</ol>
+                    <p><strong>Tugas Kontekstual:</strong></p>
+                    <div style="background:white; border-left:4px solid var(--stem-orange); padding:0.75rem 1rem; border-radius:4px; margin-bottom:1rem; font-style:italic;">
+                        "${data.lkpd?.tugasKontekstual || '-'}"
+                    </div>
+
+                    <p><strong>Tabel Alur Kerja & Investigasi Kelompok:</strong></p>
+                    <table class="rpp-table" style="background:white; margin-bottom:1rem;">
+                        ${lkpdTabelRows}
+                    </table>
+
+                    <p><strong>Pertanyaan Reflektif:</strong></p>
+                    <ol style="padding-left:1.2rem; margin:0;">${lkpdRefleksi}</ol>
+                </div>
+
+                <div class="rpp-section-title">INSTRUMEN & RUBRIK ASESMEN AUTENTIK (SKALA 1 - 4)</div>
+                <table class="rpp-table" style="margin-bottom:1.5rem;">
+                    <thead>
+                        <tr>
+                            <th>Kriteria Penilaian</th>
+                            <th width="18%">Perlu Bimbingan (1)</th>
+                            <th width="18%">Cukup (2)</th>
+                            <th width="18%">Baik (3)</th>
+                            <th width="22%">Sangat Baik (4)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rubrikRows}
+                    </tbody>
+                </table>
+
+                <div class="rpp-section-title">BAHAN BACAAN GURU & PESERTA DIDIK</div>
+                <table class="rpp-table">
+                    <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan?.guru || '-'}</td></tr>
+                    <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan?.siswa || '-'}</td></tr>
+                </table>
+            </div>
+
+            <!-- TAB 5: GLOSARIUM & PUSTAKA -->
+            <div id="tab-pustaka" class="planner-tab-content" style="display:none;">
+                <div class="rpp-section-title">GLOSARIUM (DAFTAR ISTILAH)</div>
+                <table class="rpp-table" style="margin-bottom:1.5rem;">
+                    <thead>
+                        <tr><th>Istilah / Kata Kunci</th><th>Definisi Konseptual</th></tr>
+                    </thead>
+                    <tbody>
+                        ${glosariumRows}
+                    </tbody>
+                </table>
+
+                <div class="rpp-section-title">DAFTAR PUSTAKA & RUJUKAN</div>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:1.25rem;">
+                    <ul style="margin:0; padding-left:1.2rem;">${pustakaList}</ul>
+                </div>
+            </div>
+
+            <!-- TAB 6: TAMPILAN UTUH (FOR PRINT & PDF) -->
+            <div id="tab-full-planner" class="planner-tab-content" style="display:none;">
+                <div id="printableModulAjar" class="rpp-container">
+                    <div class="rpp-watermark">MODUL AJAR</div>
+
+                    <!-- Header -->
+                    <div class="rpp-header">
+                        <div class="rpp-logo-area">
+                            <i class="fas fa-atom rpp-logo-icon"></i>
+                        </div>
+                        <div class="rpp-title-area">
+                            <h2>MODUL AJAR DEEP TEACHING</h2>
+                            <p>Kurikulum Merdeka — <strong>Standar Pembelajaran Mendalam 2025</strong></p>
+                            <p>${idt.sekolah || 'Neo Quantum Miracle Teaching'}</p>
+                        </div>
+                    </div>
+
+                    <!-- 1. INFORMASI UMUM -->
+                    <div class="rpp-section-title">1. INFORMASI UMUM</div>
+                    <table class="rpp-table">
+                        <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun || '-'}</td></tr>
+                        <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah || '-'}</td></tr>
+                        <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun || '2025'}</td></tr>
+                        <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase || '-'} (${idt.kelas || '-'})</td></tr>
+                        <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu || '3 x 45 Menit'}</td></tr>
+                        <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran || '-'}</strong> — ${idt.topik || '-'}</td></tr>
+                        <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal || '-'}</td></tr>
+                        <tr><td class="rpp-label">Profil Pelajar / Nilai Karakter</td><td>${profilBadges}</td></tr>
+                        <tr><td class="rpp-label">Sarana dan Prasarana</td><td><ul style="margin:0; padding-left:1.2rem;">${saranaList}</ul></td></tr>
+                        <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik || '-'}</td></tr>
+                        <tr><td class="rpp-label">Model Pembelajaran</td><td><strong>${data.modelPembelajaran || '-'}</strong></td></tr>
+                    </table>
+
+                    <!-- 2. KOMPONEN INTI -->
+                    <div class="rpp-section-title">2. KOMPONEN INTI</div>
+                    <table class="rpp-table">
+                        <tr><td class="rpp-label" width="25%">Tujuan Pembelajaran (TP)</td><td><ol style="margin:0; padding-left:1.2rem;">${tpList}</ol></td></tr>
+                        <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna || '-'}</td></tr>
+                        <tr><td class="rpp-label">Pertanyaan Pemantik</td><td><ol style="margin:0; padding-left:1.2rem;">${pemantikList}</ol></td></tr>
+                    </table>
+
+                    <div class="rpp-section-title">KEGIATAN PEMBELAJARAN (LANGKAH-LANGKAH 3M)</div>
+                    <table class="rpp-table">
+                        <thead>
+                            <tr><th width="20%">Tahapan</th><th>Aktivitas Pembelajaran Integratif</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rpp-phase-row">
+                                <td><span class="rpp-phase-badge opening">PENDAHULUAN</span><br><br><small><strong>Berkesadaran</strong></small></td>
+                                <td><ul style="margin:0; padding-left:1.2rem;">${pendahuluanList}</ul></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rpp-phase-badge main">INTI</span><br><br><small><strong>1. Memahami</strong></small></td>
+                                <td><ul style="margin:0; padding-left:1.2rem;">${memahamiList}</ul></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rpp-phase-badge main">INTI</span><br><br><small><strong>2. Mengaplikasi</strong></small></td>
+                                <td><ul style="margin:0; padding-left:1.2rem;">${mengaplikasiList}</ul></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rpp-phase-badge main">INTI</span><br><br><small><strong>3. Merefleksi</strong></small></td>
+                                <td><ul style="margin:0; padding-left:1.2rem;">${merefleksiList}</ul></td>
+                            </tr>
+                            <tr class="rpp-phase-row">
+                                <td><span class="rpp-phase-badge closing">PENUTUP</span><br><br><small><strong>Penguatan</strong></small></td>
+                                <td><ul style="margin:0; padding-left:1.2rem;">${penutupList}</ul></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="rpp-section-title">RENCANA ASESMEN</div>
+                    <table class="rpp-table">
+                        <thead>
+                            <tr><th width="25%">Jenis Asesmen</th><th>Deskripsi & Instrumen Penilaian</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rpp-badge blue">Asesmen Diagnostik</span></td>
+                                <td>${data.rencanaAsesmen?.diagnostik || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rpp-badge green">Asesmen Formatif</span></td>
+                                <td>${data.rencanaAsesmen?.formatif || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rpp-badge orange">Asesmen Sumatif</span></td>
+                                <td>${data.rencanaAsesmen?.sumatif || '-'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="rpp-section-title">PENGAYAAN DAN REMEDIAL</div>
+                    <table class="rpp-table">
+                        <tr><td class="rpp-label" width="25%">Strategi Pengayaan</td><td>${data.pengayaanRemedial?.pengayaan || '-'}</td></tr>
+                        <tr><td class="rpp-label">Strategi Remedial</td><td>${data.pengayaanRemedial?.remedial || '-'}</td></tr>
+                    </table>
+
+                    <!-- 3. KOMPONEN LAMPIRAN -->
+                    <div class="rpp-section-title">3. KOMPONEN LAMPIRAN</div>
+                    
+                    <!-- LKPD -->
+                    <div style="margin-bottom:1rem; page-break-inside:avoid;">
+                        <h4 style="margin-bottom:0.5rem; color:#1e293b;">A. Lembar Kerja Peserta Didik (LKPD Deep Learning)</h4>
+                        <p style="margin:0 0 0.5rem 0;"><strong>Tugas Kontekstual:</strong> ${data.lkpd?.tugasKontekstual || '-'}</p>
+                        <table class="rpp-table">
+                            ${lkpdTabelRows}
+                        </table>
+                    </div>
+
+                    <!-- RUBRIK -->
+                    <div style="margin-bottom:1rem; page-break-inside:avoid;">
+                        <h4 style="margin-bottom:0.5rem; color:#1e293b;">B. Instrumen & Rubrik Asesmen Autentik</h4>
+                        <table class="rpp-table">
+                            <thead>
+                                <tr>
+                                    <th>Kriteria</th>
+                                    <th width="18%">Skala 1</th>
+                                    <th width="18%">Skala 2</th>
+                                    <th width="18%">Skala 3</th>
+                                    <th width="22%">Skala 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rubrikRows}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BACAAN, GLOSARIUM, PUSTAKA -->
+                    <div style="page-break-inside:avoid;">
+                        <h4 style="margin-bottom:0.5rem; color:#1e293b;">C. Bahan Bacaan, Glosarium & Daftar Pustaka</h4>
+                        <table class="rpp-table" style="margin-bottom:0.75rem;">
+                            <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan?.guru || '-'}</td></tr>
+                            <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan?.siswa || '-'}</td></tr>
+                        </table>
+
+                        <table class="rpp-table" style="margin-bottom:0.75rem;">
+                            <thead><tr><th width="25%">Istilah Glosarium</th><th>Definisi</th></tr></thead>
+                            <tbody>${glosariumRows}</tbody>
+                        </table>
+
+                        <p style="margin-bottom:0.3rem;"><strong>Daftar Pustaka:</strong></p>
+                        <ul style="margin:0; padding-left:1.2rem;">${pustakaList}</ul>
+                    </div>
+
+                    <div class="rpp-footer">
+                        <p><i class="fas fa-atom"></i> Dihasilkan oleh <strong>Neo Quantum Miracle Teaching — Deep Teaching Planner</strong> | Standar Modul Ajar 2025</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    `;
+
+    window.currentModulAjarData = data;
+}
+
+function switchPlannerTab(tabId, btnEl) {
+    const wrapper = btnEl.closest('.planner-wrapper');
+    if (!wrapper) return;
+
+    wrapper.querySelectorAll('.planner-tab-btn').forEach(btn => btn.classList.remove('active'));
+    wrapper.querySelectorAll('.planner-tab-content').forEach(content => {
+        content.style.display = 'none';
+        content.classList.remove('active');
+    });
+
+    btnEl.classList.add('active');
+    const target = wrapper.querySelector('#' + tabId);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+    }
+}
+
+function copyModulAjarToClipboard() {
+    const printable = document.getElementById('printableModulAjar') || document.querySelector('.planner-tab-content.active');
+    if (!printable) return;
+
+    const textContent = printable.innerText;
+    navigator.clipboard.writeText(textContent).then(() => {
+        alert("Modul Ajar berhasil disalin ke clipboard!");
+    }).catch(err => {
+        console.error("Gagal menyalin: ", err);
+    });
+}
+
 function downloadRPPAsPDF(customFilename) {
-    const element = document.querySelector('.rpp-container');
+    let element = document.getElementById('printableModulAjar') || document.querySelector('.rpp-container');
     if (!element) return;
 
-    // Show loading indicator on buttons
+    const fullTab = document.getElementById('tab-full-planner');
+    const wasHidden = fullTab && fullTab.style.display === 'none';
+    if (wasHidden) {
+        fullTab.style.display = 'block';
+    }
+
     const btns = document.querySelectorAll('.rpp-print-btn');
     btns.forEach(b => b.style.opacity = '0.5');
 
-    // PDF Configuration
     const opt = {
         margin: [0.4, 0.4, 0.4, 0.4],
-        filename: (customFilename || 'Draft_RPP_NeoQuantum') + '.pdf',
+        filename: (customFilename || 'Modul_Ajar_NeoQuantum') + '.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
             scale: 2,
@@ -1187,10 +1693,17 @@ function downloadRPPAsPDF(customFilename) {
         pagebreak: { mode: ['css', 'legacy'], before: '.rpp-section-title' }
     };
 
-    // Generate PDF
     html2pdf().set(opt).from(element).save().then(() => {
-        // Restore buttons
         btns.forEach(b => b.style.opacity = '1');
+        if (wasHidden) {
+            fullTab.style.display = 'none';
+        }
+    }).catch(err => {
+        console.error("PDF generation error:", err);
+        btns.forEach(b => b.style.opacity = '1');
+        if (wasHidden) {
+            fullTab.style.display = 'none';
+        }
     });
 }
 

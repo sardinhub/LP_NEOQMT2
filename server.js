@@ -533,18 +533,171 @@ app.post('/api/tools/stem', async (req, res) => {
 });
 
 
-app.post('/api/tools/planner', (req, res) => {
-    const { topic, grade } = req.body;
-    res.json({
-        topic: topic || "Materi",
-        grade: grade || "SD/SMP/SMA",
-        hook: `Bayangkan jika Anda berada dalam situasi di mana ${topic} adalah satu-satunya kunci untuk menyelamatkan misi...`,
-        questions: [
-            `Mengapa menurut kalian ${topic} ini penting dalam kehidupan kita?`,
-            `Apa yang terjadi jika konsep ini tidak ditemukan oleh manusia?`,
-            `Bagaimana ${topic} bisa membantu orang lain di sekitar kita?`
-        ]
-    });
+// Helper: Generate Modul Ajar Deep Teaching Data
+function generateModulAjarData({ name, school, subject, topic, grade, phase, time, model, profil, cp }) {
+    const n = name || "Tim Guru Quantum";
+    const sch = school || "Sekolah Neo Quantum";
+    const s = subject || "Matematika / IPA / Bahasa Indonesia";
+    const t = topic || "Pemecahan Masalah Kontekstual & Penalaran Kritis";
+    const g = grade || "Kelas VIII (SMP)";
+    const ph = phase || "Fase D";
+    const tm = time || "2 Pertemuan (4 x 40 menit)";
+    const m = model || "Deep Teaching & Deep Learning (Integrasi Socratic Questioning & Experiential Learning)";
+    const pr = (profil && profil.length > 0) ? profil : ["Penalaran Kritis (Critical Thinking)", "Kreativitas (Creativity)", "Kolaborasi (Collaboration)", "Kemandirian (Self-Regulation)"];
+    const targetCP = cp || `Peserta didik mampu menganalisis konsep ${s} secara mendalam dan merancang solusi kreatif atas fenomena ${t} dalam kehidupan sehari-hari.`;
+
+    return {
+        informasiUmum: {
+            identitas: {
+                penyusun: n,
+                institusi: sch,
+                tahun: "2026",
+                jenjang: g,
+                kelasFase: `${g} - ${ph}`,
+                alokasiWaktu: tm,
+                mataPelajaran: s,
+                topikMateri: t
+            },
+            kompetensiAwal: `Peserta didik telah memiliki pengetahuan dasar mengenai konsep ${s} awal dan memiliki keterampilan observasi mendalam sebelum mempelajari ${t}.`,
+            profilPelajar: pr,
+            saranaPrasarana: "Laptop, Projector, Media Interaktif VR/AR, Lembar Kerja LKPD, Alat Peraga Konseptual, Buku Teks, dan Jaringan Internet.",
+            targetPesertaDidik: "Peserta Didik Reguler / Tipikal (30 Siswa) dengan pendampingan Scaffolding bagi siswa kesulitan belajar dan Pengayaan Tantangan bagi Fast Learners.",
+            modelPembelajaran: m
+        },
+        komponenInti: {
+            tujuanPembelajaran: [
+                `Melalui investigasi dan observasi mendalam, peserta didik mampu menganalisis konsep ${t} pada mata pelajaran ${s} dengan akurasi min. 85%.`,
+                `Melalui diskusi Socratic Questioning, peserta didik mampu menyampaikan gagasan kritis dan korelasi materi ${t} dengan kehidupan sehari-hari.`,
+                `Melalui proyek kolaboratif kelompok, peserta didik mampu mempresentasikan solusi bermakna atas studi kasus ${t}.`
+            ],
+            pemahamanBermakna: `Pemahaman mendalam mengenai ${t} membantu peserta didik menyadari bahwa konsep ${s} bukan sekadar hafalan teori, melainkan instrumen logis untuk memecahkan masalah nyata dan mengambil keputusan bijak dalam kehidupan sehari-hari.`,
+            pertanyaanPemantik: [
+                `Bayangkan jika konsep ${t} belum pernah ditemukan oleh manusia, bagaimana dampak langsungnya terhadap kehidupan kalian hari ini?`,
+                `Mengapa fenomena ${t} ini bisa terjadi dan apa prinsip sains/logika paling mendasar di balik proses tersebut?`,
+                `Bagaimana kalian dapat memanfaatkan pengetahuan tentang ${t} ini untuk membantu memecahkan masalah di sekitar lingkungan sekolah atau rumah?`
+            ],
+            kegiatanPembelajaran: {
+                pendahuluan: [
+                    "Pengondisian kelas ramah & kondusif (Mindful Greeting & Quantum Presence) untuk membangun rasa aman belajar.",
+                    `Apersepsi & Mindful Hook: Guru menyampaikan narasi studi kasus kontekstual terkait ${t} yang menggugah emosi dan empati siswa.`,
+                    "Penyampaian Tujuan Pembelajaran, Gambaran Alur Pembelajaran Mendalam, dan Kesepakatan Kelas."
+                ],
+                inti: [
+                    `Eksplorasi Konsep (Deep Understanding): Siswa mengamati tayangan/media interaktif mengenai ${t} dan mengidentifikasi fenomena kunci.`,
+                    "Diskusi Socratic Questioning: Guru melontarkan pertanyaan provokatif yang memicu pemikiran tingkat tinggi (HOTS).",
+                    "Investigasi Kelompok (Experiential Learning): Siswa bekerja dalam kelompok heterogen membedah LKPD dan melakukan pengumpulan data.",
+                    "Elaborasi & Pembuatan Karya: Kelompok merumuskan simpulan ilmiah dan merancang media presentasi kreatif."
+                ],
+                penutup: [
+                    "Refleksi Metakognisi: Siswa menyampaikan 3 hal baru yang dipahami, 2 hal yang paling menarik, dan 1 pertanyaan tersisa.",
+                    "Umpan Balik Guru (Feedback From the Heart) serta apresiasi tinggi atas kolaborasi dan keberanian siswa bertanya.",
+                    "Informasi penugasan mandiri terstruktur dan arahan persiapan pertemuan pembelajaran berikutnya."
+                ]
+            },
+            rencanaAsesmen: {
+                diagnostik: "Asesmen Diagnostik Non-Kognitif (Gaya Belajar & Minat) dan Diagnostik Kognitif Awal (3 soal pemetaan pemahaman prasyarat).",
+                formatif: "Observasi sikap karakter (Profil Pelajar), jurnal observasi diskusi kelompok, lembar ceklist LKPD, serta umpan balik lisan bertahap.",
+                sumatif: "Uji Pemahaman Konsep (Tes Tertulis HOTS) dan Evaluasi Produk / Presentasi Karya di akhir modul."
+            },
+            pengayaanRemedial: {
+                pengayaan: `Pemberian materi tantangan pengayaan tingkat lanjut mengenai aplikasi ${t} di industri modern atau peran sebagai tutor sebaya bagi rekan kelompok.`,
+                remedial: `Bimbingan khusus secara bertahap (Scaffolding) pada indikator kompetensi yang belum tuntas, diikuti uji pemahaman ulang terfokus.`
+            }
+        },
+        komponenLampiran: {
+            lkpd: {
+                title: `LEMBAR KERJA PESERTA DIDIK (LKPD) - DEEP LEARNING EXPERIENCE`,
+                projectTitle: `Topik: ${t}`,
+                instructions: "Bacalah setiap instruksi dengan cermat, kerjakan secara kolaboratif bersama kelompokmu, dan catat hasil analisismu pada kolom yang tersedia.",
+                tasks: [
+                    { step: "Aktivitas 1", title: "Orientasi & Identifikasi Masalah", activity: `Amati fenomena ${t} yang disajikan. Tuliskan 3 pertanyaan kritis dari hasil pengamatan kelompokmu!` },
+                    { step: "Aktivitas 2", title: "Investigasi & Data Collection", activity: "Lakukan pengumpulan data eksperimen/literatur. Catatlah variabel temuan kelompok pada tabel berikut!" },
+                    { step: "Aktivitas 3", title: "Analisis Mendalam & Pembuktian", activity: `Diskusikan korelasi antar-variabel data. Mengapa fenomena ${t} tersebut terjadi secara scientific?` },
+                    { step: "Aktivitas 4", title: "Kesimpulan & Solusi Bermakna", activity: "Tuliskan kesimpulan utama kelompok dan rancanglah media presentasi karya yang komunikatif!" }
+                ]
+            },
+            instrumenRubrik: {
+                title: "INSTRUMEN & RUBRIK ASSESSMENT AUTENTIK MODUL AJAR",
+                rubric: [
+                    {
+                        aspect: "1. Pemahaman Konsep & Penalaran Kritis",
+                        weight: "35%",
+                        levels: {
+                            1: "Belum mampu menjelaskan konsep materi; argumen tidak didasari bukti.",
+                            2: "Mampu menjelaskan konsep secara terbatas; argumen kurang lengkap.",
+                            3: "Mampu menjelaskan konsep secara akurat dan memberikan argumen logis.",
+                            4: "Sangat mahir menjelaskan konsep secara mendalam, kritis, dan mengorelasikan dengan fenomena nyata."
+                        }
+                    },
+                    {
+                        aspect: "2. Unjuk Kerja & Kualitas LKPD",
+                        weight: "35%",
+                        levels: {
+                            1: "LKPD tidak diisi dengan lengkap; data eksperimen tidak akurat.",
+                            2: "LKPD terisi sebagian; pengolahan data masih memerlukan banyak bimbingan.",
+                            3: "LKPD terisi lengkap; pengolahan data tepat dan rapi.",
+                            4: "LKPD terisi sangat sistematis; pengolahan data presisi dan disertai analisis komprehensif."
+                        }
+                    },
+                    {
+                        aspect: "3. Kolaborasi Tim & Presentasi Komunikatif",
+                        weight: "30%",
+                        levels: {
+                            1: "Kurang terlibat dalam kelompok; penyampaian presentasi pasif.",
+                            2: "Terlibat sebagian; penyampaian presentasi kurang runtut.",
+                            3: "Berpartisipasi aktif dalam kelompok; presentasi komunikatif dan jelas.",
+                            4: "Menunjukkan kepemimpinan positif; presentasi sangat persuasif, interaktif, dan merespons pertanyaan dengan tepat."
+                        }
+                    }
+                ]
+            },
+            bahanBacaan: {
+                untukGuru: `Buku Panduan Guru Kurikulum Merdeka ${s}, Buku Rujukan 'Neo Quantum Miracle Teaching' karya Sardin Damis (2026), Artikel Deep Teaching & Socratic Method.`,
+                untukSiswa: `Buku Teks Utama Peserta Didik ${s}, Modul Ringkasan Bergambar ${t}, Infografis Visual, serta Artikel Populer Edukasi.`
+            },
+            glosarium: [
+                { term: "Deep Teaching", definition: "Pendekatan mengajar berbasis hati dan pemahaman mendalam yang mengintegrasikan empati, storytelling, dan pemikiran kritis." },
+                { term: "Deep Learning", definition: "Prosedur belajar bermakna di mana siswa tidak sekadar menghafal, melainkan memahami korelasi dan mengaplikasikan ilmu." },
+                { term: "Socratic Questioning", definition: "Teknik bertanya provokatif untuk memancing siswa berpikir kritis dan menggali alasan mendasar di balik suatu konsep." },
+                { term: "Metakognisi", definition: "Kesadaran dan pemahaman seseorang tentang proses berpikir dan cara belajarnya sendiri." }
+            ],
+            daftarPustaka: [
+                "Damis, Sardin. (2026). Neo Quantum Miracle Teaching: Transformasi Pembelajaran Masa Depan. Jakarta: Quantum Press.",
+                "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2024). Panduan Pembelajaran dan Asesmen Kurikulum Merdeka. Jakarta: Kemendikbudristek.",
+                "Dweck, Carol S. (2017). Mindset: Changing The Way You Think To Fulfil Your Potential. London: Robinson."
+            ]
+        }
+    };
+}
+
+app.post('/api/tools/planner', async (req, res) => {
+    const { name, school, subject, topic, grade, phase, time, model, profil, cp } = req.body;
+    
+    // Attempt Gemini call if API key exists
+    try {
+        const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+        if (GEMINI_API_KEY) {
+            const systemPrompt = `Kamu adalah Pakar Kurikulum Merdeka & Deep Teaching. Buatkan JSON Modul Ajar Deep Teaching lengkap yang terdiri dari 3 bagian utama:
+            1. informasiUmum { identitas { penyusun, institusi, tahun, jenjang, kelasFase, alokasiWaktu, mataPelajaran, topikMateri }, kompetensiAwal, profilPelajar [], saranaPrasarana, targetPesertaDidik, modelPembelajaran }
+            2. komponenInti { tujuanPembelajaran [], pemahamanBermakna, pertanyaanPemantik [], kegiatanPembelajaran { pendahuluan [], inti [], penutup [] }, rencanaAsesmen { diagnostik, formatif, sumatif }, pengayaanRemedial { pengayaan, remedial } }
+            3. komponenLampiran { lkpd { title, projectTitle, instructions, tasks [ { step, title, activity } ] }, instrumenRubrik { title, rubric [ { aspect, weight, levels { 1, 2, 3, 4 } } ] }, bahanBacaan { untukGuru, untukSiswa }, glosarium [ { term, definition } ], daftarPustaka [] }. JANGAN menyertakan markdown backticks di luar JSON.`;
+
+            const userPrompt = `Nama Penyusun: ${name || 'Tim Guru Quantum'}\nSekolah: ${school || 'Sekolah Neo Quantum'}\nMata Pelajaran: ${subject || 'Matematika/IPA'}\nTopik: ${topic || 'Pemecahan Masalah'}\nKelas/Fase: ${grade || 'Kelas VIII'} ${phase || 'Fase D'}\nAlokasi Waktu: ${time || '2 Pertemuan'}\nModel: ${model || 'Deep Teaching'}\nProfil Pelajar: ${JSON.stringify(profil || [])}\nCP: ${cp || ''}`;
+
+            const geminiRaw = await callGemini(systemPrompt, userPrompt);
+            if (geminiRaw) {
+                const cleanJsonStr = geminiRaw.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const parsed = JSON.parse(cleanJsonStr);
+                return res.json(parsed);
+            }
+        }
+    } catch (err) {
+        console.log("[Modul Ajar Generator] Gemini fallback to local generator:", err.message);
+    }
+
+    // Fallback local generator
+    const data = generateModulAjarData({ name, school, subject, topic, grade, phase, time, model, profil, cp });
+    res.json(data);
 });
 
 app.post('/api/order', async (req, res) => {
