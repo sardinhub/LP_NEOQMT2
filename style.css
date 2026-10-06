@@ -1235,7 +1235,7 @@ body {
 @media print {
     @page {
         size: A4;
-        margin: 10mm;
+        margin: 8mm 8mm 8mm 8mm;
     }
     body * { visibility: hidden; }
     #chapterModal, #chapterModal * { visibility: visible; }
@@ -1250,36 +1250,31 @@ body {
         box-shadow: none !important;
         overflow: visible !important;
     }
-    .modal-sidebar, .fas.fa-times, .quick-ask-btn { display: none !important; }
+    .modal-sidebar, .fas.fa-times, .quick-ask-btn, .stem-preview-bar, .tool-form > p, .tool-form > div:not(#toolResult) { display: none !important; }
     .modal-main { padding: 0 !important; width: 100% !important; overflow: visible !important; }
     .rpp-container { 
         margin: 0 !important; 
-        border: 1px solid #eee !important; 
+        border: 1px solid #cbd5e1 !important; 
         width: 100% !important; 
         background: white !important;
         box-shadow: none !important;
         border-radius: 0 !important;
     }
-    .rpp-print-btn, .rpp-print-btn-pdf, .btnDownloadPDF { display: none !important; }
+    .rpp-print-btn, .rpp-print-btn-pdf, .btnDownloadPDF, .stem-action-btn { display: none !important; }
     
     .rpp-watermark {
-        position: fixed !important;
-        top: 40%;
-        left: 50%;
-        width: 100%;
-        text-align: center;
-        transform: translate(-50%, -50%) rotate(-45deg);
-        z-index: -1;
-        display: block !important;
-        opacity: 0.15 !important;
+        display: none !important;
     }
     
     .rpp-section-title { 
-        page-break-before: always; 
-        margin-top: 0 !important;
-    }
-    .rpp-section-title:first-of-type {
-        page-break-before: auto;
+        page-break-before: auto !important; 
+        break-before: auto !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-top: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
     
     table { width: 100%; border-collapse: collapse; page-break-inside: auto; }
@@ -2238,14 +2233,33 @@ body {
 
 @media print {
     .stem-preview-bar { display: none !important; }
-    .stem-tab-pane { display: block !important; opacity: 1 !important; visibility: visible !important; border: none !important; padding: 1rem 0 !important; }
-    .lkpd-card { border-style: solid !important; background: white !important; }
-    .hook-card { background: white !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; border-left: 6px solid #f59e0b !important; }
+    .stem-tab-pane { 
+        display: block !important; 
+        opacity: 1 !important; 
+        visibility: visible !important; 
+        border: none !important; 
+        padding: 0.75rem 0 !important; 
+        margin: 0 !important;
+    }
+    .lkpd-card { 
+        border-style: solid !important; 
+        border-width: 1px !important;
+        border-color: #cbd5e1 !important;
+        background: white !important; 
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-bottom: 1rem !important;
+    }
+    .stem-pillar-card, .diff-card, .safety-box, .hook-card, tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    .hook-card { background: white !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; border-left: 6px solid #f59e0b !important; margin-bottom: 1rem !important; }
     .hook-card h3 { color: #d97706 !important; }
     .hook-card p { color: #334155 !important; }
     .driving-q-box { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
     .driving-q-box h4 { color: #0284c7 !important; }
     .driving-q-box ul { color: #334155 !important; }
-    .diff-grid { grid-template-columns: 1fr 1fr 1fr; }
-    .stem-pillars-grid { grid-template-columns: 1fr 1fr; }
+    .diff-grid { grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; }
+    .stem-pillars-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
 }

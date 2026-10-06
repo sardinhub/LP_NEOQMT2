@@ -739,6 +739,63 @@ Dihasilkan oleh Neo Quantum Miracle Teaching — STEM Project Generator.
     });
 }
 
+function printSTEMModule() {
+    const activeTabs = Array.from(document.querySelectorAll('.stem-tab-pane.active')).map(p => p.id);
+    switchSTEMTab('tab-full');
+    
+    setTimeout(() => {
+        window.print();
+        if (activeTabs.length > 0 && activeTabs[0] !== 'tab-full') {
+            switchSTEMTab(activeTabs[0]);
+        }
+    }, 250);
+}
+
+function downloadRPPAsPDF(customFilename) {
+    const activeTabs = Array.from(document.querySelectorAll('.stem-tab-pane.active')).map(p => p.id);
+    switchSTEMTab('tab-full');
+
+    const element = document.querySelector('.rpp-container');
+    if (!element) return;
+
+    const btns = document.querySelectorAll('.stem-action-btn, .rpp-print-btn');
+    btns.forEach(b => b.style.opacity = '0.5');
+
+    const opt = {
+        margin: [0.3, 0.3, 0.3, 0.3],
+        filename: (customFilename || 'Draft_Modul_STEM') + '.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+            scale: 2,
+            useCORS: true,
+            scrollY: 0,
+            letterRendering: true,
+            backgroundColor: '#ffffff'
+        },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+        pagebreak: { 
+            mode: ['avoid-all', 'css', 'legacy'],
+            avoid: ['.lkpd-card', '.stem-pillar-card', '.diff-card', '.safety-box', '.hook-card', 'tr', '.rpp-header', '.rpp-section-title']
+        }
+    };
+
+    if (typeof html2pdf !== 'undefined') {
+        html2pdf().set(opt).from(element).save().then(() => {
+            btns.forEach(b => b.style.opacity = '1');
+            if (activeTabs.length > 0 && activeTabs[0] !== 'tab-full') {
+                switchSTEMTab(activeTabs[0]);
+            }
+        }).catch(err => {
+            console.error("PDF Download Error:", err);
+            btns.forEach(b => b.style.opacity = '1');
+            printSTEMModule();
+        });
+    } else {
+        btns.forEach(b => b.style.opacity = '1');
+        printSTEMModule();
+    }
+}
+
 function renderSTEMPreview(data) {
     const resultDiv = document.getElementById('toolResult');
     
@@ -754,14 +811,14 @@ function renderSTEMPreview(data) {
                 <button class="stem-tab-btn" onclick="switchSTEMTab('tab-full')"><i class="fas fa-file-alt"></i> Tampilan Utuh</button>
             </div>
             <div class="stem-actions-group">
-                <button onclick="window.print()" class="stem-action-btn btn-print">
-                    <i class="fas fa-print"></i> Cetak / PDF
+                <button onclick="printSTEMModule()" class="stem-action-btn btn-print">
+                    <i class="fas fa-print"></i> Cetak Dokumen
                 </button>
                 <button onclick="downloadRPPAsPDF('Modul_STEM_${data.topic.replace(/\s+/g, '_')}')" class="stem-action-btn btn-pdf">
                     <i class="fas fa-file-pdf"></i> Unduh PDF
                 </button>
                 <button onclick="copySTEMToClipboard()" class="stem-action-btn btn-copy">
-                    <i class="fas fa-copy"></i> Salin
+                    <i class="fas fa-copy"></i> Salin Teks
                 </button>
             </div>
         </div>
