@@ -1915,3 +1915,337 @@ body {
     border-bottom-right-radius: 5px;
     font-size: 0.95rem;
 }
+
+/* =====================
+   STEM GENERATOR PREVIEW STYLES
+===================== */
+.stem-preview-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px 12px 0 0;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.stem-tabs-nav {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.stem-tab-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.stem-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.stem-tab-btn.active {
+    background: var(--stem-orange);
+    color: #ffffff;
+    border-color: var(--stem-orange);
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+}
+
+.stem-actions-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.stem-action-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
+
+.stem-action-btn.btn-print {
+    background: #0284c7;
+    color: white;
+}
+
+.stem-action-btn.btn-pdf {
+    background: #e11d48;
+    color: white;
+}
+
+.stem-action-btn.btn-copy {
+    background: #10b981;
+    color: white;
+}
+
+.stem-action-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+/* Tab Panes */
+.stem-tab-pane {
+    display: none;
+    padding: 1.5rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+}
+
+.stem-tab-pane.active {
+    display: block;
+    animation: fadeInTab 0.25s ease-in-out;
+}
+
+@keyframes fadeInTab {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 4 STEM Pillars Cards */
+.stem-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.stem-pillar-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+    border-left: 5px solid #cbd5e1;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.stem-pillar-card.science { border-left-color: #2563eb; background: #eff6ff; }
+.stem-pillar-card.technology { border-left-color: #059669; background: #ecfdf5; }
+.stem-pillar-card.engineering { border-left-color: #d97706; background: #fffbeb; }
+.stem-pillar-card.mathematics { border-left-color: #7c3aed; background: #f5f3ff; }
+
+.stem-pillar-card h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stem-pillar-card.science h4 { color: #1e40af; }
+.stem-pillar-card.technology h4 { color: #065f46; }
+.stem-pillar-card.engineering h4 { color: #92400e; }
+.stem-pillar-card.mathematics h4 { color: #5b21b6; }
+
+.stem-pillar-card p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.6;
+}
+
+/* Narrative Hook Card */
+.hook-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #f8fafc;
+    padding: 1.75rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+    margin-bottom: 1.5rem;
+    border-left: 6px solid var(--stem-orange);
+}
+
+.hook-card h3 {
+    color: #fbbf24;
+    margin: 0 0 0.8rem 0;
+    font-size: 1.2rem;
+}
+
+.hook-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin-bottom: 1.25rem;
+}
+
+.driving-q-box {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1.25rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.driving-q-box h4 {
+    color: #38bdf8;
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+}
+
+.driving-q-box ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+}
+
+.driving-q-box li {
+    margin-bottom: 0.5rem;
+}
+
+/* LKPD EDP Worksheet Cards */
+.lkpd-card {
+    border: 2px dashed #cbd5e1;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.lkpd-step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.lkpd-step-badge {
+    background: var(--quantum-blue);
+    color: white;
+    font-weight: 800;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.lkpd-step-title {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.lkpd-box-field {
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-top: 0.6rem;
+    min-height: 50px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Rubrik Table styling */
+.rubric-table th {
+    background: #0f172a;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.rubric-table td {
+    font-size: 0.82rem;
+}
+
+.rubric-score-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Differentiation & Safety */
+.diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.diff-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid var(--quantum-blue);
+    border-radius: 10px;
+    padding: 1.25rem;
+}
+
+.diff-card h4 {
+    margin: 0 0 0.6rem 0;
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.diff-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.6;
+}
+
+.safety-box {
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    border-left: 5px solid #e11d48;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+}
+
+.safety-box h4 {
+    color: #9f1239;
+    margin: 0 0 0.8rem 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.safety-box ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #881337;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+@media print {
+    .stem-preview-bar { display: none !important; }
+    .stem-tab-pane { display: block !important; opacity: 1 !important; visibility: visible !important; border: none !important; padding: 1rem 0 !important; }
+    .lkpd-card { border-style: solid !important; background: white !important; }
+    .hook-card { background: white !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; border-left: 6px solid #f59e0b !important; }
+    .hook-card h3 { color: #d97706 !important; }
+    .hook-card p { color: #334155 !important; }
+    .driving-q-box { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
+    .driving-q-box h4 { color: #0284c7 !important; }
+    .driving-q-box ul { color: #334155 !important; }
+    .diff-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .stem-pillars-grid { grid-template-columns: 1fr 1fr; }
+}

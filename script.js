@@ -448,19 +448,50 @@ function openTool(type) {
 
     switch (type) {
         case 'stem':
-            title = "STEM Project Generator";
+            title = "STEM Project Generator Terintegrasi";
             content = `
                 <div class="tool-form">
-                    <p>Masukkan topik pelajaran untuk membuat rancangan proyek STEM otomatis.</p>
-                    <div style="margin: 1.5rem 0;">
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Mata Pelajaran:</label>
-                        <input type="text" id="stemSubject" placeholder="Contoh: IPA, Fisika, Biologi..." style="width:100%; padding:1rem; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:1rem;">
-                        
-                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Topik / Materi:</label>
-                        <input type="text" id="stemTopic" placeholder="Contoh: Energi Terbarukan, Ekosistem..." style="width:100%; padding:1rem; border:1px solid #e2e8f0; border-radius:10px;">
+                    <div style="background: linear-gradient(135deg, rgba(237, 137, 54, 0.1), rgba(66, 153, 225, 0.1)); padding: 1rem 1.25rem; border-radius: 12px; border-left: 4px solid var(--stem-orange); margin-bottom: 1.5rem;">
+                        <h4 style="margin: 0 0 0.4rem 0; color: #1e293b; font-size: 1rem;"><i class="fas fa-atom" style="color:var(--stem-orange)"></i> Project Generator STEM (PBL + PjBL + EDP)</h4>
+                        <p style="margin:0; font-size:0.85rem; color:#64748b; line-height:1.5;">Rancang Modul STEM lengkap terintegrasi 4 Pilar STEM, Capaian Pembelajaran (CP), Narrative Hook, LKPD EDP, Rubrik Assesment Autentik, Diferensiasi, & Safety Notes.</p>
                     </div>
-                    <button class="btn-generate" onclick="generateSTEM()">
-                        <i class="fas fa-magic"></i> Generate Proyek STEM
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Mata Pelajaran:</label>
+                            <input type="text" id="stemSubject" list="stemSubjectList" placeholder="Fisika / IPAS / Biologi / Informatika..." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
+                            <datalist id="stemSubjectList">
+                                <option value="IPAS (Sains & Sosial)">
+                                <option value="Fisika Terapan">
+                                <option value="Biologi & Lingkungan">
+                                <option value="Kimia & Material">
+                                <option value="Matematika & Pemodelan">
+                                <option value="Informatika & Robotika">
+                                <option value="Rekayasa & Teknologi">
+                            </datalist>
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Jenjang / Target Kelas:</label>
+                            <select id="stemGrade" style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem; background:white;">
+                                <option value="SD Kelas 4 - 6">Sekolah Dasar (SD Kelas 4-6)</option>
+                                <option value="SMP Kelas 7 - 9" selected>Sekolah Menengah Pertama (SMP Kelas 7-9)</option>
+                                <option value="SMA / SMK Kelas 10 - 12">Sekolah Menengah Atas / Kejuruan (SMA/SMK)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Topik / Materi Pembelajaran:</label>
+                        <input type="text" id="stemTopic" placeholder="Contoh: Energi Terbarukan, Bioplastik Daur Ulang, Filter Air Bersih..." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.9rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display:block; margin-bottom:0.4rem; font-weight:600; font-size:0.9rem;">Capaian Pembelajaran (CP) / Target Kompetensi (Opsional):</label>
+                        <textarea id="stemCP" rows="2" placeholder="Kosongkan untuk generate otomatis, atau tuliskan CP Kurikulum sekolah Anda..." style="width:100%; padding:0.85rem; border:1px solid #cbd5e1; border-radius:10px; font-size:0.88rem; font-family:inherit; resize:vertical;"></textarea>
+                    </div>
+
+                    <button class="btn-generate" onclick="generateSTEM()" style="background: linear-gradient(135deg, var(--stem-orange), #f59e0b); padding: 0.9rem; font-size: 1rem;">
+                        <i class="fas fa-magic"></i> Generate Modul STEM & Tampilkan Preview
                     </button>
                     <div id="toolResult"></div>
                 </div>
@@ -576,133 +607,365 @@ function openTool(type) {
 }
 
 // Systematic Generators (Calling Backend API)
+let currentSTEMData = null;
+
 function generateSTEM() {
-    const subject = document.getElementById('stemSubject').value || 'Mata Pelajaran';
-    const topic = document.getElementById('stemTopic').value || 'Topik / Proyek';
+    const subjectInput = document.getElementById('stemSubject');
+    const topicInput = document.getElementById('stemTopic');
+    const gradeInput = document.getElementById('stemGrade');
+    const cpInput = document.getElementById('stemCP');
+
+    const subject = (subjectInput && subjectInput.value.trim()) ? subjectInput.value.trim() : 'IPAS / Sains Rekayasa';
+    const topic = (topicInput && topicInput.value.trim()) ? topicInput.value.trim() : 'Energi Terbarukan & Teknologi Ramah Lingkungan';
+    const grade = gradeInput ? gradeInput.value : 'SMP Kelas 7-9';
+    const cp = cpInput ? cpInput.value.trim() : '';
     const resultDiv = document.getElementById('toolResult');
 
-    resultDiv.innerHTML = `<div style="text-align:center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--stem-orange);"></i><p style="margin-top:1rem;">Menganalisis Proyek STEM Quantum...</p></div>`;
+    resultDiv.innerHTML = `
+        <div style="text-align:center; padding: 3rem 1rem; background: #f8fafc; border-radius: 12px; margin-top: 1.5rem; border: 1px solid #e2e8f0;">
+            <i class="fas fa-atom fa-spin" style="font-size:2.5rem; color:var(--stem-orange);"></i>
+            <h4 style="margin-top:1.2rem; color:#1e293b; font-size:1.1rem;">Merancang Modul STEM Terintegrasi (PBL + PjBL)...</h4>
+            <p style="color:#64748b; font-size:0.88rem; max-width:480px; margin:0.5rem auto 0 auto;">Menyusun 4 Pilar STEM, Narrative Hook, LKPD EDP, Rubrik Autentik, Diferensiasi & Safety Notes...</p>
+        </div>
+    `;
 
     fetch(`${API_URL}/tools/stem`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, topic })
+        body: JSON.stringify({ subject, topic, grade, cp })
     })
-        .then(res => res.json())
-        .then(data => {
-            resultDiv.innerHTML = `
-            <div class="rpp-container">
-                <div class="rpp-watermark">DRAFT</div>
-                
-                <div class="rpp-header" style="background: linear-gradient(135deg, var(--stem-orange) 0%, #f6993f 100%);">
+    .then(res => res.json())
+    .then(data => {
+        currentSTEMData = data;
+        renderSTEMPreview(data);
+    })
+    .catch(err => {
+        console.error("STEM Generation Error:", err);
+        resultDiv.innerHTML = `<div style="padding:1.5rem; background:#fef2f2; color:#991b1b; border-radius:10px; margin-top:1rem;">Terjadi kesalahan dalam memproses Modul STEM. Silakan coba lagi.</div>`;
+    });
+}
+
+function switchSTEMTab(tabId) {
+    const tabs = document.querySelectorAll('.stem-tab-btn');
+    const panes = document.querySelectorAll('.stem-tab-pane');
+    
+    tabs.forEach(t => t.classList.remove('active'));
+    panes.forEach(p => p.classList.remove('active'));
+
+    const activeTab = document.querySelector(`.stem-tab-btn[onclick*="${tabId}"]`);
+    if (activeTab) activeTab.classList.add('active');
+
+    if (tabId === 'tab-full') {
+        panes.forEach(p => p.classList.add('active'));
+    } else {
+        const targetPane = document.getElementById(tabId);
+        if (targetPane) targetPane.classList.add('active');
+    }
+}
+
+function copySTEMToClipboard() {
+    if (!currentSTEMData) return;
+    const d = currentSTEMData;
+    const text = `
+=========================================
+BLUEPRINT MODUL STEM TERINTEGRASI (PBL + PjBL)
+=========================================
+Mata Pelajaran : ${d.subject}
+Topik Utama    : ${d.topic}
+Jenjang / Kelas: ${d.grade}
+Alokasi Waktu  : ${d.timeAllocation}
+Model Utama    : ${d.modelIntegration}
+
+Capaian Pembelajaran (CP):
+${d.cp}
+
+-----------------------------------------
+1. INTEGRASI 4 PILAR STEM
+-----------------------------------------
+- Science     : ${d.pillars.science}
+- Technology  : ${d.pillars.technology}
+- Engineering : ${d.pillars.engineering}
+- Mathematics : ${d.pillars.mathematics}
+
+-----------------------------------------
+2. NARRATIVE HOOK & TANTANGAN (PBL)
+-----------------------------------------
+Judul   : ${d.narrativeHook.title}
+Skenario:
+${d.narrativeHook.scenario}
+
+Pertanyaan Pemantik:
+${d.narrativeHook.drivingQuestions.map((q, i) => `${i+1}. ${q}`).join('\n')}
+
+-----------------------------------------
+3. ALUR PEMBELAJARAN (SINTAKS INTEGRASI)
+-----------------------------------------
+${d.syntaxFlow.map(s => `[Sesi ${s.session}] ${s.phase}\nAktivitas: ${s.activities}`).join('\n\n')}
+
+-----------------------------------------
+4. LKPD EDP (ENGINEERING DESIGN PROCESS)
+-----------------------------------------
+${d.lkpdEdp.steps.map(step => `
+[${step.code}] ${step.title}
+${step.prompts.map(p => `- ${p}`).join('\n')}
+`).join('\n')}
+
+-----------------------------------------
+5. RUBRIK ASSESSMENT AUTENTIK
+-----------------------------------------
+${d.assessments.rubric.map(r => `
+Aspek: ${r.criteria} (Bobot ${r.weight})
+- Level 1 (Perlu Bimbingan): ${r.levels['1']}
+- Level 2 (Cukup): ${r.levels['2']}
+- Level 3 (Baik): ${r.levels['3']}
+- Level 4 (Sangat Baik): ${r.levels['4']}
+`).join('\n')}
+
+-----------------------------------------
+6. DIFERENSIASI & SAFETY NOTES (K3)
+-----------------------------------------
+Diferensiasi Konten : ${d.differentiation.content}
+Diferensiasi Proses : ${d.differentiation.process}
+Diferensiasi Produk : ${d.differentiation.product}
+
+Catatan Keselamatan Kerja (K3):
+${d.safetyNotes.map(n => `- ${n}`).join('\n')}
+
+Dihasilkan oleh Neo Quantum Miracle Teaching — STEM Project Generator.
+    `.trim();
+
+    navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Seluruh Modul STEM berhasil disalin ke Clipboard!");
+    });
+}
+
+function renderSTEMPreview(data) {
+    const resultDiv = document.getElementById('toolResult');
+    
+    resultDiv.innerHTML = `
+        <!-- Action & Navigation Bar -->
+        <div class="stem-preview-bar">
+            <div class="stem-tabs-nav">
+                <button class="stem-tab-btn active" onclick="switchSTEMTab('tab-blueprint')"><i class="fas fa-layer-group"></i> Blueprint STEM</button>
+                <button class="stem-tab-btn" onclick="switchSTEMTab('tab-hook')"><i class="fas fa-book-open"></i> Narrative Hook</button>
+                <button class="stem-tab-btn" onclick="switchSTEMTab('tab-lkpd')"><i class="fas fa-pen-nib"></i> LKPD EDP</button>
+                <button class="stem-tab-btn" onclick="switchSTEMTab('tab-rubric')"><i class="fas fa-clipboard-check"></i> Rubrik Autentik</button>
+                <button class="stem-tab-btn" onclick="switchSTEMTab('tab-diff')"><i class="fas fa-shield-alt"></i> Diferensiasi & K3</button>
+                <button class="stem-tab-btn" onclick="switchSTEMTab('tab-full')"><i class="fas fa-file-alt"></i> Tampilan Utuh</button>
+            </div>
+            <div class="stem-actions-group">
+                <button onclick="window.print()" class="stem-action-btn btn-print">
+                    <i class="fas fa-print"></i> Cetak / PDF
+                </button>
+                <button onclick="downloadRPPAsPDF('Modul_STEM_${data.topic.replace(/\s+/g, '_')}')" class="stem-action-btn btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Unduh PDF
+                </button>
+                <button onclick="copySTEMToClipboard()" class="stem-action-btn btn-copy">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </div>
+        </div>
+
+        <div class="rpp-container" style="margin-top:0; border-top-left-radius:0; border-top-right-radius:0;">
+            <div class="rpp-watermark">STEM MODUL</div>
+
+            <!-- Tab 1: Blueprint Modul & 4 Pilar STEM -->
+            <div id="tab-blueprint" class="stem-tab-pane active">
+                <div class="rpp-header" style="background: linear-gradient(135deg, var(--stem-orange) 0%, #d97706 100%);">
                     <div class="rpp-logo-area">
-                        <i class="fas fa-flask rpp-logo-icon"></i>
+                        <i class="fas fa-atom rpp-logo-icon"></i>
                     </div>
                     <div class="rpp-title-area">
-                        <h2>RENCANA PROYEK STEM (MENDALAM)</h2>
-                        <p>Topik: <strong>${data.topic}</strong> | Bidang: <strong>${data.subject}</strong></p>
-                        <p>Neo Quantum Miracle Teaching - STEM Generator</p>
-                    </div>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button onclick="window.print()" class="rpp-print-btn">
-                            <i class="fas fa-print"></i> Cetak
-                        </button>
-                        <button onclick="downloadRPPAsPDF('Draft_Proyek_STEM_${data.topic.replace(/\s+/g, '_')}')" class="rpp-print-btn" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);">
-                            <i class="fas fa-file-pdf"></i> PDF
-                        </button>
+                        <h2>BLUEPRINT MODUL PROYEK STEM</h2>
+                        <p>Topik: <strong>${data.topic}</strong> | Jenjang: <strong>${data.grade}</strong> | Mapel: <strong>${data.subject}</strong></p>
+                        <p><i class="fas fa-clock"></i> ${data.timeAllocation} | Model: <strong>${data.modelIntegration}</strong></p>
                     </div>
                 </div>
 
-                <!-- 1. Komponen STEM -->
-                <div class="rpp-section-title">1. KOMPONEN STEM (4 PILAR)</div>
-                <table class="rpp-table">
-                    <tr><td class="rpp-label" style="color:var(--stem-orange)">Science</td><td>${data.pillars.science}</td></tr>
-                    <tr><td class="rpp-label" style="color:var(--stem-orange)">Technology</td><td>${data.pillars.technology}</td></tr>
-                    <tr><td class="rpp-label" style="color:var(--stem-orange)">Engineering</td><td>${data.pillars.engineering}</td></tr>
-                    <tr><td class="rpp-label" style="color:var(--stem-orange)">Mathematics</td><td>${data.pillars.mathematics}</td></tr>
-                </table>
+                <div class="rpp-section-title">CAPAIAN PEMBELAJARAN (CP) & FOKUS KOMPETENSI</div>
+                <div style="padding:1.2rem; background:#f8fafc; border-bottom:1px solid #e2e8f0; font-size:0.92rem; line-height:1.6; color:#334155;">
+                    <i class="fas fa-bullseye" style="color:var(--stem-orange); margin-right:0.5rem;"></i> ${data.cp}
+                </div>
 
-                <!-- 2. Tujuan & Media -->
-                <div class="rpp-section-title">2. TUJUAN PEMBELAJARAN & MEDIA</div>
-                <table class="rpp-table">
-                    <tr>
-                        <td class="rpp-label">Tujuan (Objectives)</td>
-                        <td>
-                            <ul style="padding-left:1.2rem; margin:0;">
-                                ${data.objectives.map(obj => `<li>${obj}</li>`).join('')}
+                <div class="rpp-section-title">INTEGRASI 4 PILAR STEM (SCIENCE, TECHNOLOGY, ENGINEERING, MATHEMATICS)</div>
+                <div class="stem-pillars-grid" style="padding: 1rem 1.25rem;">
+                    <div class="stem-pillar-card science">
+                        <h4><i class="fas fa-flask"></i> 1. Science (Sains)</h4>
+                        <p>${data.pillars.science}</p>
+                    </div>
+                    <div class="stem-pillar-card technology">
+                        <h4><i class="fas fa-laptop-code"></i> 2. Technology (Teknologi)</h4>
+                        <p>${data.pillars.technology}</p>
+                    </div>
+                    <div class="stem-pillar-card engineering">
+                        <h4><i class="fas fa-cogs"></i> 3. Engineering (Rekayasa)</h4>
+                        <p>${data.pillars.engineering}</p>
+                    </div>
+                    <div class="stem-pillar-card mathematics">
+                        <h4><i class="fas fa-calculator"></i> 4. Mathematics (Matematika)</h4>
+                        <p>${data.pillars.mathematics}</p>
+                    </div>
+                </div>
+
+                <div class="rpp-section-title">REKOMENDASI ALAT & MATERIAL PROYEK</div>
+                <div style="padding:1.2rem; background:white;">
+                    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        ${data.materials.map(m => `<span class="rpp-badge orange" style="font-size:0.8rem;"><i class="fas fa-check-circle"></i> ${m}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Narrative Hook & Sintaks PBL-PjBL -->
+            <div id="tab-hook" class="stem-tab-pane">
+                <div class="rpp-section-title">NARRATIVE HOOK & TANTANGAN KONTEKSTUAL (PBL STAGE)</div>
+                <div style="padding: 1.25rem;">
+                    <div class="hook-card">
+                        <h3><i class="fas fa-fire"></i> ${data.narrativeHook.title}</h3>
+                        <p>${data.narrativeHook.scenario}</p>
+                        
+                        <div class="driving-q-box">
+                            <h4><i class="fas fa-question-circle"></i> Pertanyaan Pemantik (Driving Questions):</h4>
+                            <ul>
+                                ${data.narrativeHook.drivingQuestions.map(q => `<li>${q}</li>`).join('')}
                             </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rpp-label">Media & Bahan</td>
-                        <td>
-                            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-                                ${data.materials.map(mat => `<span class="rpp-badge orange" style="font-size:0.75rem;">${mat}</span>`).join('')}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- 3. Rencana Pertemuan -->
-                <div class="rpp-section-title">3. RENCANA PERTEMUAN (FLOW PEMBELAJARAN)</div>
+                <div class="rpp-section-title">SINTAKS PEMBELAJARAN INTEGRASI PBL + PjBL + STEM EDP</div>
                 <table class="rpp-table">
                     <thead>
-                        <tr>
-                            <th width="15%">Sesi</th>
-                            <th>Aktivitas Utama Proyek</th>
+                        <tr style="background:#0f172a; color:white;">
+                            <th width="12%" style="color:white;">Sesi</th>
+                            <th width="28%" style="color:white;">Tahap PBL & EDP</th>
+                            <th style="color:white;">Aktivitas Utama Pembelajaran & Proyek</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${data.meetings.map(m => `
+                        ${data.syntaxFlow.map(s => `
                             <tr>
-                                <td style="text-align:center;"><span class="rpp-badge blue">Sesi ${m.session}</span></td>
-                                <td>${m.activity}</td>
+                                <td style="text-align:center;"><span class="rpp-badge blue">Sesi ${s.session}</span></td>
+                                <td>
+                                    <div style="font-weight:700; color:#1e293b; font-size:0.85rem;">${s.pblPhase}</div>
+                                    <span class="rpp-badge orange" style="font-size:0.75rem; margin-top:0.3rem;">${s.edpStage}</span>
+                                </td>
+                                <td style="font-size:0.88rem; line-height:1.6;">${s.activities}</td>
                             </tr>
                         `).join('')}
                     </tbody>
                 </table>
+            </div>
 
-                <!-- 4. Asesmen & Rubrik -->
-                <div class="rpp-section-title">4. ASESMEN & RUBRIK PENILAIAN</div>
-                <div style="padding:1.5rem; background:white; border-bottom:1px solid #e2e8f0;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
-                        <div style="background:#f8fafc; padding:1rem; border-radius:10px; border-left:4px solid var(--stem-orange);">
-                            <h4 style="margin:0 0 0.5rem 0; font-size:0.9rem; color:var(--quantum-blue);">Asesmen Formatif</h4>
-                            <p style="margin:0; font-size:0.85rem; color:var(--text-light);">${data.assessments.formative}</p>
-                        </div>
-                        <div style="background:#f8fafc; padding:1rem; border-radius:10px; border-left:4px solid var(--quantum-blue);">
-                            <h4 style="margin:0 0 0.5rem 0; font-size:0.9rem; color:var(--quantum-blue);">Asesmen Sumatif</h4>
-                            <p style="margin:0; font-size:0.85rem; color:var(--text-light);">${data.assessments.summative}</p>
-                        </div>
+            <!-- Tab 3: LKPD EDP (Lembar Kerja Peserta Didik) -->
+            <div id="tab-lkpd" class="stem-tab-pane">
+                <div class="rpp-header" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); margin-bottom:1.5rem;">
+                    <div class="rpp-logo-area" style="background:rgba(255,255,255,0.1);">
+                        <i class="fas fa-pen-fancy rpp-logo-icon" style="color:#fbbf24;"></i>
                     </div>
-                    
-                    <h4 style="margin-bottom:1rem; color:var(--quantum-blue); border-bottom:1px solid #eee; padding-bottom:0.5rem;">Rubrik Penilaian Proyek</h4>
-                    <table class="rpp-table" style="border:1px solid #eee;">
+                    <div class="rpp-title-area">
+                        <h2 style="color:#fbbf24;">${data.lkpdEdp.title}</h2>
+                        <p>${data.lkpdEdp.projectTitle} | Kelompok: _______________ | Kelas: ${data.grade}</p>
+                    </div>
+                </div>
+
+                <div style="padding: 0 0.5rem;">
+                    ${data.lkpdEdp.steps.map(step => `
+                        <div class="lkpd-card">
+                            <div class="lkpd-step-header">
+                                <span class="lkpd-step-badge">${step.code}</span>
+                                <h4 class="lkpd-step-title">${step.title}</h4>
+                            </div>
+                            <div style="padding-left:0.5rem;">
+                                ${step.prompts.map(p => `
+                                    <div style="margin-bottom:0.8rem;">
+                                        <div style="font-weight:600; font-size:0.88rem; color:#334155;"><i class="fas fa-caret-right" style="color:var(--stem-orange)"></i> ${p}</div>
+                                        <div class="lkpd-box-field">[ Ruang Catatan Siswa / Sketsa Desain / Tabel Pengujian ]</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- Tab 4: Rubrik Assessment Autentik -->
+            <div id="tab-rubric" class="stem-tab-pane">
+                <div class="rpp-section-title">STRATEGI ASESMEN PEMBELAJARAN</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; padding:1.25rem; background:#f8fafc; border-bottom:1px solid #e2e8f0;">
+                    <div style="background:white; padding:1rem; border-radius:10px; border-left:4px solid var(--stem-orange); box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                        <h4 style="margin:0 0 0.4rem 0; font-size:0.9rem; color:#1e293b;"><i class="fas fa-clipboard-list" style="color:var(--stem-orange)"></i> Asesmen Formatif (Proses)</h4>
+                        <p style="margin:0; font-size:0.85rem; color:#475569; line-height:1.5;">${data.assessments.formative}</p>
+                    </div>
+                    <div style="background:white; padding:1rem; border-radius:10px; border-left:4px solid var(--quantum-blue); box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+                        <h4 style="margin:0 0 0.4rem 0; font-size:0.9rem; color:#1e293b;"><i class="fas fa-award" style="color:var(--quantum-blue)"></i> Asesmen Sumatif (Produk & Exhibition)</h4>
+                        <p style="margin:0; font-size:0.85rem; color:#475569; line-height:1.5;">${data.assessments.summative}</p>
+                    </div>
+                </div>
+
+                <div class="rpp-section-title">RUBRIK ASSESSMENT AUTENTIK PROYEK STEM (SKALA 1 - 4)</div>
+                <div style="padding:1rem;">
+                    <table class="rpp-table rubric-table" style="border:1px solid #e2e8f0;">
                         <thead>
-                            <tr style="background:#f1f5f9;">
-                                <th style="color:var(--text-dark); background:#f1f5f9; width:25%;">Kriteria</th>
-                                <th style="color:var(--text-dark); background:#f1f5f9; width:15%;">Bobot</th>
-                                <th style="color:var(--text-dark); background:#f1f5f9;">Deskripsi Penilaian</th>
+                            <tr>
+                                <th width="20%">Kriteria & Bobot</th>
+                                <th width="20%">Perlu Bimbingan (1)</th>
+                                <th width="20%">Cukup (2)</th>
+                                <th width="20%">Baik (3)</th>
+                                <th width="20%">Sangat Baik (4)</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${data.assessments.rubric.map(r => `
                                 <tr>
-                                    <td style="font-weight:600;">${r.criteria}</td>
-                                    <td style="text-align:center;"><span class="rpp-badge purple">${r.weight}</span></td>
-                                    <td style="font-size:0.8rem;">${r.desc}</td>
+                                    <td>
+                                        <div style="font-weight:700; color:#1e293b; font-size:0.88rem;">${r.criteria}</div>
+                                        <span class="rpp-badge purple" style="font-size:0.75rem; margin-top:0.4rem;">Bobot: ${r.weight}</span>
+                                    </td>
+                                    <td><span class="rubric-score-badge" style="background:#fee2e2; color:#991b1b;">Skor 1</span><br>${r.levels['1']}</td>
+                                    <td><span class="rubric-score-badge" style="background:#fef3c7; color:#92400e;">Skor 2</span><br>${r.levels['2']}</td>
+                                    <td><span class="rubric-score-badge" style="background:#dbeafe; color:#1e40af;">Skor 3</span><br>${r.levels['3']}</td>
+                                    <td><span class="rubric-score-badge" style="background:#dcfce7; color:#166534;">Skor 4</span><br>${r.levels['4']}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="rpp-footer" style="background:#ed8936;">
-                    <p><i class="fas fa-atom"></i> Dihasilkan oleh <strong>Neo Quantum Miracle Teaching — STEM Generator</strong></p>
+            <!-- Tab 5: Diferensiasi & Safety Notes -->
+            <div id="tab-diff" class="stem-tab-pane">
+                <div class="rpp-section-title">PANDUAN DIFERENSIASI PEMBELAJARAN</div>
+                <div class="diff-grid" style="padding: 1.25rem 1.25rem 0 1.25rem;">
+                    <div class="diff-card">
+                        <h4><i class="fas fa-book-reader" style="color:var(--quantum-blue);"></i> Diferensiasi Konten</h4>
+                        <p>${data.differentiation.content}</p>
+                    </div>
+                    <div class="diff-card" style="border-top-color:var(--stem-orange);">
+                        <h4><i class="fas fa-tasks" style="color:var(--stem-orange);"></i> Diferensiasi Proses</h4>
+                        <p>${data.differentiation.process}</p>
+                    </div>
+                    <div class="diff-card" style="border-top-color:#10b981;">
+                        <h4><i class="fas fa-box-open" style="color:#10b981;"></i> Diferensiasi Produk</h4>
+                        <p>${data.differentiation.product}</p>
+                    </div>
+                </div>
+
+                <div class="rpp-section-title">CATATAN KESELAMATAN KERJA (SAFETY NOTES / K3)</div>
+                <div style="padding: 0 1.25rem 1.25rem 1.25rem;">
+                    <div class="safety-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Panduan K3 Praktikum & Rekayasa Lab:</h4>
+                        <ul>
+                            ${data.safetyNotes.map(sn => `<li>${sn}</li>`).join('')}
+                        </ul>
+                    </div>
                 </div>
             </div>
-            `;
-        });
+
+            <div class="rpp-footer" style="background:#0f172a;">
+                <p><i class="fas fa-atom" style="color:var(--stem-orange);"></i> Dihasilkan oleh <strong>Neo Quantum Miracle Teaching — STEM Project Generator</strong></p>
+            </div>
+        </div>
+    `;
 }
 
 

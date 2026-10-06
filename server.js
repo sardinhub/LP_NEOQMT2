@@ -303,48 +303,233 @@ ${allBookContext}`;
     });
 });
 
-app.post('/api/tools/stem', (req, res) => {
-    const { subject, topic } = req.body;
-    const t = topic || "Topik Umum";
-    const s = subject || "Mata Pelajaran";
-    
-    res.json({
+// Helper: Generate STEM Blueprint Data
+function generateSTEMModuleData({ subject, topic, grade, cp }) {
+    const t = topic || "Energi Terbarukan & Teknologi Ramah Lingkungan";
+    const s = subject || "IPAS / Sains Rekayasa";
+    const g = grade || "SMP Kelas 8";
+    const c = cp || `Peserta didik mampu menerapkan prinsip ilmiah ${s} dan pemikiran rekayasa (Engineering Design Process) untuk merancang solusi kontekstual atas permasalahan ${t} di lingkungan masyarakat.`;
+
+    return {
         topic: t,
         subject: s,
+        grade: g,
+        cp: c,
+        timeAllocation: "3 Pertemuan (6 x 40 menit)",
+        modelIntegration: "Integrasi Problem-Based Learning (PBL) & Project-Based Learning (PjBL) Berbasis STEM EDP",
         pillars: {
-            science: `Menganalisis fenomena ilmiah di balik ${t} dan bagaimana prinsip-prinsip sains mendasarinya dalam konteks ${s}.`,
-            technology: `Mengeksplorasi penggunaan alat digital, perangkat lunak simulasi, atau sistem kontrol otomatis untuk mendukung proyek ${t}.`,
-            engineering: `Merancang, menguji, dan menyempurnakan prototipe atau model fisik sebagai solusi atas tantangan dalam ${t}.`,
-            mathematics: `Menerapkan perhitungan presisi, analisis data statistik, dan pemodelan matematis untuk mengoptimalkan desain ${t}.`
+            science: `Memahami dan menganalisis hukum-hukum sains dasar, prinsip fisika/biologi/kimia, serta teori transformasi energi yang melandasi fenomena ${t} dalam mata pelajaran ${s}.`,
+            technology: `Memanfaatkan alat instrumen ukur digital (multimeter/sensor), perangkat lunak simulasi sirkuit/desain 3D, aplikasi data spreadsheet, serta alat bantu digital pendukung analisis proyek ${t}.`,
+            engineering: `Menerapkan tahapan Engineering Design Process (EDP): merancang blueprint sketsa teknis, merakit prototipe rekayasa, melakukan pengujian mekanis, serta melakukan perbaikan (iterasi desain) pada model ${t}.`,
+            mathematics: `Mengaplikasikan perhitungan numerik presisi, rumus matematis terapan, analisis rasio/skala, penyajian grafik variabel data hasil uji coba, serta kalkulasi estimasi anggaran biaya pembuatan ${t}.`
         },
-        objectives: [
-            `Siswa mampu menjelaskan keterkaitan antara konsep ${s} dengan aplikasi nyata ${t}.`,
-            `Siswa dapat merancang solusi kreatif menggunakan pendekatan Engineering Design Process (EDP).`,
-            `Siswa menunjukkan kolaborasi dan pemikiran kritis dalam memecahkan masalah kompleks.`
-        ],
-        meetings: [
-            { session: 1, activity: "Identifikasi Masalah & Brainstorming ide solusi kreatif." },
-            { session: 2, activity: "Riset Literatur & Perancangan Desain Awal (Sketsa)." },
-            { session: 3, activity: "Pembuatan Prototipe menggunakan bahan yang tersedia." },
-            { session: 4, activity: "Pengujian, Evaluasi, dan Presentasi Hasil Proyek." }
-        ],
-        assessments: {
-            formative: "Observasi aktivitas diskusi, jurnal refleksi harian, dan kemajuan desain.",
-            summative: "Uji coba prototipe, laporan teknis, dan presentasi akhir proyek.",
-            rubric: [
-                { criteria: "Kreativitas Solusi", weight: "30%", desc: "Sejauh mana ide proyek unik dan efektif." },
-                { criteria: "Akurasi Sains", weight: "30%", desc: "Ketepatan penerapan prinsip ilmiah dalam model." },
-                { criteria: "Kerja Sama Tim", weight: "20%", desc: "Keterlibatan aktif setiap anggota kelompok." },
-                { criteria: "Kualitas Prototipe", weight: "20%", desc: "Kekuatan dan fungsionalitas hasil karya." }
+        narrativeHook: {
+            title: `Studi Kasus Kontekstual: Tantangan Solusi Inovatif ${t} di Komunitas Lokal`,
+            scenario: `Di lingkungan sekitar kita, masyarakat dan komunitas sekolah menghadapi permasalahan nyata terkait efisiensi dan keberlanjutan ${t}. Kurangnya teknologi ramah lingkungan yang hemat biaya menyebabkan dampak negatif pada kehidupan sehari-hari. Kelompok kalian ditantang untuk bertindak sebagai Tim Insinyur Muda yang bertugas merancang, membangun, dan mempublikasikan prototipe rekayasa berbahan terjangkau sebagai solusi atas masalah ${t} tersebut.`,
+            drivingQuestions: [
+                `Bagaimana kita dapat menerapkan konsep sains ${s} untuk merancang solusi teknologi yang mengatasi masalah ${t}?`,
+                `Desain rekayasa seperti apa yang paling efisien dan kokoh setelah diuji secara berulang menggunakan EDP?`,
+                `Bagaimana data matematika dan analisis statistik dapat membuktikan bahwa prototipe karya kalian layak dan bermanfaat?`
             ]
         },
+        syntaxFlow: [
+            {
+                session: 1,
+                phase: "Fase 1: Orientasi Masalah (PBL) & Ask (EDP)",
+                pblPhase: "Orientasi Siswa pada Masalah Kontekstual",
+                edpStage: "Ask (Identifikasi Masalah & Kriteria)",
+                activities: `Siswa mengamati tayangan krisis/masalah kontekstual ${t}, mengidentifikasi batasan proyek (waktu, alat, bahan), dan merumuskan kriteria keberhasilan prototipe.`
+            },
+            {
+                session: 2,
+                phase: "Fase 2: Mengorganisasi Kelompok & Imagine (EDP)",
+                pblPhase: "Mengorganisasi Belajar Kelompok",
+                edpStage: "Imagine (Eksplorasi Ide Solusi)",
+                activities: `Siswa melakukan studi literatur/riset sains tentang ${s}, mengeksplorasi minimal 3 gagasan ide solusi rekayasa, dan memilih 1 rancangan terbaik secara kolaboratif.`
+            },
+            {
+                session: 3,
+                phase: "Fase 3: Membimbing Penyelidikan & Plan (EDP)",
+                pblPhase: "Membimbing Penyelidikan Kelompok",
+                edpStage: "Plan (Rancangan Sketsa & Blueprint)",
+                activities: `Siswa menggambar sketsa blueprint teknis prototipe ${t}, menghitung dimensi ukuran matematika, menyusun daftar alat/bahan daur ulang, serta membagi peran tim.`
+            },
+            {
+                session: 4,
+                phase: "Fase 4: Mengembangkan Prototipe & Create (EDP)",
+                pblPhase: "Pengembangan & Fabrikasi Karya (PjBL)",
+                edpStage: "Create (Pembuatan & Perakitan)",
+                activities: `Siswa merakit prototipe fisik ${t} sesuai sketsa dengan menerapkan prosedur keselamatan kerja (K3), mencatat alur perakitan, dan mengatasi kendala fisik.`
+            },
+            {
+                session: 5,
+                phase: "Fase 5: Pengujian Data & Test/Improve (EDP)",
+                pblPhase: "Pengujian, Analisis Data & Perbaikan",
+                edpStage: "Test & Improve (Uji Coba & Iterasi)",
+                activities: `Siswa menguji performa prototipe ${t} dengan variabel pengukur (multimeter/sensor), mencatat data uji pada tabel matematika, dan melakukan perbaikan desain (revisi V2).`
+            },
+            {
+                session: 6,
+                phase: "Fase 6: Evaluasi & Share (EDP)",
+                pblPhase: "Pameran Karya (Exhibition) & Refleksi",
+                edpStage: "Share (Presentasi & Publikasi)",
+                activities: `Siswa mempresentasikan prototipe ${t} di depan kelas/STEM Exhibition, menjawab pertanyaan pemantik, serta melakukan refleksi autentik atas seluruh alur proyek.`
+            }
+        ],
+        lkpdEdp: {
+            title: `LEMBAR KERJA PESERTA DIDIK (LKPD) - ENGINEERING DESIGN PROCESS (EDP)`,
+            projectTitle: `Proyek Rekayasa STEM: ${t}`,
+            steps: [
+                {
+                    code: "TAHAP 1",
+                    title: "ASK (Tanyakan & Identifikasi Masalah)",
+                    prompts: [
+                        "Apa masalah utama yang sedang terjadi terkait topik ini?",
+                        "Apa kriteria keberhasilan prototipe yang harus dicapai kelompokmu?",
+                        "Apa batasan alat, bahan, anggaran biaya, dan alokasi waktu yang tersedia?"
+                    ]
+                },
+                {
+                    code: "TAHAP 2",
+                    title: "IMAGINE (Bayangkan & Eksplorasi Solusi)",
+                    prompts: [
+                        "Tuliskan 3 alternatif rancangan solusi hasil diskusi kelompok:",
+                        "Solusi mana yang paling berpeluang sukses dan efisien?",
+                        "Sebutkan alasan scientific / ilmiah di balik pemilihan solusi tersebut!"
+                    ]
+                },
+                {
+                    code: "TAHAP 3",
+                    title: "PLAN (Rencanakan & Buat Blueprint Sketsa)",
+                    prompts: [
+                        "Gambarlah sketsa blueprint prototipe (Lengkapi dengan dimensi ukuran & nama komponen):",
+                        "Rincian Alat & Bahan yang dibutuhkan beserta taksirannya:",
+                        "Jadwal kerja dan pembagian tugas masing-masing anggota kelompok:"
+                    ]
+                },
+                {
+                    code: "TAHAP 4",
+                    title: "CREATE (Buat & Fabrikasi Prototipe)",
+                    prompts: [
+                        "Tuliskan langkah-langkah nyata proses perakitan prototipe:",
+                        "Kendala teknis apa yang ditemukan saat merakit komponen?",
+                        "Bagaimana cara kelompok mengatasi kendala teknis tersebut?"
+                    ]
+                },
+                {
+                    code: "TAHAP 5",
+                    title: "TEST & IMPROVE (Uji Coba & Perbaikan Desain)",
+                    prompts: [
+                        "Catat data hasil uji coba pada tabel pengukuran (Pengujian 1, 2, dan 3):",
+                        "Apakah prototipe sudah memenuhi kriteria kinerjanya? Jelaskan bukti angkanya!",
+                        "Apa perbaikan atau revisi desain yang dilakukan untuk menyempurnakan prototipe?"
+                    ]
+                },
+                {
+                    code: "TAHAP 6",
+                    title: "SHARE (Bagikan & Refleksi Karya)",
+                    prompts: [
+                        "Rangkum 3 poin utama yang akan disampaikan saat presentasi pameran STEM:",
+                        "Apa pelajaran sains, teknologi, rekayasa, dan matematika paling berharga yang kalian dapatkan?",
+                        "Inovasi lanjutan apa yang bisa ditambahkan jika proyek ini dikembangkan lebih jauh?"
+                    ]
+                }
+            ]
+        },
+        assessments: {
+            formative: "Observasi keaktifan diskusi kelompok, keterlibatan riset, jurnal harian LKPD EDP, dan progres perakitan.",
+            summative: "Uji performa prototipe fisik, keakuratan laporan data matematika/sains, dan pameran presentasi karya (STEM Exhibition).",
+            rubric: [
+                {
+                    criteria: "1. Penalaran Kritis & Problem Solving (PBL)",
+                    weight: "25%",
+                    levels: {
+                        1: "Kurang mampu mengidentifikasi masalah kontekstual; ide solusi tidak terstruktur.",
+                        2: "Mengidentifikasi masalah secara terbatas; solusi kurang relevan dengan kriteria.",
+                        3: "Mampu merumuskan masalah kontekstual dengan jelas dan merancang solusi rasional.",
+                        4: "Sangat analitis dalam membedah krisis kontekstual dan menghasilkan solusi inovatif."
+                    }
+                },
+                {
+                    criteria: "2. Desain Rekayasa & Kualitas Prototipe (PjBL / EDP)",
+                    weight: "30%",
+                    levels: {
+                        1: "Prototipe tidak dapat berfungsi; sketsa blueprint tidak dibuat dengan jelas.",
+                        2: "Prototipe berfungsi sebagian; perakitan kurang kokoh dan kurang rapi.",
+                        3: "Prototipe berfungsi baik, kokoh, dan sesuai dengan sketsa perencanaan awal.",
+                        4: "Prototipe sangat presisi, fungsionalitas optimal, estetik, dan memiliki tingkat efisiensi tinggi."
+                    }
+                },
+                {
+                    criteria: "3. Integrasi Sains & Kalkulasi Matematika",
+                    weight: "25%",
+                    levels: {
+                        1: "Belum mampu menjelaskan prinsip sains dasar dan perhitungan matematika proyek.",
+                        2: "Penjelasan sains terbatas; terdapat kesalahan dalam pengolahan data matematika.",
+                        3: "Menerapkan hukum sains dengan benar dan kalkulasi data matematika akurat.",
+                        4: "Sangat mahir mengintegrasikan konsep sains terapan dan pemodelan data matematika presisi."
+                    }
+                },
+                {
+                    criteria: "4. Kolaborasi Tim & Presentasi Autentik",
+                    weight: "20%",
+                    levels: {
+                        1: "Kerja sama tim tidak terlihat; penyampaian presentasi pasif dan tidak siap.",
+                        2: "Sebagian anggota mendominasi; penyampaian presentasi kurang runtut.",
+                        3: "Semua anggota berpartisipasi aktif; presentasi disampaikan secara komunikatif dan jelas.",
+                        4: "Kolaborasi kelompok sangat solid; presentasi persuasif, interaktif, dan mempertahankan argumen dengan tepat."
+                    }
+                }
+            ]
+        },
+        differentiation: {
+            content: "Menyediakan artikel rujukan bertingkat, video animasi simulasi sirkuit/mekanisme 3D, infografis visual, serta modul pengayaan konsep sains lanjutan bagi siswa bereksplorasi tinggi.",
+            process: "Memberikan panduan bertahap (scaffolding checklist) bagi siswa yang butuh bantuan ekstra, serta tantangan tambahan pengoptimalan efisiensi bagi kelompok fast learners.",
+            product: "Siswa diberi kebebasan memilih bentuk penyampaian produk akhir: prototipe fisik nyata, maket simulasi 3D, video dokumenter alur perakitan, atau poster infografis digital."
+        },
+        safetyNotes: [
+            "🚨 Penggunaan Alat Tajam & Pemotong: Selalu berhati-hati saat menggunakan cutter, gunting, atau tang potong. Gunakan alas potong khusus.",
+            "⚡ Keselamatan Arus Listrik & Komponen Pemanas: Batasi sumber arus listrik maksimal DC 12V. Penggunaan solder / lem tembak wajib dalam pengawasan guru.",
+            "👓 Perlindungan Diri (K3): Gunakan kacamata pelindung (goggles) dan sarung tangan saat memotong atau membengkokkan material keras.",
+            "🧹 Protokol Kebersihan & Tanggap Darurat: Bersihkan area kerja setelah eksperimen, pilah sisa material daur ulang, dan pahami letak kotak P3K kelas/laboratorium."
+        ],
         materials: [
-            "Perangkat digital (Laptop/Tablet) untuk riset",
-            "Bahan daur ulang atau kit komponen (sesuai kebutuhan proyek)",
-            "Alat ukur (penggaris, timbangan digital, sensor)",
-            "Aplikasi pendukung (Canva/Google Docs untuk laporan)"
+            "Perangkat Komputer / Tablet untuk riset & pencatatan data spreadsheet",
+            "Bahan Daur Ulang & Material Konstruksi (Stik es krim, kardus bekas, botol plastik, pipa PVC mini)",
+            "Komponen Elektronika / Mekanis Sederhana (Dinamo DC mini, lampu LED, kabel, sakelar, solar sel mini)",
+            "Alat Ukur Presisi (Penggaris, multimeter digital, timbangan digital, stopwatch)",
+            "Alat Perekat & Pemotong (Lem tembak, cutter safety, gunting, isolasi listrik)",
+            "Aplikasi Dokumentasi (Canva, Google Slides, atau video editor ponsel untuk presentasi)"
         ]
-    });
+    };
+}
+
+app.post('/api/tools/stem', async (req, res) => {
+    const { subject, topic, grade, cp } = req.body;
+    
+    // Attempt Gemini call if API key exists
+    try {
+        const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+        if (GEMINI_API_KEY) {
+            const systemPrompt = `Kamu adalah Pakar Kurikulum STEM & Quantum Teaching. Buatkan JSON modul proyek STEM terintegrasi PBL (Problem-Based Learning) & PjBL (Project-Based Learning) dengan 4 Pilar STEM, Capaian Pembelajaran (CP), Narrative Hook, LKPD EDP (Engineering Design Process), Rubrik Assessment Autentik (skala 1-4), Differentiation Notes, dan Safety Notes. Keluaran WAJIB berupa objek JSON valid sesuai bidang berikut:
+            topic, subject, grade, cp, timeAllocation, modelIntegration, pillars { science, technology, engineering, mathematics }, narrativeHook { title, scenario, drivingQuestions [] }, syntaxFlow [ { session, phase, pblPhase, edpStage, activities } ], lkpdEdp { title, projectTitle, steps [ { code, title, prompts [] } ] }, assessments { formative, summative, rubric [ { criteria, weight, levels { 1, 2, 3, 4 } } ] }, differentiation { content, process, product }, safetyNotes [], materials []. JANGAN menyertakan markdown backticks di luar JSON.`;
+
+            const userPrompt = `Mata Pelajaran: ${subject || 'IPAS/Sains'}\nTopik/Materi: ${topic || 'Energi Terbarukan'}\nJenjang: ${grade || 'SMP'}\nCapaian Pembelajaran (CP): ${cp || 'Peserta didik memahami konsep sains dan merancang prototipe rekayasa.'}`;
+
+            const geminiRaw = await callGemini(systemPrompt, userPrompt);
+            if (geminiRaw) {
+                const cleanJsonStr = geminiRaw.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const parsed = JSON.parse(cleanJsonStr);
+                return res.json(parsed);
+            }
+        }
+    } catch (err) {
+        console.log("[STEM Generator] Gemini fallback to local generator:", err.message);
+    }
+
+    // Fallback local generator
+    const data = generateSTEMModuleData({ subject, topic, grade, cp });
+    res.json(data);
 });
 
 
