@@ -671,7 +671,9 @@ function generateModulAjarData({ name, school, subject, topic, grade, phase, tim
 }
 
 app.post('/api/tools/planner', async (req, res) => {
-    const { name, school, subject, topic, grade, phase, time, model, profil, cp } = req.body;
+    const { teacherName, schoolName, name, school, subject, topic, grade, phase, time, model, profil, cp } = req.body;
+    const finalName = teacherName || name || "Tim Guru Quantum";
+    const finalSchool = schoolName || school || "Sekolah Neo Quantum";
     
     // Attempt Gemini call if API key exists
     try {
@@ -682,7 +684,7 @@ app.post('/api/tools/planner', async (req, res) => {
             2. komponenInti { tujuanPembelajaran [], pemahamanBermakna, pertanyaanPemantik [], kegiatanPembelajaran { pendahuluan [], inti [], penutup [] }, rencanaAsesmen { diagnostik, formatif, sumatif }, pengayaanRemedial { pengayaan, remedial } }
             3. komponenLampiran { lkpd { title, projectTitle, instructions, tasks [ { step, title, activity } ] }, instrumenRubrik { title, rubric [ { aspect, weight, levels { 1, 2, 3, 4 } } ] }, bahanBacaan { untukGuru, untukSiswa }, glosarium [ { term, definition } ], daftarPustaka [] }. JANGAN menyertakan markdown backticks di luar JSON.`;
 
-            const userPrompt = `Nama Penyusun: ${name || 'Tim Guru Quantum'}\nSekolah: ${school || 'Sekolah Neo Quantum'}\nMata Pelajaran: ${subject || 'Matematika/IPA'}\nTopik: ${topic || 'Pemecahan Masalah'}\nKelas/Fase: ${grade || 'Kelas VIII'} ${phase || 'Fase D'}\nAlokasi Waktu: ${time || '2 Pertemuan'}\nModel: ${model || 'Deep Teaching'}\nProfil Pelajar: ${JSON.stringify(profil || [])}\nCP: ${cp || ''}`;
+            const userPrompt = `Nama Penyusun: ${finalName}\nSekolah: ${finalSchool}\nMata Pelajaran: ${subject || 'Matematika/IPA'}\nTopik: ${topic || 'Pemecahan Masalah'}\nKelas/Fase: ${grade || 'Kelas VIII'} ${phase || 'Fase D'}\nAlokasi Waktu: ${time || '2 Pertemuan'}\nModel: ${model || 'Deep Teaching'}\nProfil Pelajar: ${JSON.stringify(profil || [])}\nCP: ${cp || ''}`;
 
             const geminiRaw = await callGemini(systemPrompt, userPrompt);
             if (geminiRaw) {
@@ -696,7 +698,7 @@ app.post('/api/tools/planner', async (req, res) => {
     }
 
     // Fallback local generator
-    const data = generateModulAjarData({ name, school, subject, topic, grade, phase, time, model, profil, cp });
+    const data = generateModulAjarData({ name: finalName, school: finalSchool, subject, topic, grade, phase, time, model, profil, cp });
     res.json(data);
 });
 

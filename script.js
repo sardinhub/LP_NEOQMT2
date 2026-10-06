@@ -1235,11 +1235,199 @@ function createModulAjarFallbackData({ name, school, subject, grade, topic, mode
     };
 }
 
-function renderModulAjarPreview(data) {
+function normalizeModulAjarData(raw) {
+    if (!raw) raw = {};
+    const info = raw.informasiUmum || {};
+    const idt = raw.identitas || info.identitas || {};
+    const inti = raw.komponenInti || {};
+    const lamp = raw.komponenLampiran || {};
+
+    const penyusun = idt.penyusun || idt.teacherName || raw.teacherName || raw.name || 'Tim Guru Deep Teaching';
+    const sekolah = idt.sekolah || idt.institusi || raw.schoolName || raw.school || 'Sekolah Penggerak Neo Quantum';
+    const tahun = idt.tahun || new Date().getFullYear().toString();
+    const jenjangFase = idt.jenjangFase || idt.kelasFase || idt.jenjang || (raw.grade === 'SD' ? 'SD / Fase A-C' : (raw.grade === 'SMP' ? 'SMP / Fase D' : 'SMA / Fase E-F'));
+    const kelas = idt.kelas || (raw.grade === 'SD' ? 'Kelas 4' : (raw.grade === 'SMP' ? 'Kelas 8' : 'Kelas 10'));
+    const alokasiWaktu = idt.alokasiWaktu || '3 x 45 Menit (1 Pertemuan)';
+    const mataPelajaran = idt.mataPelajaran || idt.topikMateri || raw.subject || 'Mata Pelajaran';
+    const topik = idt.topik || idt.topikMateri || raw.topic || 'Topik Pembelajaran Kontekstual';
+
+    const kompetensiAwal = raw.kompetensiAwal || info.kompetensiAwal || `Peserta didik telah memiliki pemahaman mendasar mengenai konsep prasyarat ${mataPelajaran} serta memiliki rasa ingin tahu tinggi terhadap penerapan ${topik} dalam kehidupan sehari-hari.`;
+
+    let profil = raw.profilPelajar || info.profilPelajar || raw.profil || ['Bernalar Kritis', 'Kreatif', 'Gotong Royong', 'Mandiri'];
+    if (typeof profil === 'string') profil = [profil];
+
+    let sarana = raw.saranaPrasarana || info.saranaPrasarana || [
+        'Proyektor / Smart TV & Laptop',
+        'Alat & Bahan Eksperimen / Praktikum Kontekstual',
+        'Lembar Kerja Peserta Didik (LKPD Deep Learning)',
+        'Akses Internet dan Media Pembelajaran Digital Interaktif'
+    ];
+    if (typeof sarana === 'string') {
+        sarana = sarana.split(/,|\n/).map(s => s.trim()).filter(Boolean);
+    }
+
+    const targetPesertaDidik = raw.targetPesertaDidik || info.targetPesertaDidik || 'Peserta Didik Reguler / Tipikal (Heterogen, 30 Siswa) dengan pendampingan Scaffolding bagi siswa yang memerlukan bimbingan ekstra dan Pengayaan bagi Fast Learners.';
+
+    const modelPembelajaran = raw.modelPembelajaran || info.modelPembelajaran || raw.model || 'Problem-Based Learning (PBL) berbasis Deep Teaching';
+
+    // KOMPONEN INTI
+    let tp = raw.tujuanPembelajaran || inti.tujuanPembelajaran || [
+        `Menganalisis dan mengidentifikasi prinsip utama ${topik} secara mendalam melalui penyelidikan fenomena riil.`,
+        `Merancang dan mengaplikasikan solusi praktis atas permasalahan kontekstual ${topik} dengan pendekatan kolaboratif.`,
+        `Refleksi metakognitif mengenai manfaat pemahaman ${topik} dalam kehidupan sehari-hari dan tanggung jawab sosial.`
+    ];
+    if (typeof tp === 'string') tp = [tp];
+
+    const pemahamanBermakna = raw.pemahamanBermakna || inti.pemahamanBermakna || `Pemahaman mendalam tentang ${topik} membantu peserta didik menyadari bahwa konsep ${mataPelajaran} bukan sekadar hafalan teori, melainkan instrumen logis untuk memecahkan masalah nyata dan mengambil keputusan bijak dalam kehidupan.`;
+
+    let pemantik = raw.pertanyaanPemantik || inti.pertanyaanPemantik || [
+        `Mengapa konsep ${topik} sangat krusial dalam dinamika kehidupan modern saat ini?`,
+        `Apa dampaknya jika kita tidak menerapkan prinsip ${topik} secara cerdas dan berkesadaran?`,
+        `Bagaimana kamu dapat memanfaatkan pemahaman ${topik} ini untuk membantu komunitas atau lingkungan sekitarmu?`
+    ];
+    if (typeof pemantik === 'string') pemantik = [pemantik];
+
+    const keg = raw.kegiatanPembelajaran || inti.kegiatanPembelajaran || {};
+    let pendahuluan = keg.pendahuluan || [
+        'Guru membuka pelajaran dengan salam hangat, doa bersama, dan melakukan pengondisian kelas berkesadaran (Mindful Check-in).',
+        `Guru menyampaikan Apersepsi & Mindful Hook: menampilkan tayangan fenomena mengejutkan terkait ${topik} untuk memantik rasa ingin tahu.`,
+        'Guru menjelaskan tujuan pembelajaran, alur kegiatan 3M (Memahami-Mengaplikasi-Merefleksi), dan teknik asesmen yang akan dilakukan.'
+    ];
+    if (typeof pendahuluan === 'string') pendahuluan = [pendahuluan];
+
+    let memahami = (keg.inti && (keg.inti.memahami || (Array.isArray(keg.inti) ? keg.inti.slice(0, 2) : null))) || [
+        `Siswa membentuk kelompok heterogen dan mengamati studi kasus / fenomena nyata tentang ${topik}.`,
+        'Siswa melakukan penelusuran literasi multi-sumber (buku, media digital, eksperimen mini) untuk mendalami konsep inti.',
+        'Guru memfasilitasi Dialog Socratic untuk menggali penalaran kritis dan meluruskan miskonsepsi.'
+    ];
+    if (typeof memahami === 'string') memahami = [memahami];
+
+    let mengaplikasi = (keg.inti && (keg.inti.mengaplikasi || (Array.isArray(keg.inti) ? keg.inti.slice(2, 4) : null))) || [
+        `Kelompok merancang karya / desain solusi / lembar investigasi EDP atas permasalahan ${topik}.`,
+        'Siswa menguji coba rancangan solusi, mengumpulkan data penunjang, dan mendokumentasikan hasil temuan.',
+        'Setiap kelompok menyajikan hasil aplikasi proyek/solusi dalam pameran karya singkat (Gallery Walk) untuk saling memberi umpan balik.'
+    ];
+    if (typeof mengaplikasi === 'string') mengaplikasi = [mengaplikasi];
+
+    let merefleksi = (keg.inti && keg.inti.merefleksi) || [
+        'Siswa menyusun jurnal refleksi pribadi: apa yang sudah dipahami, apa kendala yang dihadapi, dan strategi perbaikan.',
+        'Diskusi reflektif kelas mengenai nilai moral dan tanggung jawab yang dipelajari dari proses pemecahan masalah.'
+    ];
+    if (typeof merefleksi === 'string') merefleksi = [merefleksi];
+
+    let penutup = keg.penutup || [
+        'Guru dan siswa bersama-sama menyimpulkan poin-poin kunci pembelajaran.',
+        'Guru memberikan umpan balik apresiatif dan konstruktif terhadap kinerja individual maupun kelompok.',
+        'Menyampaikan rencana tindak lanjut (tugas pengayaan / persiapan pertemuan berikutnya) dan ditutup dengan doa.'
+    ];
+    if (typeof penutup === 'string') penutup = [penutup];
+
+    const asesmen = raw.rencanaAsesmen || inti.rencanaAsesmen || {};
+    const diagnostik = asesmen.diagnostik || 'Kuis singkat prasyarat dan pemetaan awal minat/gaya belajar siswa sebelum memulai kegiatan.';
+    const formatif = asesmen.formatif || 'Observasi keaktifan diskusi, penilaian antar teman (peer-assessment), lembar kerja 3M, dan unjuk kerja proyek.';
+    const sumatif = asesmen.sumatif || 'Evaluasi berbasis produk autentik / laporan solusi / presentasi argumentatif di akhir modul.';
+
+    const pengayaanRemedial = raw.pengayaanRemedial || inti.pengayaanRemedial || {};
+    const pengayaan = pengayaanRemedial.pengayaan || `Bagi peserta didik yang telah mencapai ketuntasan cepat: Diberikan tantangan menganalisis studi kasus tingkat lanjut atau menjadi tutor sebaya dalam riset ${topik}.`;
+    const remedial = pengayaanRemedial.remedial || `Bagi peserta didik yang memerlukan bimbingan tambahan: Pendampingan diferensiasi terfokus oleh guru dengan bantuan skema visual dan tutor sebaya.`;
+
+    // KOMPONEN LAMPIRAN
+    const lkpdRaw = raw.lkpd || lamp.lkpd || {};
+    const lkpd = {
+        judul: lkpdRaw.judul || lkpdRaw.title || `LKPD Deep Learning: Eksplorasi & Solusi Kontekstual ${topik}`,
+        tugasKontekstual: lkpdRaw.tugasKontekstual || lkpdRaw.instructions || `Lakukan analisis terhadap masalah nyata di lingkungan sekitar yang berkaitan dengan ${topik}. Rumuskan rancangan ide kreatif solusi yang efisien, hemat biaya, dan dapat diterapkan!`,
+        petunjuk: lkpdRaw.petunjuk || [
+            'Bacalah setiap instruksi dengan cermat bersama anggota kelompokmu.',
+            `Diskusikan dan jawablah pertanyaan pemantik terkait fenomena ${topik}.`,
+            'Gunakan tabel alur kerja untuk mendokumentasikan data dan hasil rancangan solusi kelompok.'
+        ],
+        tabelKerja: lkpdRaw.tabelKerja || (lkpdRaw.tasks ? lkpdRaw.tasks.map(t => ({ langkah: `${t.step}: ${t.title}`, deskripsi: t.activity })) : [
+            { langkah: '1. Identifikasi Masalah', deskripsi: `Jelaskan apa masalah utama terkait ${topik} yang kalian temukan di lingkungan sekitar.` },
+            { langkah: '2. Pengumpulan Data', deskripsi: 'Tuliskan fakta, data pendukung, atau teori prasyarat yang relevan.' },
+            { langkah: '3. Rancangan Solusi', deskripsi: 'Gambarkan atau jabarkan skema solusi/karya yang akan dibuat.' },
+            { langkah: '4. Evaluasi & Refleksi', deskripsi: 'Apa kelebihan dan kelemahan dari solusi yang kelompok kalian tawarkan?' }
+        ]),
+        pertanyaanReflektif: lkpdRaw.pertanyaanReflektif || [
+            'Apa hal baru dan berharga yang kamu pelajari dari pengerjaan LKPD ini?',
+            'Bagaimana kamu mengatasi perbedaan pendapat di dalam kelompokmu saat merancang solusi?'
+        ]
+    };
+
+    const rubrikRaw = raw.rubrikAsesmen || lamp.instrumenRubrik?.rubric || [];
+    let rubrikAsesmen = [];
+    if (Array.isArray(rubrikRaw) && rubrikRaw.length > 0) {
+        rubrikAsesmen = rubrikRaw.map(r => ({
+            kriteria: r.kriteria || r.aspect || 'Penalaran Kritis',
+            skala1: r.skala1 || (r.levels ? r.levels[1] : 'Perlu Bimbingan'),
+            skala2: r.skala2 || (r.levels ? r.levels[2] : 'Cukup'),
+            skala3: r.skala3 || (r.levels ? r.levels[3] : 'Baik'),
+            skala4: r.skala4 || (r.levels ? r.levels[4] : 'Sangat Baik')
+        }));
+    } else {
+        rubrikAsesmen = [
+            { kriteria: 'Penalaran Kritis & Kedalaman Konsep', skala1: 'Menunjukkan pemahaman parsial/banyak miskonsepsi.', skala2: 'Memahami konsep dasar namun belum mampu menghubungkan variabel.', skala3: 'Memahami konsep secara utuh dan mampu menjelaskan alasan penalaran.', skala4: 'Menganalisis konsep secara mendalam, kritis, dan menemukan pola baru.' },
+            { kriteria: 'Kreativitas & Desain Solusi', skala1: 'Solusi meniru penuh tanpa variasi.', skala2: 'Solusi standar dengan sedikit modifikasi.', skala3: 'Solusi relatif baru dan aplikatif untuk pemecahan masalah.', skala4: 'Solusi sangat inovatif, orisinal, bernilai tambah tinggi dan hemat daya.' },
+            { kriteria: 'Kolaborasi & Gotong Royong', skala1: 'Pasif dan bergantung pada anggota lain.', skala2: 'Terkadang berpartisipasi jika diminta.', skala3: 'Aktif bekerjasama dan menghargai pendapat teman.', skala4: 'Inisiatif tinggi, memfasilitasi diskusi, dan menolong teman yang kesulitan.' },
+            { kriteria: 'Komunikasi & Presentasi', skala1: 'Penyampaian membingungkan dan tidak berkesinambungan.', skala2: 'Penyampaian cukup jelas namun kurang percaya diri.', skala3: 'Penyampaian sistematis, komunikatif, dan responsif.', skala4: 'Penyampaian sangat persuasif, runtut, didukung argumen ilmiah yang kuat.' }
+        ];
+    }
+
+    const bacaanRaw = raw.bahanBacaan || lamp.bahanBacaan || {};
+    const bahanBacaan = {
+        guru: bacaanRaw.guru || bacaanRaw.untukGuru || `Buku Panduan Guru Kurikulum Merdeka ${mataPelajaran}, Buku Rujukan 'Neo Quantum Miracle Teaching' karya Sardin Damis (2026), Artikel Deep Teaching & Socratic Method.`,
+        siswa: bacaanRaw.siswa || bacaanRaw.untukSiswa || `Buku Teks Utama Peserta Didik ${mataPelajaran}, Modul Ringkasan Bergambar ${topik}, Infografis Visual, serta Artikel Populer Edukasi.`
+    };
+
+    const gloRaw = raw.glosarium || lamp.glosarium || [];
+    let glosarium = [];
+    if (Array.isArray(gloRaw) && gloRaw.length > 0) {
+        glosarium = gloRaw.map(g => ({
+            istilah: g.istilah || g.term || 'Deep Teaching',
+            arti: g.arti || g.definition || 'Pendekatan mengajar berkesadaran yang berfokus pada kedalaman makna.'
+        }));
+    } else {
+        glosarium = [
+            { istilah: 'Deep Teaching', arti: 'Pendekatan mengajar berbasis hati dan pemahaman mendalam yang mengintegrasikan empati, storytelling, dan pemikiran kritis.' },
+            { istilah: 'Deep Learning', arti: 'Prosedur belajar bermakna di mana siswa tidak sekadar menghafal, melainkan memahami korelasi dan mengaplikasikan ilmu.' },
+            { istilah: 'Socratic Questioning', arti: 'Teknik bertanya provokatif untuk memancing siswa berpikir kritis dan menggali alasan mendasar di balik suatu konsep.' },
+            { istilah: 'Metakognisi', arti: 'Kesadaran dan pemahaman seseorang tentang proses berpikir dan cara belajarnya sendiri.' }
+        ];
+    }
+
+    let pustaka = raw.daftarPustaka || lamp.daftarPustaka || [
+        "Damis, Sardin. (2026). Neo Quantum Miracle Teaching: Transformasi Pembelajaran Masa Depan. Jakarta: Quantum Press.",
+        "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. (2024). Panduan Pembelajaran dan Asesmen Kurikulum Merdeka. Jakarta: Kemendikbudristek.",
+        "Dweck, Carol S. (2017). Mindset: Changing The Way You Think To Fulfil Your Potential. London: Robinson."
+    ];
+    if (typeof pustaka === 'string') pustaka = [pustaka];
+
+    return {
+        identitas: { penyusun, sekolah, tahun, jenjangFase, kelas, alokasiWaktu, mataPelajaran, topik },
+        kompetensiAwal,
+        profilPelajar: profil,
+        saranaPrasarana: sarana,
+        targetPesertaDidik,
+        modelPembelajaran,
+        tujuanPembelajaran: tp,
+        pemahamanBermakna,
+        pertanyaanPemantik: pemantik,
+        kegiatanPembelajaran: { pendahuluan, inti: { memahami, mengaplikasi, merefleksi }, penutup },
+        rencanaAsesmen: { diagnostik, formatif, sumatif },
+        pengayaanRemedial: { pengayaan, remedial },
+        lkpd,
+        rubrikAsesmen,
+        bahanBacaan,
+        glosarium,
+        daftarPustaka: pustaka
+    };
+}
+
+function renderModulAjarPreview(rawData) {
+    const data = normalizeModulAjarData(rawData);
     const resultDiv = document.getElementById('toolResult');
     const idt = data.identitas || {};
 
-    const profilBadges = data.profilPelajarBadgeHTML || (idt.profilPelajar || []).map(p => `<span class="rpp-badge blue" style="margin-right:4px;">${p}</span>`).join(' ') || '<span class="rpp-badge blue">Bernalar Kritis</span>';
+    const profilBadges = (data.profilPelajar || []).map(p => `<span class="rpp-badge blue" style="margin-right:4px; display:inline-block;">${p}</span>`).join(' ');
 
     const saranaList = (data.saranaPrasarana || []).map(s => `<li>${s}</li>`).join('');
     const tpList = (data.tujuanPembelajaran || []).map(tp => `<li>${tp}</li>`).join('');
@@ -1286,9 +1474,12 @@ function renderModulAjarPreview(data) {
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; background:#0f172a; padding:1rem 1.25rem; border-radius:12px; margin-bottom:1rem; color:white;">
                 <div>
                     <h3 style="margin:0; font-size:1.1rem; color:#f8fafc;"><i class="fas fa-book-open" style="color:var(--stem-orange); margin-right:0.5rem;"></i> Modul Ajar Deep Teaching Ready</h3>
-                    <p style="margin:0; font-size:0.8rem; color:#94a3b8;">${idt.mataPelajaran || 'Mata Pelajaran'} - ${idt.topik || 'Topik'} (${idt.jenjangFase || 'Fase'})</p>
+                    <p style="margin:0; font-size:0.8rem; color:#94a3b8;">${idt.mataPelajaran} - ${idt.topik} (${idt.jenjangFase})</p>
                 </div>
                 <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button id="btnToggleEditPlanner" onclick="togglePlannerEditMode()" class="rpp-print-btn" style="background:#059669; border:none;">
+                        <i class="fas fa-edit"></i> Edit Data Modul Ajar
+                    </button>
                     <button onclick="copyModulAjarToClipboard()" class="rpp-print-btn" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);">
                         <i class="fas fa-copy"></i> Salin Teks
                     </button>
@@ -1299,6 +1490,12 @@ function renderModulAjarPreview(data) {
                         <i class="fas fa-file-pdf"></i> Download PDF
                     </button>
                 </div>
+            </div>
+
+            <!-- Edit Notice Banner -->
+            <div id="plannerEditNotice" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; padding:0.65rem 1rem; border-radius:8px; margin-bottom:1rem; font-size:0.88rem; align-items:center; gap:0.6rem;">
+                <i class="fas fa-pen-square" style="font-size:1.2rem; color:#059669;"></i>
+                <span><strong>Mode Edit Aktif!</strong> Anda dapat mengeklik langsung setiap isi teks atau tabel di bawah ini untuk mengedit / melengkapi data secara bebas. Seluruh isi yang telah disesuaikan akan langsung dapat dicetak / diunduh sebagai PDF.</span>
             </div>
 
             <!-- Tab Navigation Header -->
@@ -1327,17 +1524,17 @@ function renderModulAjarPreview(data) {
             <div id="tab-info" class="planner-tab-content active">
                 <div class="rpp-section-title">1. INFORMASI UMUM</div>
                 <table class="rpp-table">
-                    <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun || '-'}</td></tr>
-                    <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah || '-'}</td></tr>
-                    <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun || '2025'}</td></tr>
-                    <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase || '-'} (${idt.kelas || '-'})</td></tr>
-                    <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu || '3 x 45 Menit'}</td></tr>
-                    <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran || '-'}</strong> — ${idt.topik || '-'}</td></tr>
-                    <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal || '-'}</td></tr>
+                    <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun}</td></tr>
+                    <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah}</td></tr>
+                    <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun}</td></tr>
+                    <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase} (${idt.kelas})</td></tr>
+                    <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu}</td></tr>
+                    <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran}</strong> — ${idt.topik}</td></tr>
+                    <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal}</td></tr>
                     <tr><td class="rpp-label">Profil Pelajar / Nilai Karakter</td><td>${profilBadges}</td></tr>
                     <tr><td class="rpp-label">Sarana dan Prasarana</td><td><ul style="margin:0; padding-left:1.2rem;">${saranaList}</ul></td></tr>
-                    <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik || '-'}</td></tr>
-                    <tr><td class="rpp-label">Model Pembelajaran</td><td><span class="rpp-badge orange">${data.modelPembelajaran || '-'}</span></td></tr>
+                    <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik}</td></tr>
+                    <tr><td class="rpp-label">Model Pembelajaran</td><td><span class="rpp-badge orange">${data.modelPembelajaran}</span></td></tr>
                 </table>
             </div>
 
@@ -1346,7 +1543,7 @@ function renderModulAjarPreview(data) {
                 <div class="rpp-section-title">2. KOMPONEN INTI</div>
                 <table class="rpp-table">
                     <tr><td class="rpp-label" width="25%">Tujuan Pembelajaran (TP)</td><td><ol style="margin:0; padding-left:1.2rem;">${tpList}</ol></td></tr>
-                    <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna || '-'}</td></tr>
+                    <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna}</td></tr>
                     <tr><td class="rpp-label">Pertanyaan Pemantik (Mindful Hook)</td><td><ol style="margin:0; padding-left:1.2rem;">${pemantikList}</ol></td></tr>
                 </table>
 
@@ -1390,15 +1587,15 @@ function renderModulAjarPreview(data) {
                     <tbody>
                         <tr>
                             <td><span class="rpp-badge blue">Asesmen Diagnostik</span><br><small>(Awal Pembelajaran)</small></td>
-                            <td>${data.rencanaAsesmen?.diagnostik || '-'}</td>
+                            <td>${data.rencanaAsesmen.diagnostik}</td>
                         </tr>
                         <tr>
                             <td><span class="rpp-badge green">Asesmen Formatif</span><br><small>(Proses Pembelajaran)</small></td>
-                            <td>${data.rencanaAsesmen?.formatif || '-'}</td>
+                            <td>${data.rencanaAsesmen.formatif}</td>
                         </tr>
                         <tr>
                             <td><span class="rpp-badge orange">Asesmen Sumatif</span><br><small>(Akhir Pembelajaran/Proyek)</small></td>
-                            <td>${data.rencanaAsesmen?.sumatif || '-'}</td>
+                            <td>${data.rencanaAsesmen.sumatif}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1407,11 +1604,11 @@ function renderModulAjarPreview(data) {
                 <table class="rpp-table">
                     <tr>
                         <td class="rpp-label" width="25%">Strategi Pengayaan (Tuntas Cepat)</td>
-                        <td>${data.pengayaanRemedial?.pengayaan || '-'}</td>
+                        <td>${data.pengayaanRemedial.pengayaan}</td>
                     </tr>
                     <tr>
                         <td class="rpp-label">Strategi Remedial (Bimbingan)</td>
-                        <td>${data.pengayaanRemedial?.remedial || '-'}</td>
+                        <td>${data.pengayaanRemedial.remedial}</td>
                     </tr>
                 </table>
             </div>
@@ -1420,12 +1617,12 @@ function renderModulAjarPreview(data) {
             <div id="tab-lampiran" class="planner-tab-content" style="display:none;">
                 <div class="rpp-section-title">4. LAMPIRAN: LEMBAR KERJA PESERTA DIDIK (LKPD DEEP LEARNING)</div>
                 <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:1.25rem; margin-bottom:1.5rem;">
-                    <h4 style="margin-top:0; color:#1e293b;"><i class="fas fa-file-signature" style="color:var(--stem-blue);"></i> ${data.lkpd?.judul || 'LKPD Deep Learning'}</h4>
+                    <h4 style="margin-top:0; color:#1e293b;"><i class="fas fa-file-signature" style="color:var(--stem-blue);"></i> ${data.lkpd.judul}</h4>
                     <p><strong>Petunjuk Pengerjaan:</strong></p>
                     <ol style="padding-left:1.2rem; margin-bottom:1rem;">${lkpdPetunjuk}</ol>
                     <p><strong>Tugas Kontekstual:</strong></p>
                     <div style="background:white; border-left:4px solid var(--stem-orange); padding:0.75rem 1rem; border-radius:4px; margin-bottom:1rem; font-style:italic;">
-                        "${data.lkpd?.tugasKontekstual || '-'}"
+                        "${data.lkpd.tugasKontekstual}"
                     </div>
 
                     <p><strong>Tabel Alur Kerja & Investigasi Kelompok:</strong></p>
@@ -1455,8 +1652,8 @@ function renderModulAjarPreview(data) {
 
                 <div class="rpp-section-title">BAHAN BACAAN GURU & PESERTA DIDIK</div>
                 <table class="rpp-table">
-                    <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan?.guru || '-'}</td></tr>
-                    <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan?.siswa || '-'}</td></tr>
+                    <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan.guru}</td></tr>
+                    <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan.siswa}</td></tr>
                 </table>
             </div>
 
@@ -1491,31 +1688,31 @@ function renderModulAjarPreview(data) {
                         <div class="rpp-title-area">
                             <h2>MODUL AJAR DEEP TEACHING</h2>
                             <p>Kurikulum Merdeka — <strong>Standar Pembelajaran Mendalam 2025</strong></p>
-                            <p>${idt.sekolah || 'Neo Quantum Miracle Teaching'}</p>
+                            <p>${idt.sekolah}</p>
                         </div>
                     </div>
 
                     <!-- 1. INFORMASI UMUM -->
                     <div class="rpp-section-title">1. INFORMASI UMUM</div>
                     <table class="rpp-table">
-                        <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun || '-'}</td></tr>
-                        <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah || '-'}</td></tr>
-                        <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun || '2025'}</td></tr>
-                        <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase || '-'} (${idt.kelas || '-'})</td></tr>
-                        <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu || '3 x 45 Menit'}</td></tr>
-                        <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran || '-'}</strong> — ${idt.topik || '-'}</td></tr>
-                        <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal || '-'}</td></tr>
+                        <tr><td class="rpp-label" width="25%">Nama Penyusun</td><td>${idt.penyusun}</td></tr>
+                        <tr><td class="rpp-label">Institusi / Sekolah</td><td>${idt.sekolah}</td></tr>
+                        <tr><td class="rpp-label">Tahun Penyusunan</td><td>${idt.tahun}</td></tr>
+                        <tr><td class="rpp-label">Jenjang / Fase / Kelas</td><td>${idt.jenjangFase} (${idt.kelas})</td></tr>
+                        <tr><td class="rpp-label">Alokasi Waktu</td><td>${idt.alokasiWaktu}</td></tr>
+                        <tr><td class="rpp-label">Mata Pelajaran & Topik</td><td><strong>${idt.mataPelajaran}</strong> — ${idt.topik}</td></tr>
+                        <tr><td class="rpp-label">Kompetensi Awal (Prasyarat)</td><td>${data.kompetensiAwal}</td></tr>
                         <tr><td class="rpp-label">Profil Pelajar / Nilai Karakter</td><td>${profilBadges}</td></tr>
                         <tr><td class="rpp-label">Sarana dan Prasarana</td><td><ul style="margin:0; padding-left:1.2rem;">${saranaList}</ul></td></tr>
-                        <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik || '-'}</td></tr>
-                        <tr><td class="rpp-label">Model Pembelajaran</td><td><strong>${data.modelPembelajaran || '-'}</strong></td></tr>
+                        <tr><td class="rpp-label">Target Peserta Didik</td><td>${data.targetPesertaDidik}</td></tr>
+                        <tr><td class="rpp-label">Model Pembelajaran</td><td><strong>${data.modelPembelajaran}</strong></td></tr>
                     </table>
 
                     <!-- 2. KOMPONEN INTI -->
                     <div class="rpp-section-title">2. KOMPONEN INTI</div>
                     <table class="rpp-table">
                         <tr><td class="rpp-label" width="25%">Tujuan Pembelajaran (TP)</td><td><ol style="margin:0; padding-left:1.2rem;">${tpList}</ol></td></tr>
-                        <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna || '-'}</td></tr>
+                        <tr><td class="rpp-label">Pemahaman Bermakna</td><td>${data.pemahamanBermakna}</td></tr>
                         <tr><td class="rpp-label">Pertanyaan Pemantik</td><td><ol style="margin:0; padding-left:1.2rem;">${pemantikList}</ol></td></tr>
                     </table>
 
@@ -1556,23 +1753,23 @@ function renderModulAjarPreview(data) {
                         <tbody>
                             <tr>
                                 <td><span class="rpp-badge blue">Asesmen Diagnostik</span></td>
-                                <td>${data.rencanaAsesmen?.diagnostik || '-'}</td>
+                                <td>${data.rencanaAsesmen.diagnostik}</td>
                             </tr>
                             <tr>
                                 <td><span class="rpp-badge green">Asesmen Formatif</span></td>
-                                <td>${data.rencanaAsesmen?.formatif || '-'}</td>
+                                <td>${data.rencanaAsesmen.formatif}</td>
                             </tr>
                             <tr>
                                 <td><span class="rpp-badge orange">Asesmen Sumatif</span></td>
-                                <td>${data.rencanaAsesmen?.sumatif || '-'}</td>
+                                <td>${data.rencanaAsesmen.sumatif}</td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="rpp-section-title">PENGAYAAN DAN REMEDIAL</div>
                     <table class="rpp-table">
-                        <tr><td class="rpp-label" width="25%">Strategi Pengayaan</td><td>${data.pengayaanRemedial?.pengayaan || '-'}</td></tr>
-                        <tr><td class="rpp-label">Strategi Remedial</td><td>${data.pengayaanRemedial?.remedial || '-'}</td></tr>
+                        <tr><td class="rpp-label" width="25%">Strategi Pengayaan</td><td>${data.pengayaanRemedial.pengayaan}</td></tr>
+                        <tr><td class="rpp-label">Strategi Remedial</td><td>${data.pengayaanRemedial.remedial}</td></tr>
                     </table>
 
                     <!-- 3. KOMPONEN LAMPIRAN -->
@@ -1581,7 +1778,7 @@ function renderModulAjarPreview(data) {
                     <!-- LKPD -->
                     <div style="margin-bottom:1rem; page-break-inside:avoid;">
                         <h4 style="margin-bottom:0.5rem; color:#1e293b;">A. Lembar Kerja Peserta Didik (LKPD Deep Learning)</h4>
-                        <p style="margin:0 0 0.5rem 0;"><strong>Tugas Kontekstual:</strong> ${data.lkpd?.tugasKontekstual || '-'}</p>
+                        <p style="margin:0 0 0.5rem 0;"><strong>Tugas Kontekstual:</strong> ${data.lkpd.tugasKontekstual}</p>
                         <table class="rpp-table">
                             ${lkpdTabelRows}
                         </table>
@@ -1610,8 +1807,8 @@ function renderModulAjarPreview(data) {
                     <div style="page-break-inside:avoid;">
                         <h4 style="margin-bottom:0.5rem; color:#1e293b;">C. Bahan Bacaan, Glosarium & Daftar Pustaka</h4>
                         <table class="rpp-table" style="margin-bottom:0.75rem;">
-                            <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan?.guru || '-'}</td></tr>
-                            <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan?.siswa || '-'}</td></tr>
+                            <tr><td class="rpp-label" width="25%">Bahan Bacaan Guru</td><td>${data.bahanBacaan.guru}</td></tr>
+                            <tr><td class="rpp-label">Bahan Bacaan Siswa</td><td>${data.bahanBacaan.siswa}</td></tr>
                         </table>
 
                         <table class="rpp-table" style="margin-bottom:0.75rem;">
@@ -1633,6 +1830,38 @@ function renderModulAjarPreview(data) {
     `;
 
     window.currentModulAjarData = data;
+    window.isPlannerEditActive = false;
+}
+
+function togglePlannerEditMode() {
+    window.isPlannerEditActive = !window.isPlannerEditActive;
+    const btn = document.getElementById('btnToggleEditPlanner');
+    const notice = document.getElementById('plannerEditNotice');
+    const editableElements = document.querySelectorAll('.rpp-table td:not(.rpp-label), .planner-tab-content p, .planner-tab-content li');
+
+    if (window.isPlannerEditActive) {
+        if (btn) {
+            btn.style.background = '#dc2626';
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Selesai Edit (Simpan Tampilan)';
+        }
+        if (notice) notice.style.display = 'flex';
+
+        editableElements.forEach(el => {
+            el.setAttribute('contenteditable', 'true');
+            el.classList.add('planner-editing');
+        });
+    } else {
+        if (btn) {
+            btn.style.background = '#059669';
+            btn.innerHTML = '<i class="fas fa-edit"></i> Edit Data Modul Ajar';
+        }
+        if (notice) notice.style.display = 'none';
+
+        editableElements.forEach(el => {
+            el.removeAttribute('contenteditable');
+            el.classList.remove('planner-editing');
+        });
+    }
 }
 
 function switchPlannerTab(tabId, btnEl) {

@@ -1405,6 +1405,23 @@ body {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
+/* Live Edit Mode for Modul Ajar */
+.planner-editing {
+    outline: 2px dashed #059669 !important;
+    outline-offset: 2px;
+    background-color: rgba(5, 150, 105, 0.05) !important;
+    border-radius: 4px;
+    padding: 2px 4px;
+    transition: all 0.2s ease;
+    cursor: text;
+}
+
+.planner-editing:focus {
+    outline: 2px solid #047857 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 8px rgba(4, 120, 87, 0.3);
+}
+
 /* RPP Header */
 .rpp-header {
     background: linear-gradient(135deg, var(--quantum-blue) 0%, #1a56db 100%);
